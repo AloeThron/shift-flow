@@ -1,0 +1,13 @@
+staff_code,display_name,grade_code,staff_group_code,staff_group_section,row_order,email,fte,contract_type,active
+STAFF-DEMO-PL-001,Demo Staff Alpha,HEAD,GRP-HEAD,RESULT_CAPABLE,1,alpha@demo.shift-flow.local,1.0,FULL_TIME,true
+STAFF-DEMO-PL-002,Demo Staff Beta,MT,GRP-MT,RESULT_CAPABLE,1,beta@demo.shift-flow.local,1.0,FULL_TIME,true
+STAFF-DEMO-PL-003,Demo Staff Gamma,MT,GRP-MT,RESULT_CAPABLE,2,gamma@demo.shift-flow.local,1.0,FULL_TIME,true
+STAFF-DEMO-PL-004,Demo Staff Delta,MT,GRP-MT,RESULT_CAPABLE,3,delta@demo.shift-flow.local,1.0,FULL_TIME,true
+STAFF-DEMO-PL-005,Demo Staff Epsilon,MT,GRP-MT,RESULT_CAPABLE,4,epsilon@demo.shift-flow.local,1.0,FULL_TIME,true
+STAFF-DEMO-PL-006,Demo Staff Zeta,MT,GRP-MT,RESULT_CAPABLE,5,zeta@demo.shift-flow.local,1.0,FULL_TIME,true
+STAFF-DEMO-PL-007,Demo Staff Eta,PT,GRP-MT,PART_TIME,6,eta@demo.shift-flow.local,0.5,PART_TIME,true
+STAFF-DEMO-PL-008,Demo Staff Theta,ASSISTANT,GRP-ASST,RESULT_NOT_CAPABLE,1,theta@demo.shift-flow.local,1.0,FULL_TIME,true
+STAFF-DEMO-PL-009,Demo Staff Iota,ASSISTANT,GRP-ASST,RESULT_NOT_CAPABLE,2,iota@demo.shift-flow.local,1.0,FULL_TIME,true
+STAFF-DEMO-PL-010,Demo Staff Kappa,ASSISTANT,GRP-ASST,RESULT_NOT_CAPABLE,3,kappa@demo.shift-flow.local,1.0,FULL_TIME,true
+STAFF-DEMO-PL-011,Demo Staff Lambda,ASSISTANT,GRP-ASST,RESULT_NOT_CAPABLE,4,lambda@demo.shift-flow.local,0.0,NO_GUARANTEED_HOURS,true
+STAFF-DEMO-PL-012,Demo Staff Mu,MT,GRP-MT,RESULT_CAPABLE,7,mu@demo.shift-flow.local,0.8,FULL_TIME,true

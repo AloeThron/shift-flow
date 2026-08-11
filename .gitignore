@@ -1,3 +1,50 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js
+.next/
+out/
+
+# Prisma generated client
+generated/
+
+# Testing
+playwright-report/
+test-results/
+coverage/
+backups/
+
+# Environment
+.env
+.env.local
+.env.*.local
+.env.test
+
+# OS / IDE
+.DS_Store
+*.pem
+.idea/
+.vscode/
+
+# Debug
+npm-debug.log*
+pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Temp discovery (existing policy)
 /temp/
 
-.env
+# Pilot vault
+pilot-vault/raw/**
+pilot-vault/anonymized/**
+pilot-vault/consent/**
+pilot-vault/manifest.json
+!pilot-vault/raw/.gitkeep
+!pilot-vault/anonymized/.gitkeep
+!pilot-vault/consent/.gitkeep
+!pilot-vault/README.md
+!pilot-vault/manifest.example.json

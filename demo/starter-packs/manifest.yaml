@@ -1,0 +1,28 @@
+# Starter pack catalog — ชุดตั้งค่าเริ่มต้นสำหรับ onboarding (ข้อมูลสังเคราะห์ทั้งหมด)
+version: 1
+
+packs:
+  - id: pilot-lab-example
+    slug: demo-pilot-pattern-lab
+    path: pilot-lab-example
+    display_name_th: Pilot Pattern Laboratory
+    display_name_en: Pilot Pattern Laboratory
+    complexity: high
+    aliases:
+      - pilot-lab-sample
+    requires_review: true
+    disclaimer: SYNTHETIC_DATA — ไม่ map กับ pilot-vault — ต้องปรับก่อนใช้จริง
+    pattern_reference: docs/domain/shift-code-taxonomy.md
+    apply_order:
+      - organization.yaml
+      - departments.csv
+      - staff_grades.csv
+      - staff_groups.csv
+      - scheduling_policy.yaml
+      - shift_codes.csv
+      - staff.csv
+      - staff_shift_authorization.csv
+      - shift_demands.csv
+      - holidays.csv
+      - rule_instances.yaml
+      - roster_import_sample.csv

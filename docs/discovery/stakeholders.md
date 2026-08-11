@@ -1,7 +1,7 @@
 # Stakeholder Map — แผนที่ผู้มีส่วนได้ส่วนเสีย
 
-> อัปเดตล่าสุด: _กรอกวันที่_  
-> สถานที่นำร่อง: _ชื่อหน่วยงาน (ไม่ commit ชื่อจริงใน repo จน anonymize)_
+> อัปเดตล่าสุด: 2026-08-10  
+> สถานที่นำร่อง: `PILOT-LAB-001` (ข้อมูลจาก role play ยังไม่ใช่ข้อมูลหน้างานจริง)
 
 ---
 
@@ -145,17 +145,17 @@ flowchart TB
 | Leave approval workflow |     C     |    A     |   R   |    C     |    I    |   I    |
 | Data retention policy   |     I     |    C     |   I   |    C     |    I    | **R**  |
 
-_R = Responsible, A = Accountable, C = Consulted, I = Informed_
+> R = Responsible, A = Accountable, C = Consulted, I = Informed
 
 ---
 
 ## 5. Pain Point Matrix (กรอกหลังสัมภาษณ์)
 
-| #   | Pain point | ผู้ได้รับผล | ความรุนแรง (1–5) | ความถี่ | หลักฐาน (artifact/quote นิรนาม) | แนวทางระบบ |
-| --- | ---------- | ------- | --------------- | ----- | ----------------------------- | ---------- |
-| 1   |            |         |                 |       |                               |            |
-| 2   |            |         |                 |       |                               |            |
-| 3   |            |         |                 |       |                               |            |
+| #   | Pain point                                             | ผู้ได้รับผล                      | ความรุนแรง (1–5) | ความถี่                     | หลักฐาน (artifact/quote นิรนาม) | แนวทางระบบ                                                  |
+| --- | ------------------------------------------------------ | ---------------------------- | --------------- | ------------------------- | ----------------------------- | ----------------------------------------------------------- |
+| 1   | Excel หลายไฟล์ทำให้ตรวจ overlap, rest และ coverage gap ช้า | Scheduler, Lab Head          | 5               | ทุกรอบ                     | `INT-SCH-001` quote 1         | validator ก่อน publish และแสดง conflict พร้อมเหตุผล            |
+| 2   | Competency matrix ไม่เชื่อมกับตารางและวันหมดอายุ             | Scheduler, Quality, Lab Head | 5               | ทุกครั้งที่จัดรอบ               | `INT-SCH-001` hard rules      | block assignment ที่ authorization ไม่ครอบคลุมทั้งเวร             |
+| 3   | Sick leave และ swap หลัง publish ต้องแก้และแจ้งหลายช่องทาง  | Scheduler, Staff             | 4               | 1–2 ครั้งหลัง publish ต่อเดือน | `INT-SCH-001` quote 2         | workflow revision/swap พร้อม acknowledgement และ audit trail |
 
 ---
 
@@ -172,6 +172,6 @@ _R = Responsible, A = Accountable, C = Consulted, I = Informed_
 
 ## 7. บันทึกการอัปเดต / Change Log
 
-| วันที่ | ผู้บันทึก | การเปลี่ยนแปลง    |
-| --- | ----- | --------------- |
-|     |       | สร้างเอกสารเริ่มต้น |
+| วันที่        | ผู้บันทึก                  | การเปลี่ยนแปลง                                                           |
+| ---------- | ---------------------- | ---------------------------------------------------------------------- |
+| 2026-08-10 | `SIMULATED-RESEARCHER` | เพิ่ม pain matrix จาก `INT-SCH-001` role play; ต้องยืนยันกับผู้มีส่วนได้ส่วนเสียจริง |

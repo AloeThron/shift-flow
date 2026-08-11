@@ -1,0 +1,673 @@
+{
+  "generated_at": "2026-08-10T18:38:45.262319+00:00",
+  "source": "scripts/build_roster_artifacts.py::parse_shift",
+  "token_count": 74,
+  "tokens": {
+    "": {
+      "raw_code": "",
+      "canonical_area": "",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "NO_SHIFT",
+      "confidence": "HIGH"
+    },
+    "7/BB": {
+      "raw_code": "7/BB",
+      "canonical_area": "BB",
+      "start_hint": "07:00",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7/Bac": {
+      "raw_code": "7/Bac",
+      "canonical_area": "Bac",
+      "start_hint": "07:00",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7/HE": {
+      "raw_code": "7/HE",
+      "canonical_area": "HE",
+      "start_hint": "07:00",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7/Inc": {
+      "raw_code": "7/Inc",
+      "canonical_area": "INC",
+      "start_hint": "07:00",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7BA18": {
+      "raw_code": "7BA18",
+      "canonical_area": "B",
+      "start_hint": "07:00",
+      "end_hint": "18:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7BB": {
+      "raw_code": "7BB",
+      "canonical_area": "BB",
+      "start_hint": "07:00",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7BB18": {
+      "raw_code": "7BB18",
+      "canonical_area": "BB",
+      "start_hint": "07:00",
+      "end_hint": "18:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7Bac": {
+      "raw_code": "7Bac",
+      "canonical_area": "Bac",
+      "start_hint": "07:00",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7Bae": {
+      "raw_code": "7Bae",
+      "canonical_area": "Bac",
+      "start_hint": "07:00",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7Bae18": {
+      "raw_code": "7Bae18",
+      "canonical_area": "Bac",
+      "start_hint": "07:00",
+      "end_hint": "18:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7CH": {
+      "raw_code": "7CH",
+      "canonical_area": "CH",
+      "start_hint": "07:00",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7CH20": {
+      "raw_code": "7CH20",
+      "canonical_area": "CH",
+      "start_hint": "07:00",
+      "end_hint": "20:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7HE": {
+      "raw_code": "7HE",
+      "canonical_area": "HE",
+      "start_hint": "07:00",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7IM": {
+      "raw_code": "7IM",
+      "canonical_area": "IM",
+      "start_hint": "07:00",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7INC": {
+      "raw_code": "7INC",
+      "canonical_area": "INC",
+      "start_hint": "07:00",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7MI": {
+      "raw_code": "7MI",
+      "canonical_area": "MI",
+      "start_hint": "07:00",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7Set": {
+      "raw_code": "7Set",
+      "canonical_area": "Set",
+      "start_hint": "07:00",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "7ช": {
+      "raw_code": "7ช",
+      "canonical_area": "",
+      "start_hint": "07:00",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "8/16": {
+      "raw_code": "8/16",
+      "canonical_area": "8",
+      "start_hint": "16:00",
+      "end_hint": "16:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "8/17": {
+      "raw_code": "8/17",
+      "canonical_area": "8",
+      "start_hint": "17:00",
+      "end_hint": "17:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "?": {
+      "raw_code": "?",
+      "canonical_area": "",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "UNKNOWN",
+      "confidence": "LOW"
+    },
+    "B/16": {
+      "raw_code": "B/16",
+      "canonical_area": "B",
+      "start_hint": "16:00",
+      "end_hint": "16:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "B/17": {
+      "raw_code": "B/17",
+      "canonical_area": "B",
+      "start_hint": "17:00",
+      "end_hint": "17:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "BB": {
+      "raw_code": "BB",
+      "canonical_area": "BB",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "BB/18": {
+      "raw_code": "BB/18",
+      "canonical_area": "BB",
+      "start_hint": "18:00",
+      "end_hint": "18:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "BB18": {
+      "raw_code": "BB18",
+      "canonical_area": "BB",
+      "start_hint": "",
+      "end_hint": "18:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "BB20": {
+      "raw_code": "BB20",
+      "canonical_area": "BB",
+      "start_hint": "",
+      "end_hint": "20:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "Bac": {
+      "raw_code": "Bac",
+      "canonical_area": "Bac",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "Bac/16": {
+      "raw_code": "Bac/16",
+      "canonical_area": "Bac",
+      "start_hint": "16:00",
+      "end_hint": "16:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "Bac/20": {
+      "raw_code": "Bac/20",
+      "canonical_area": "Bac",
+      "start_hint": "20:00",
+      "end_hint": "20:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "Bac/MI2": {
+      "raw_code": "Bac/MI2",
+      "canonical_area": "Bac",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "Bac18": {
+      "raw_code": "Bac18",
+      "canonical_area": "Bac",
+      "start_hint": "",
+      "end_hint": "18:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "Bac20": {
+      "raw_code": "Bac20",
+      "canonical_area": "Bac",
+      "start_hint": "",
+      "end_hint": "20:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "Bae": {
+      "raw_code": "Bae",
+      "canonical_area": "Bac",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "Bae18": {
+      "raw_code": "Bae18",
+      "canonical_area": "Bac",
+      "start_hint": "",
+      "end_hint": "18:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "Bae20": {
+      "raw_code": "Bae20",
+      "canonical_area": "Bac",
+      "start_hint": "",
+      "end_hint": "20:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "CH": {
+      "raw_code": "CH",
+      "canonical_area": "CH",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "CH18": {
+      "raw_code": "CH18",
+      "canonical_area": "CH",
+      "start_hint": "",
+      "end_hint": "18:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "CT": {
+      "raw_code": "CT",
+      "canonical_area": "CT",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "CT/17": {
+      "raw_code": "CT/17",
+      "canonical_area": "CT",
+      "start_hint": "",
+      "end_hint": "17:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "F/16": {
+      "raw_code": "F/16",
+      "canonical_area": "F",
+      "start_hint": "16:00",
+      "end_hint": "16:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "HE": {
+      "raw_code": "HE",
+      "canonical_area": "HE",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "HE/20": {
+      "raw_code": "HE/20",
+      "canonical_area": "HE",
+      "start_hint": "",
+      "end_hint": "20:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "HE18": {
+      "raw_code": "HE18",
+      "canonical_area": "HE",
+      "start_hint": "",
+      "end_hint": "18:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "HE20": {
+      "raw_code": "HE20",
+      "canonical_area": "HE",
+      "start_hint": "",
+      "end_hint": "20:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "IM": {
+      "raw_code": "IM",
+      "canonical_area": "IM",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "IM/20": {
+      "raw_code": "IM/20",
+      "canonical_area": "IM",
+      "start_hint": "",
+      "end_hint": "20:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "IM18": {
+      "raw_code": "IM18",
+      "canonical_area": "IM",
+      "start_hint": "",
+      "end_hint": "18:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "IM20": {
+      "raw_code": "IM20",
+      "canonical_area": "IM",
+      "start_hint": "",
+      "end_hint": "20:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "INC": {
+      "raw_code": "INC",
+      "canonical_area": "INC",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "INC18": {
+      "raw_code": "INC18",
+      "canonical_area": "INC",
+      "start_hint": "",
+      "end_hint": "18:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "INC20": {
+      "raw_code": "INC20",
+      "canonical_area": "INC",
+      "start_hint": "",
+      "end_hint": "20:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "Inc": {
+      "raw_code": "Inc",
+      "canonical_area": "INC",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "Inc/MI2": {
+      "raw_code": "Inc/MI2",
+      "canonical_area": "INC",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "Inc20": {
+      "raw_code": "Inc20",
+      "canonical_area": "INC",
+      "start_hint": "",
+      "end_hint": "20:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "MI": {
+      "raw_code": "MI",
+      "canonical_area": "MI",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "MI120": {
+      "raw_code": "MI120",
+      "canonical_area": "MI",
+      "start_hint": "",
+      "end_hint": "20:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "MI18": {
+      "raw_code": "MI18",
+      "canonical_area": "MI",
+      "start_hint": "",
+      "end_hint": "18:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "MI20": {
+      "raw_code": "MI20",
+      "canonical_area": "MI",
+      "start_hint": "",
+      "end_hint": "20:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "N1": {
+      "raw_code": "N1",
+      "canonical_area": "N1",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "N2": {
+      "raw_code": "N2",
+      "canonical_area": "N2",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "Set": {
+      "raw_code": "Set",
+      "canonical_area": "Set",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "Set/17": {
+      "raw_code": "Set/17",
+      "canonical_area": "Set",
+      "start_hint": "",
+      "end_hint": "17:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "[แดง]": {
+      "raw_code": "[แดง]",
+      "canonical_area": "",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "UNKNOWN",
+      "confidence": "MED"
+    },
+    "cs/19": {
+      "raw_code": "cs/19",
+      "canonical_area": "cs",
+      "start_hint": "",
+      "end_hint": "19:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "es/19": {
+      "raw_code": "es/19",
+      "canonical_area": "es",
+      "start_hint": "",
+      "end_hint": "19:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "off": {
+      "raw_code": "off",
+      "canonical_area": "",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "OFF",
+      "confidence": "HIGH"
+    },
+    "sick": {
+      "raw_code": "sick",
+      "canonical_area": "",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "LEAVE",
+      "confidence": "HIGH"
+    },
+    "ช": {
+      "raw_code": "ช",
+      "canonical_area": "",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "ช/18": {
+      "raw_code": "ช/18",
+      "canonical_area": "",
+      "start_hint": "",
+      "end_hint": "18:00",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "บค": {
+      "raw_code": "บค",
+      "canonical_area": "",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "บด": {
+      "raw_code": "บด",
+      "canonical_area": "บด",
+      "start_hint": "16:00",
+      "end_hint": "08:00",
+      "crosses_midnight": true,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    },
+    "บต": {
+      "raw_code": "บต",
+      "canonical_area": "",
+      "start_hint": "",
+      "end_hint": "",
+      "crosses_midnight": false,
+      "status": "ASSIGNED",
+      "confidence": "HIGH"
+    }
+  }
+}

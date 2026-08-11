@@ -1,0 +1,84 @@
+{
+  "generated_at": "2026-08-11T04:52:08.597Z",
+  "source": "demo/validation-dataset + src/domain/optimize/fairness",
+  "cycle_start_date": "2026-06-01",
+  "cycle_end_date": "2026-06-30",
+  "lookback_months": 6,
+  "workload_row_count": 78,
+  "snapshots": {
+    "TOTAL_HOURS": {
+      "dimension": "TOTAL_HOURS",
+      "scope": "GROUP",
+      "lookbackMonths": 6,
+      "normalizeByFte": true,
+      "cycleStartDate": "2026-06-01",
+      "cycleEndDate": "2026-06-30",
+      "groups": {
+        "grp-asst": {
+          "staffCount": 6,
+          "min": 0,
+          "max": 262.86,
+          "mean": 209.76,
+          "spread": 262.86,
+          "gini": 0.18,
+          "spreadPerFte": 262.86
+        },
+        "grp-head": {
+          "staffCount": 1,
+          "min": 950,
+          "max": 950,
+          "mean": 950,
+          "spread": 0,
+          "gini": 0,
+          "spreadPerFte": 0
+        },
+        "grp-mt": {
+          "staffCount": 15,
+          "min": 0,
+          "max": 804.57,
+          "mean": 197.12,
+          "spread": 804.57,
+          "gini": 0.45,
+          "spreadPerFte": 862.04
+        }
+      }
+    },
+    "OT_HOURS": {
+      "dimension": "OT_HOURS",
+      "scope": "GROUP",
+      "lookbackMonths": 6,
+      "normalizeByFte": true,
+      "cycleStartDate": "2026-06-01",
+      "cycleEndDate": "2026-06-30",
+      "groups": {
+        "grp-asst": {
+          "staffCount": 6,
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "spread": 0,
+          "gini": 0,
+          "spreadPerFte": 0
+        },
+        "grp-head": {
+          "staffCount": 1,
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "spread": 0,
+          "gini": 0,
+          "spreadPerFte": 0
+        },
+        "grp-mt": {
+          "staffCount": 15,
+          "min": 0,
+          "max": 109.71,
+          "mean": 24.79,
+          "spread": 109.71,
+          "gini": 0.48,
+          "spreadPerFte": 117.55
+        }
+      }
+    }
+  }
+}

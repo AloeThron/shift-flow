@@ -1,0 +1,950 @@
+// Prisma schema — auth + tenant boundary + domain models (tenant-domain phase)
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+/// บทบาทสมาชิกองค์กร — ตรงกับ docs/security/rbac.md
+enum OrganizationRole {
+  SYSTEM_ADMIN
+  SCHEDULER
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  DISABLED
+}
+
+enum MembershipStatus {
+  INVITED
+  ACTIVE
+  SUSPENDED
+}
+
+enum ContractType {
+  FULL_TIME
+  PART_TIME
+  NO_GUARANTEED_HOURS
+}
+
+/// หมวดย่อยภายใน StaffGroup — กำหนด manual ต่อคน (canvas + HR)
+enum StaffGroupSection {
+  RESULT_CAPABLE
+  RESULT_NOT_CAPABLE
+  PART_TIME
+}
+
+enum RuleSeverity {
+  HARD
+  SOFT
+}
+
+enum OverrideClass {
+  NEVER
+  APPROVER_REQUIRED
+  SCHEDULER_ALLOWED
+}
+
+enum ScheduleDraftStatus {
+  EDITING
+  VALIDATED
+}
+
+enum ScheduleVersionStatus {
+  DRAFT
+  VALIDATED
+  PUBLISHED
+  LOCKED
+  SUPERSEDED
+}
+
+enum ScheduleRunStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+/// ระยะ solver สองขั้น — ลงวันหยุด vs เกลี่ยงาน
+enum ScheduleRunStage {
+  DAY_OFF
+  BALANCE
+}
+
+/// ที่มาของวันหยุดที่วางแผนใน draft (Stage A)
+enum PlannedNonWorkingDaySource {
+  REQUEST
+  QUOTA
+  MANUAL
+}
+
+/// วิธี derive OT ใน canvas — จากรหัสเวรอย่างเดียวหรือแก้ plannedOtHours ได้
+enum OtDerivationMode {
+  SHIFT_CODE_ONLY
+  PLANNED_OVERRIDE_ALLOWED
+}
+
+enum RosterCellStatus {
+  ASSIGNED
+  OFF
+  LEAVE
+  UNKNOWN
+  NO_SHIFT
+}
+
+enum ImportBatchStatus {
+  UPLOADED
+  DRY_RUN
+  COMMITTED
+  FAILED
+  ROLLED_BACK
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  PUBLISH
+  LOCK
+  SUPERSEDE
+  OVERRIDE
+  IMPORT
+  APPROVE
+  REJECT
+  ACKNOWLEDGE
+  RUN_SOLVER
+}
+
+// ─── Auth & Tenant ───────────────────────────────────────────────────────────
+
+/// ตัวตนผู้ใช้ global — ไม่ผูก tenant โดยตรง
+model User {
+  id           String     @id @default(cuid())
+  username     String     @unique
+  email        String?    @unique
+  passwordHash String
+  displayName  String?
+  status       UserStatus @default(PENDING)
+  tokenVersion Int        @default(0)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  memberships OrganizationMembership[]
+  accounts    Account[]
+  sessions    Session[]
+
+  @@index([status])
+}
+
+/// Tenant — องค์กร/หน่วยงาน
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  timezone  String   @default("Asia/Bangkok")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships                    OrganizationMembership[]
+  departments                    Department[]
+  staffGrades                    StaffGrade[]
+  staffGroups                    StaffGroup[]
+  staffProfiles                  StaffProfile[]
+  employmentContracts            EmploymentContract[]
+  staffShiftAuthorizations       StaffShiftAuthorization[]
+  nonWorkingDayKinds             NonWorkingDayKind[]
+  shiftCodes                     ShiftCode[]
+  shiftTemplates                 ShiftTemplate[]
+  shiftInstances                 ShiftInstance[]
+  codeParsingRules               CodeParsingRule[]
+  shiftCodeDemands               ShiftCodeDemand[]
+  holidayCalendars               HolidayCalendar[]
+  ruleInstances                  RuleInstance[]
+  ruleSetVersions                RuleSetVersion[]
+  configChangeEvents             ConfigChangeEvent[]
+  scheduleCycles                 ScheduleCycle[]
+  scheduleDrafts                 ScheduleDraft[]
+  scheduleVersions               ScheduleVersion[]
+  assignments                    Assignment[]
+  scheduleRuns                   ScheduleRun[]
+  plannedNonWorkingDays          PlannedNonWorkingDay[]
+  draftStaffDayOffQuotas         DraftStaffDayOffQuota[]
+  staffWorkloadMonthly           StaffWorkloadMonthly[]
+  scheduleShareLinks             ScheduleShareLink[]
+  rosterImportBatches            RosterImportBatch[]
+  rosterImportCells              RosterImportCell[]
+  auditEvents                    AuditEvent[]
+  payRuleVersions                PayRuleVersion[]
+  schedulingPolicies             SchedulingPolicy[]
+
+  @@index([name])
+}
+
+/// สมาชิกภาพ user ↔ organization พร้อม role
+model OrganizationMembership {
+  id             String           @id @default(cuid())
+  userId         String
+  organizationId String
+  role           OrganizationRole
+  status         MembershipStatus @default(INVITED)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+  @@index([organizationId, role])
+  @@index([userId, status])
+}
+
+/// Auth.js adapter models (รองรับ OAuth ในอนาคต — session หลักใช้ JWT)
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── โครงสร้างองค์กร ─────────────────────────────────────────────────────────
+
+/// แผนก / จุดปฏิบัติงาน — lookup ของรหัสเวร (flatten จาก WorkArea เดิม)
+model Department {
+  id             String   @id @default(cuid())
+  organizationId String
+  code           String
+  displayName    String
+  sortOrder      Int      @default(0)
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  shiftCodes     ShiftCode[]
+  shiftTemplates ShiftTemplate[]
+
+  @@unique([organizationId, code])
+  @@index([organizationId, active])
+}
+
+/// ระดับพนักงาน — องค์กรกำหนดเอง
+model StaffGrade {
+  id             String   @id @default(cuid())
+  organizationId String
+  code           String
+  displayName    String
+  sortOrder      Int      @default(0)
+  canWorkNights  Boolean  @default(false)
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization  Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  staffProfiles StaffProfile[]
+
+  @@unique([organizationId, code])
+  @@index([organizationId, active])
+}
+
+/// กลุ่ม canvas + ขอบเขต fairness — แยกจาก StaffGrade
+model StaffGroup {
+  id             String   @id @default(cuid())
+  organizationId String
+  code           String
+  displayName    String
+  sortOrder      Int      @default(0)
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization         Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  staffProfiles        StaffProfile[]
+  staffWorkloadMonthly StaffWorkloadMonthly[]
+
+  @@unique([organizationId, code])
+  @@index([organizationId, sortOrder])
+}
+
+// ─── บุคลากร ─────────────────────────────────────────────────────────────────
+
+/// โปรไฟล์บุคลากร — แยกจากบัญชี User
+model StaffProfile {
+  id             String   @id @default(cuid())
+  organizationId String
+  staffGradeId   String
+  staffGroupId   String?
+  userId         String?
+  staffCode         String
+  displayName       String
+  email             String?
+  staffGroupSection StaffGroupSection @default(RESULT_CAPABLE)
+  rowOrder          Int               @default(0)
+  active            Boolean           @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization                  Organization                   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  staffGrade                    StaffGrade                     @relation(fields: [staffGradeId], references: [id], onDelete: Restrict)
+  staffGroup                    StaffGroup?                    @relation(fields: [staffGroupId], references: [id], onDelete: SetNull)
+  employmentContracts           EmploymentContract[]
+  shiftAuthorizations      StaffShiftAuthorization[] @relation("StaffShiftAuthSubject")
+  shiftAuthorizationsGiven StaffShiftAuthorization[] @relation("StaffShiftAuthAuthorizer")
+  assignments                   Assignment[]
+  plannedNonWorkingDays         PlannedNonWorkingDay[]
+  draftStaffDayOffQuotas        DraftStaffDayOffQuota[]
+  staffWorkloadMonthly          StaffWorkloadMonthly[]
+
+  @@unique([organizationId, staffCode])
+  @@index([organizationId, active])
+  @@index([organizationId, staffGradeId])
+  @@index([organizationId, staffGroupId, staffGroupSection, rowOrder])
+}
+
+/// สัญญาจ้าง — FTE, ชั่วโมงเป้า, effective period
+model EmploymentContract {
+  id                  String       @id @default(cuid())
+  organizationId      String
+  staffProfileId      String
+  contractType        ContractType
+  fte                 Decimal      @db.Decimal(4, 2)
+  targetHoursPerMonth Decimal?     @db.Decimal(6, 2)
+  effectiveFrom       DateTime     @db.Date
+  effectiveTo         DateTime?    @db.Date
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  staffProfile StaffProfile @relation(fields: [staffProfileId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, staffProfileId])
+  @@index([organizationId, effectiveFrom, effectiveTo])
+}
+
+// ─── สิทธิปฏิบัติงานตามรหัสเวร ───────────────────────────────────────────────
+
+/// สิทธิ์ปฏิบัติงานตามรหัสเวร — ระดับ, ผู้อนุมัติ, วันหมดอายุ; coversAll = ทุกรหัสเวร
+model StaffShiftAuthorization {
+  id                  String    @id @default(cuid())
+  organizationId      String
+  staffProfileId      String
+  shiftCodeId         String?
+  coversAllShiftCodes Boolean   @default(false)
+  level               String?
+  authorizedByStaffId String?
+  assessedAt          DateTime  @db.Date
+  expiresAt           DateTime? @db.Date
+  requiresSupervision Boolean   @default(false)
+  notes               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  organization      Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  staffProfile      StaffProfile  @relation("StaffShiftAuthSubject", fields: [staffProfileId], references: [id], onDelete: Cascade)
+  shiftCode         ShiftCode?    @relation(fields: [shiftCodeId], references: [id], onDelete: Restrict)
+  authorizedByStaff StaffProfile? @relation("StaffShiftAuthAuthorizer", fields: [authorizedByStaffId], references: [id], onDelete: SetNull)
+
+  @@unique([organizationId, staffProfileId, shiftCodeId])
+  @@index([organizationId, staffProfileId])
+  @@index([organizationId, expiresAt])
+  @@index([organizationId, staffProfileId, coversAllShiftCodes])
+}
+
+// ─── Non-Working Days ────────────────────────────────────────────────────────
+
+/// ประเภทวันไม่ขึ้นเวร — องค์กรกำหนดเอง
+model NonWorkingDayKind {
+  id             String   @id @default(cuid())
+  organizationId String
+  code           String
+  displayName    String
+  blocksScheduling Boolean @default(true)
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization          Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  plannedNonWorkingDays PlannedNonWorkingDay[]
+
+  @@unique([organizationId, code])
+  @@index([organizationId, active])
+}
+
+// ─── Shift Configuration ─────────────────────────────────────────────────────
+
+/// รหัสเวร canonical ต่อองค์กร
+model ShiftCode {
+  id                String   @id @default(cuid())
+  organizationId    String
+  departmentId      String?
+  canonicalCode     String
+  startTime         String?
+  endTime           String?
+  standardHours     Decimal? @db.Decimal(4, 2)
+  otHours           Decimal  @default(0) @db.Decimal(4, 2)
+  isNightShift      Boolean  @default(false)
+  allowedGradeCodes String[]
+  needsConfirmation Boolean  @default(false)
+  deprecated        Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  organization       Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  department         Department?         @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  shiftCodeDemands        ShiftCodeDemand[]
+  shiftTemplates          ShiftTemplate[]
+  rosterImportCells       RosterImportCell[]
+  assignments             Assignment[]
+  staffShiftAuthorizations StaffShiftAuthorization[]
+
+  @@unique([organizationId, canonicalCode])
+  @@index([organizationId, deprecated])
+}
+
+/// รูปแบบเวลา + area
+model ShiftTemplate {
+  id                    String   @id @default(cuid())
+  organizationId        String
+  shiftCodeId           String
+  departmentId          String?
+  name                  String
+  active                Boolean  @default(true)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  shiftCode      ShiftCode       @relation(fields: [shiftCodeId], references: [id], onDelete: Restrict)
+  department     Department?     @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  shiftInstances ShiftInstance[]
+
+  @@index([organizationId, active])
+}
+
+/// instance รายวัน — รองรับข้ามเที่ยงคืน
+model ShiftInstance {
+  id              String   @id @default(cuid())
+  organizationId  String
+  shiftTemplateId String
+  localDate       DateTime @db.Date
+  startsAt        DateTime
+  endsAt          DateTime
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  organization  Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  shiftTemplate ShiftTemplate @relation(fields: [shiftTemplateId], references: [id], onDelete: Restrict)
+  assignments   Assignment[]
+
+  @@unique([organizationId, shiftTemplateId, localDate])
+  @@index([organizationId, localDate])
+}
+
+/// กติกา parse token ในเซลล์ — prefix/suffix/composite
+model CodeParsingRule {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  pattern        String
+  priority       Int      @default(0)
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, active, priority])
+}
+
+/// ความต้องการกำลังคนขั้นต่ำต่อรหัสเวร — ใช้เวลาของ ShiftCode
+model ShiftCodeDemand {
+  id                   String    @id @default(cuid())
+  organizationId       String
+  shiftCodeId          String
+  name                 String
+  minHeadcount         Int
+  requiresLead         Boolean   @default(false)
+  weekdayMask          Int       @default(127)
+  appliesOnHolidays    Boolean   @default(false)
+  effectiveFrom        DateTime  @db.Date
+  effectiveTo          DateTime? @db.Date
+  active               Boolean   @default(true)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  shiftCode    ShiftCode    @relation(fields: [shiftCodeId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, shiftCodeId, active])
+  @@index([organizationId, effectiveFrom, effectiveTo])
+}
+
+/// ปฏิทินวันหยุดองค์กร
+model HolidayCalendar {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  source         String?
+  version        Int      @default(1)
+  effectiveFrom  DateTime @db.Date
+  effectiveTo    DateTime? @db.Date
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  holidays     HolidayDate[]
+
+  @@index([organizationId, effectiveFrom, effectiveTo])
+}
+
+/// วันหยุดใน calendar
+model HolidayDate {
+  id                String   @id @default(cuid())
+  holidayCalendarId String
+  localDate         DateTime @db.Date
+  name              String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  holidayCalendar HolidayCalendar @relation(fields: [holidayCalendarId], references: [id], onDelete: Cascade)
+
+  @@unique([holidayCalendarId, localDate])
+}
+
+// ─── Rules & Config Versioning ───────────────────────────────────────────────
+
+/// rule instance ต่อองค์กร — อ้าง ruleTemplateId ใน registry
+model RuleInstance {
+  id             String        @id @default(cuid())
+  organizationId String
+  ruleTemplateId String
+  params         Json
+  severity       RuleSeverity
+  weight         Decimal?      @db.Decimal(6, 2)
+  overrideClass  OverrideClass
+  enabled        Boolean       @default(true)
+  effectiveFrom  DateTime      @db.Date
+  effectiveTo    DateTime?     @db.Date
+  version        Int           @default(1)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, ruleTemplateId, enabled])
+  @@index([organizationId, effectiveFrom, effectiveTo])
+}
+
+/// snapshot rule set ที่ bind กับ schedule publish
+model RuleSetVersion {
+  id             String   @id @default(cuid())
+  organizationId String
+  versionNumber  Int
+  effectiveFrom  DateTime @db.Date
+  snapshot       Json
+  createdByUserId String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization     Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  scheduleVersions ScheduleVersion[]
+  scheduleRuns     ScheduleRun[]
+
+  @@unique([organizationId, versionNumber])
+  @@index([organizationId, effectiveFrom])
+}
+
+/// audit การแก้ config — actor, before/after, effective date
+model ConfigChangeEvent {
+  id             String   @id @default(cuid())
+  organizationId String
+  actorUserId    String?
+  entityType     String
+  entityId       String
+  field          String?
+  before         Json?
+  after          Json?
+  reason         String?
+  effectiveFrom  DateTime @db.Date
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, entityType, entityId])
+  @@index([organizationId, createdAt])
+}
+
+// ─── Scheduling Policy ───────────────────────────────────────────────────────
+
+/// นโยบายจัดตารางต่อ org — หน้าต่างปฏิบัติการ, fairness lookback, planning horizon
+model SchedulingPolicy {
+  id                     String           @id @default(cuid())
+  organizationId         String
+  historyWindowMonths    Int              @default(6)
+  fairnessLookbackMonths Int              @default(6)
+  planningHorizonMonths  Int              @default(1)
+  publishLeadDays        Int              @default(7)
+  otDerivationMode       OtDerivationMode @default(SHIFT_CODE_ONLY)
+  effectiveFrom          DateTime         @db.Date
+  effectiveTo            DateTime?        @db.Date
+  version                Int              @default(1)
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, effectiveFrom, effectiveTo])
+}
+
+// ─── Payroll Config (phase หลัง core — schema พร้อมสำหรับ admin UI) ─────────
+
+/// สูตรค่าตอบแทน — effective date + version
+model PayRuleVersion {
+  id              String    @id @default(cuid())
+  organizationId  String
+  versionNumber   Int
+  name            String
+  config          Json
+  effectiveFrom   DateTime  @db.Date
+  effectiveTo     DateTime? @db.Date
+  createdByUserId String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, versionNumber])
+  @@index([organizationId, effectiveFrom, effectiveTo])
+}
+
+// ─── Schedule Lifecycle ──────────────────────────────────────────────────────
+
+/// รอบตาราง เช่น รายเดือน
+model ScheduleCycle {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  periodStart    DateTime @db.Date
+  periodEnd      DateTime @db.Date
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization     Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  drafts           ScheduleDraft[]
+  scheduleVersions ScheduleVersion[]
+
+  @@index([organizationId, periodStart, periodEnd])
+}
+
+/// draft ที่แก้ไขได้ — optimistic version
+model ScheduleDraft {
+  id               String              @id @default(cuid())
+  organizationId   String
+  scheduleCycleId  String
+  draftNumber      Int
+  status           ScheduleDraftStatus @default(EDITING)
+  baseVersionId    String?
+  optimisticVersion Int                @default(1)
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  organization    Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  scheduleCycle   ScheduleCycle   @relation(fields: [scheduleCycleId], references: [id], onDelete: Cascade)
+  baseVersion     ScheduleVersion? @relation("DraftBaseVersion", fields: [baseVersionId], references: [id], onDelete: SetNull)
+  scheduleRuns            ScheduleRun[]
+  plannedNonWorkingDays   PlannedNonWorkingDay[]
+  draftStaffDayOffQuotas  DraftStaffDayOffQuota[]
+  derivedVersions         ScheduleVersion[] @relation("DraftDerivedVersion")
+
+  @@unique([organizationId, scheduleCycleId, draftNumber])
+  @@index([organizationId, status])
+}
+
+/// revision ที่ publish แล้ว — immutable in-place
+model ScheduleVersion {
+  id                      String                @id @default(cuid())
+  organizationId          String
+  scheduleCycleId         String
+  scheduleDraftId         String?
+  versionNumber           Int
+  status                  ScheduleVersionStatus @default(DRAFT)
+  ruleSetVersionId        String
+  publishedAt             DateTime?
+  publishedByUserId       String?
+  supersededAt            DateTime?
+  supersededByVersionId   String?
+  publishReason           String?
+  checksum                String?
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+
+  organization          Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  scheduleCycle         ScheduleCycle    @relation(fields: [scheduleCycleId], references: [id], onDelete: Cascade)
+  scheduleDraft         ScheduleDraft?   @relation("DraftDerivedVersion", fields: [scheduleDraftId], references: [id], onDelete: SetNull)
+  ruleSetVersion        RuleSetVersion   @relation(fields: [ruleSetVersionId], references: [id], onDelete: Restrict)
+  supersededByVersion   ScheduleVersion? @relation("VersionSupersession", fields: [supersededByVersionId], references: [id], onDelete: SetNull)
+  supersedesVersions    ScheduleVersion[] @relation("VersionSupersession")
+  baseForDrafts         ScheduleDraft[]  @relation("DraftBaseVersion")
+  assignments           Assignment[]
+  scheduleShareLinks    ScheduleShareLink[]
+
+  @@unique([organizationId, scheduleCycleId, versionNumber])
+  @@index([organizationId, status])
+}
+
+/// การมอบหมาย planned ใน schedule version
+model Assignment {
+  id                       String   @id @default(cuid())
+  organizationId           String
+  scheduleVersionId        String
+  staffProfileId           String
+  shiftCodeId              String?
+  shiftInstanceId          String?
+  localDate                DateTime @db.Date
+  startsAt                 DateTime
+  endsAt                   DateTime
+  plannedOtHours           Decimal  @default(0) @db.Decimal(4, 2)
+  isPinned                 Boolean  @default(false)
+  isManualOverride         Boolean  @default(false)
+  overrideReason           String?
+  overrideApprovedByUserId String?
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  organization    Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  scheduleVersion ScheduleVersion @relation(fields: [scheduleVersionId], references: [id], onDelete: Cascade)
+  staffProfile    StaffProfile    @relation(fields: [staffProfileId], references: [id], onDelete: Restrict)
+  shiftCode       ShiftCode?      @relation(fields: [shiftCodeId], references: [id], onDelete: SetNull)
+  shiftInstance   ShiftInstance?  @relation(fields: [shiftInstanceId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, scheduleVersionId])
+  @@index([organizationId, staffProfileId, localDate])
+  @@index([organizationId, localDate])
+}
+
+/// วันหยุดที่วางแผนใน draft — ผล Stage A แยกจาก LeaveRequest
+model PlannedNonWorkingDay {
+  id                  String                     @id @default(cuid())
+  organizationId      String
+  scheduleDraftId     String
+  staffProfileId      String
+  localDate           DateTime                   @db.Date
+  nonWorkingDayKindId String
+  source              PlannedNonWorkingDaySource
+  locked              Boolean                    @default(false)
+  createdAt           DateTime                   @default(now())
+  updatedAt           DateTime                   @updatedAt
+
+  organization      Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  scheduleDraft     ScheduleDraft     @relation(fields: [scheduleDraftId], references: [id], onDelete: Cascade)
+  staffProfile      StaffProfile      @relation(fields: [staffProfileId], references: [id], onDelete: Cascade)
+  nonWorkingDayKind NonWorkingDayKind @relation(fields: [nonWorkingDayKindId], references: [id], onDelete: Restrict)
+
+  @@unique([scheduleDraftId, staffProfileId, localDate])
+  @@index([organizationId, scheduleDraftId])
+  @@index([organizationId, staffProfileId, localDate])
+}
+
+/// โควตาวันหยุดต่อคนต่อ draft — ใช้ก่อนเรียก Stage A solver
+model DraftStaffDayOffQuota {
+  id               String   @id @default(cuid())
+  organizationId   String
+  scheduleDraftId  String
+  staffProfileId   String
+  daysOffQuota     Int
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  scheduleDraft  ScheduleDraft  @relation(fields: [scheduleDraftId], references: [id], onDelete: Cascade)
+  staffProfile   StaffProfile   @relation(fields: [staffProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([scheduleDraftId, staffProfileId])
+  @@index([organizationId, scheduleDraftId])
+}
+
+/// สรุป workload รายเดือน — ฐาน fairness carry-over และ aggregate หลังหน้าต่างปฏิบัติการ
+model StaffWorkloadMonthly {
+  id             String   @id @default(cuid())
+  organizationId String
+  staffProfileId String
+  yearMonth      String
+  staffGroupId   String?
+  plannedHours   Decimal  @default(0) @db.Decimal(8, 2)
+  otHours        Decimal  @default(0) @db.Decimal(6, 2)
+  nightCount     Int      @default(0)
+  weekendCount   Int      @default(0)
+  holidayCount   Int      @default(0)
+  workedDays     Int      @default(0)
+  daysOff        Int      @default(0)
+  fteAtPeriod    Decimal  @default(1) @db.Decimal(4, 2)
+  computedAt     DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  staffProfile StaffProfile @relation(fields: [staffProfileId], references: [id], onDelete: Cascade)
+  staffGroup   StaffGroup?  @relation(fields: [staffGroupId], references: [id], onDelete: SetNull)
+
+  @@unique([organizationId, staffProfileId, yearMonth])
+  @@index([organizationId, yearMonth])
+  @@index([organizationId, staffGroupId, yearMonth])
+}
+
+/// solver run — input checksum, seed, status สำหรับ reproducibility
+model ScheduleRun {
+  id               String            @id @default(cuid())
+  organizationId   String
+  scheduleDraftId  String
+  ruleSetVersionId String
+  stage            ScheduleRunStage  @default(BALANCE)
+  status           ScheduleRunStatus @default(PENDING)
+  inputChecksum    String
+  solverVersion    String
+  randomSeed       String
+  attemptNumber    Int               @default(1)
+  startedAt        DateTime?
+  completedAt      DateTime?
+  errorMessage     String?
+  resultSummary    Json?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  scheduleDraft  ScheduleDraft  @relation(fields: [scheduleDraftId], references: [id], onDelete: Cascade)
+  ruleSetVersion RuleSetVersion @relation(fields: [ruleSetVersionId], references: [id], onDelete: Restrict)
+
+  @@index([organizationId, status])
+  @@index([organizationId, scheduleDraftId])
+  @@index([organizationId, scheduleDraftId, stage])
+}
+
+// ─── Share Links ─────────────────────────────────────────────────────────────
+
+/// ลิงก์แชร์ตารางเวรแบบ read-only — token hash + หมดอายุ/เพิกถอน
+model ScheduleShareLink {
+  id                String    @id @default(cuid())
+  organizationId    String
+  scheduleVersionId String
+  tokenHash         String    @unique
+  expiresAt         DateTime
+  revokedAt         DateTime?
+  createdByUserId   String
+  viewCount         Int       @default(0)
+  lastViewedAt      DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  organization    Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  scheduleVersion ScheduleVersion @relation(fields: [scheduleVersionId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, scheduleVersionId])
+  @@index([organizationId, expiresAt])
+}
+
+// ─── Import ──────────────────────────────────────────────────────────────────
+
+/// batch นำเข้าตารางเดิม
+model RosterImportBatch {
+  id             String            @id @default(cuid())
+  organizationId String
+  sourceFileName String
+  uploadedByUserId String?
+  status         ImportBatchStatus @default(UPLOADED)
+  rowCount       Int               @default(0)
+  errorSummary   Json?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  cells        RosterImportCell[]
+
+  @@index([organizationId, status])
+}
+
+/// เซลล์ดิบจาก import
+model RosterImportCell {
+  id                  String           @id @default(cuid())
+  organizationId      String
+  rosterImportBatchId String
+  staffCode           String
+  localDate           DateTime         @db.Date
+  rawCode             String
+  parsedShiftCodeId   String?
+  confidence          String?
+  status              RosterCellStatus
+  rowIndex            Int
+  colIndex            Int
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  organization      Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  rosterImportBatch RosterImportBatch @relation(fields: [rosterImportBatchId], references: [id], onDelete: Cascade)
+  parsedShiftCode   ShiftCode?        @relation(fields: [parsedShiftCodeId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, rosterImportBatchId])
+  @@index([organizationId, staffCode, localDate])
+}
+
+// ─── Audit ───────────────────────────────────────────────────────────────────
+
+/// append-only audit trail — mutation สำคัญทุกครั้ง
+model AuditEvent {
+  id                 String      @id @default(cuid())
+  organizationId     String
+  actorUserId        String?
+  actorStaffProfileId String?
+  action             AuditAction
+  entityType         String
+  entityId           String
+  before             Json?
+  after              Json?
+  reason             String?
+  correlationId      String?
+  createdAt          DateTime    @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, entityType, entityId])
+  @@index([organizationId, createdAt])
+  @@index([organizationId, action])
+}

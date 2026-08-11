@@ -1,0 +1,5 @@
+code,display_name_th,sort_order,can_work_nights
+HEAD,หัวหน้า,1,false
+MT,นักเทคนิคการแพทย์,2,true
+PT,Part-time MT,3,true
+ASSISTANT,ผู้ช่วยปฏิบัติงาน,4,true

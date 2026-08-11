@@ -1,0 +1,4 @@
+code,display_name_th,sort_order,active
+GRP-HEAD,หัวหน้างาน,1,true
+GRP-MT,นักเทคนิคการแพทย์,2,true
+GRP-ASST,ผู้ช่วย,3,true

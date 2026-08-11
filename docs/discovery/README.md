@@ -21,16 +21,60 @@ This pack supports a single pilot laboratory site in Thailand. All artifacts mus
 
 ## ไฟล์ในชุด / Pack Contents
 
-| ไฟล์                                                                | ใช้กับ                            | สถานะ                   |
-| ------------------------------------------------------------------ | ------------------------------- | ----------------------- |
-| [stakeholders.md](./stakeholders.md)                               | แผนที่ผู้มีส่วนได้ส่วนเสีย               | แม่แบบ — กรอกหลัง kickoff |
-| [interview-scheduler.md](./interview-scheduler.md)                 | ผู้จัดเวร / หัวหน้าเวร               | แม่แบบสัมภาษณ์             |
-| [interview-staff.md](./interview-staff.md)                         | เจ้าหน้าที่ระดับ junior–senior       | แม่แบบสัมภาษณ์             |
-| [interview-quality-hr-it.md](./interview-quality-hr-it.md)         | คุณภาพ, HR/เงินเดือน, นิติกร, IT/DPO | แม่แบบสัมภาษณ์             |
-| [artifact-inventory.md](./artifact-inventory.md)                   | รายการ Excel/แบบฟอร์ม/ปฏิทิน       | checklist เก็บของ        |
-| [../domain/constraint-catalog.md](../domain/constraint-catalog.md) | กติกาจัดเวร                       | ร่างเริ่มต้น + ช่อง sign-off |
-| [../privacy/data-inventory.md](../privacy/data-inventory.md)       | ข้อมูลที่ระบบจะเก็บ                  | ร่างเริ่มต้น                |
-| [../pilot/baseline.md](../pilot/baseline.md)                       | ตัวชี้วัดก่อนใช้ระบบ                  | แบบฟอร์มวัด               |
+| ไฟล์                                                               | ใช้กับ                               | สถานะ                                      |
+| ------------------------------------------------------------------ | ------------------------------------ | ------------------------------------------ |
+| [stakeholders.md](./stakeholders.md)                               | แผนที่ผู้มีส่วนได้ส่วนเสีย           | แม่แบบ — กรอกหลัง kickoff                  |
+| [interview-scheduler.md](./interview-scheduler.md)                 | ผู้จัดเวร / หัวหน้าเวร               | แม่แบบสัมภาษณ์                             |
+| [interview-staff.md](./interview-staff.md)                         | เจ้าหน้าที่ระดับ junior–senior       | แม่แบบสัมภาษณ์                             |
+| [interview-quality-hr-it.md](./interview-quality-hr-it.md)         | คุณภาพ, HR/เงินเดือน, นิติกร, IT/DPO | แม่แบบสัมภาษณ์                             |
+| [artifact-inventory.md](./artifact-inventory.md)                   | รายการ Excel/แบบฟอร์ม/ปฏิทิน         | checklist เก็บของ                          |
+| [clarification-requests.md](./clarification-requests.md)           | คำขอความชัดเจน Q1–Q21                | backlog ถามหน้างาน / ขอ artifact           |
+| [../domain/constraint-catalog.md](../domain/constraint-catalog.md) | กติกาจัดเวร                          | ร่างเริ่มต้น + ช่อง sign-off               |
+| [../privacy/data-inventory.md](../privacy/data-inventory.md)       | ข้อมูลที่ระบบจะเก็บ                  | ร่างเริ่มต้น                               |
+| [../pilot/baseline.md](../pilot/baseline.md)                       | ตัวชี้วัดก่อนใช้ระบบ                 | แบบฟอร์มวัด                                |
+| [notes/](./notes/)                                                 | บันทึกราย session (นิรนาม)           | แม่แบบพร้อม — คัดลอกจาก `_templates/`      |
+| [../../pilot-vault/](../../pilot-vault/)                           | ไฟล์ดิบ / anonymized / consent       | โครงสร้างพร้อม — **ไม่ commit ข้อมูลจริง** |
+
+---
+
+## ที่เก็บข้อมูล / Data Storage
+
+```mermaid
+flowchart TB
+  subgraph OffRepo["pilot-vault/ — local, ไม่ commit ข้อมูลจริง"]
+    RAW[raw/]
+    ANON[anonymized/]
+    CON[consent/]
+    MAN[manifest.json]
+  end
+
+  subgraph InRepo["docs/ — commit ได้หลังนิรนาม"]
+    NOTES[discovery/notes/INT-*.md]
+    STK[stakeholders.md]
+    CONC[domain/constraint-catalog.md]
+    DATA[privacy/data-inventory.md]
+    BASE[pilot/baseline.md]
+    ART[artifact-inventory.md]
+  end
+
+  RAW --> ANON
+  NOTES --> STK
+  NOTES --> CONC
+  NOTES --> DATA
+  NOTES --> BASE
+  MAN --> ART
+```
+
+| ขั้นตอน | ทำอะไร                    | เก็บที่                                             |
+| ------- | ------------------------- | --------------------------------------------------- |
+| 1       | รับ Excel/PDF จากหน่วยงาน | `pilot-vault/raw/` + อัปเดต `manifest.json`         |
+| 2       | บันทึก consent            | `pilot-vault/consent/`                              |
+| 3       | สัมภาษณ์ / สังเกตการณ์    | คัดลอก `_templates/` → `notes/INT-*.md`             |
+| 4       | Anonymize ไฟล์            | `pilot-vault/anonymized/`                           |
+| 5       | สรุปเข้าเอกสารหลัก        | `stakeholders`, `constraint-catalog`, `baseline`, … |
+| 6       | ติด index                 | [notes/sessions.md](./notes/sessions.md)            |
+
+**เริ่มต้น:** คัดลอก `pilot-vault/manifest.example.json` → `pilot-vault/manifest.json` (ไฟล์นี้ไม่เข้า git)
 
 ---
 
@@ -48,21 +92,25 @@ flowchart LR
 ```
 
 ### สัปดาห์ที่ 1
+
 - Kickoff กับหัวหน้าห้องแล็บและผู้จัดเวร
 - กรอก `stakeholders.md`
 - เริ่ม `artifact-inventory.md` และขอไฟล์ตัวอย่าง (นิรนาม)
 
 ### สัปดาห์ที่ 2
+
 - สัมภาษณ์ผู้จัดเวร (60–90 นาที)
 - สัมภาษณ์เจ้าหน้าที่ 4–6 คน (กลุ่มละ 30–45 นาที)
 - สังเกตการณ์ session จัดเวร 1 ครั้ง (ถ้าอนุญาต)
 
 ### สัปดาห์ที่ 3
+
 - สัมภาษณ์ HR/นิติกร, คุณภาพ/ISO, IT/DPO
 - ร่าง `constraint-catalog.md` จากข้อมูลที่ได้
 - เริ่มวัด `baseline.md` จากรอบตารางล่าสุด
 
 ### สัปดาห์ที่ 4
+
 - Workshop ร่วมตรวจ constraint catalog (2 ชั่วโมง)
 - ปิด Discovery Gate ตามเกณฑ์ด้านล่าง
 
@@ -90,13 +138,13 @@ flowchart LR
 
 ## Sign-off Sheet
 
-| บทบาท                  | ชื่อ (กรอกในที่ทำงาน) | วันที่ | ลายเซ็น |
-| ---------------------- | ---------------- | --- | ------ |
-| ผู้จัดเวร / Scheduler     |                  |     |        |
-| หัวหน้าห้องแล็บ / Lab Head |                  |     |        |
-| HR / นิติกร              |                  |     |        |
-| ผู้รับผิดชอบคุณภาพ / ISO    |                  |     |        |
-| DPO / IT Security      |                  |     |        |
+| บทบาท                      | ชื่อ (กรอกในที่ทำงาน) | วันที่ | ลายเซ็น |
+| -------------------------- | --------------------- | ------ | ------- |
+| ผู้จัดเวร / Scheduler      |                       |        |         |
+| หัวหน้าห้องแล็บ / Lab Head |                       |        |         |
+| HR / นิติกร                |                       |        |         |
+| ผู้รับผิดชอบคุณภาพ / ISO   |                       |        |         |
+| DPO / IT Security          |                       |        |         |
 
 ---
 

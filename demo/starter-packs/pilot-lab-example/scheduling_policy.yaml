@@ -1,0 +1,7 @@
+# นโยบายจัดตาราง — ค่า default ตาม scheduling-workflow.md
+history_window_months: 6
+fairness_lookback_months: 6
+planning_horizon_months: 1
+publish_lead_days: 7
+ot_derivation_mode: PLANNED_OVERRIDE_ALLOWED
+effective_from: 2026-01-01

@@ -1,0 +1,21 @@
+# PostgreSQL สำหรับพัฒนา local — production ใช้ Neon
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: shiftflow
+      POSTGRES_PASSWORD: shiftflow
+      POSTGRES_DB: shiftflow
+    volumes:
+      - shiftflow_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shiftflow -d shiftflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  shiftflow_pgdata:

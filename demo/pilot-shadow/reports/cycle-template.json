@@ -1,0 +1,25 @@
+{
+  "cycleId": "CYCLE-___",
+  "cycleStartDate": "YYYY-MM-DD",
+  "cycleEndDate": "YYYY-MM-DD",
+  "mode": "shadow",
+  "hardSafetyViolations": 0,
+  "competencyRequiredCount": 0,
+  "competencyCorrectCount": 0,
+  "unapprovedCoverageGaps": 0,
+  "schedulingHoursTotal": 0,
+  "schedulingHoursActive": 0,
+  "baselineSchedulingHoursTotal": 0,
+  "acknowledgementRate": 0,
+  "fairnessMetrics": [
+    {
+      "id": "night-per-fte",
+      "nameTh": "เวรดึกต่อ FTE",
+      "baselineValue": 0,
+      "pilotValue": 0,
+      "higherIsBetter": false
+    }
+  ],
+  "deterministicReplayPassed": false,
+  "duplicateAssignmentCount": 0
+}
