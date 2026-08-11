@@ -58,7 +58,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
-    "lucide-react": "^0.539.0",
+    "lucide-react": "^1.30.0",
     "next": "^15.4.6",
     "next-auth": "5.0.0-beta.29",
     "pg": "^8.16.3",
