@@ -1,0 +1,9 @@
+canonical_code,day_type,min_count,requires_lead
+MI20,WEEKDAY,1,false
+IM20,WEEKDAY,1,false
+BB20,WEEKDAY,1,false
+CH18,WEEKDAY,1,false
+HE18,WEEKDAY,1,false
+N1-MI,ALL,1,true
+N1-IM,ALL,1,true
+BB20,WEEKEND,1,true

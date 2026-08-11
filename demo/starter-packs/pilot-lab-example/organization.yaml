@@ -1,0 +1,8 @@
+name: Demo Pilot Pattern Laboratory
+slug: demo-pilot-pattern-lab
+timezone: Asia/Bangkok
+locale: th-TH
+description_th: ตัวอย่างรูปแบบรหัสซับซ้อน — ข้อมูลสมมติ ไม่ใช่แล็บนำร่องจริง
+description_en: Synthetic example mimicking complex shift code patterns for testing only
+disclaimer: SYNTHETIC_DATA — NOT derived from pilot-vault — must be validated before any production use
+pattern_reference: docs/domain/shift-code-taxonomy.md (structure only not values)

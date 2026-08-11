@@ -1,0 +1,142 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_ENV: test
+  NEXTAUTH_URL: http://localhost:3000
+  AUTH_SECRET: ci-auth-secret-minimum-32-characters-long
+  DATABASE_URL: postgresql://shiftflow:shiftflow@localhost:5432/shiftflow_test?schema=public
+  DIRECT_URL: postgresql://shiftflow:shiftflow@localhost:5432/shiftflow_test?schema=public
+  DATABASE_PROVIDER: local
+
+jobs:
+  quality:
+    name: Quality Gates
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: shiftflow
+          POSTGRES_PASSWORD: shiftflow
+          POSTGRES_DB: shiftflow_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U shiftflow -d shiftflow_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Format check
+        run: pnpm format
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Unit tests
+        run: pnpm test
+
+      - name: Migration deploy (test DB)
+        run: pnpm db:migrate:deploy
+
+      - name: Integration tests
+        run: pnpm test:integration
+
+      - name: Production build
+        run: pnpm build
+
+      - name: Dependency audit
+        run: pnpm audit --audit-level=high
+        continue-on-error: true
+
+      - name: License check
+        run: pnpm licenses list --json > /tmp/licenses.json
+
+      - name: Secret scan (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  e2e:
+    name: E2E Smoke
+    runs-on: ubuntu-latest
+    needs: quality
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: shiftflow
+          POSTGRES_PASSWORD: shiftflow
+          POSTGRES_DB: shiftflow_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U shiftflow -d shiftflow_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Migrate test database
+        run: pnpm db:migrate:deploy
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install chromium --with-deps
+
+      - name: Build application
+        run: pnpm build
+
+      - name: Seed test database
+        run: pnpm db:seed
+
+      - name: Prepare canvas e2e draft
+        run: pnpm exec tsx e2e/prepare-canvas-draft.ts
+
+      - name: Run E2E tests
+        run: pnpm test:e2e

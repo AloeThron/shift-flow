@@ -13,12 +13,12 @@
 
 ## 2. สถานะการเก็บ / Collection Status
 
-| สถานะ                | ความหมาย                               |
-| -------------------- | -------------------------------------- |
-| ☐ ยังไม่ขอ             | ยังไม่ได้ร้องขอจากหน่วยงาน                  |
-| ◐ ได้รับแล้ว (off-repo) | เก็บใน encrypted storage ของ pilot      |
-| ✓ Anonymized         | พร้อมใส่ `samples/` หรือ fixture (ถ้าอนุมัติ) |
-| ✗ ไม่มี                | หน่วยงานไม่มี artifact ประเภทนี้            |
+| สถานะ                | ความหมาย                                               |
+| -------------------- | ------------------------------------------------------ |
+| ☐ ยังไม่ขอ             | ยังไม่ได้ร้องขอจากหน่วยงาน                                  |
+| ◐ ได้รับแล้ว (off-repo) | เก็บใน encrypted storage ของ pilot                      |
+| ✓ Anonymized         | พร้อมใส่ `demo/validation-dataset/` หรือ fixture (ถ้าอนุมัติ) |
+| ✗ ไม่มี                | หน่วยงานไม่มี artifact ประเภทนี้                            |
 
 ---
 
@@ -26,23 +26,35 @@
 
 ### 3.1 ตารางเวร / Roster
 
-| ID          | ชื่อไฟล์ (นิรนาม)             | รูปแบบ | ครอบคลุมช่วง | สถานะ | หมายเหตุ             |
-| ----------- | ------------------------- | ----- | ---------- | ----- | ------------------- |
-| ART-ROST-01 | roster_cycle_N-2.xlsx     | Excel | รอบ N-2    | ☐     | ต้องมีเวรก่อน boundary |
-| ART-ROST-02 | roster_cycle_N-1.xlsx     | Excel | รอบ N-1    | ☐     | รอบล่าสุดที่ publish    |
-| ART-ROST-03 | roster_cycle_N_draft.xlsx | Excel | รอบปัจจุบัน   | ☐     | draft ถ้ามี           |
+| ID                | ชื่อไฟล์ (นิรนาม)             | รูปแบบ | ครอบคลุมช่วง     | สถานะ | หมายเหตุ                       |
+| ----------------- | ------------------------- | ----- | -------------- | ----- | ----------------------------- |
+| ART-ROST-01       | roster_cycle_N-2.xlsx     | Excel | รอบ N-2        | ☐     | ต้องมีเวรก่อน boundary           |
+| ART-ROST-02       | roster_cycle_N-1.xlsx     | Excel | รอบ N-1        | ☐     | รอบล่าสุดที่ publish              |
+| ART-ROST-03       | roster_cycle_N_draft.xlsx | Excel | รอบปัจจุบัน       | ☐     | draft ถ้ามี                     |
+| ART-ROST-PHOTO-01 | S__21069857_0.jpg         | JPG   | ม.ค. 2569      | ◐     | vault/raw/ART-ROST-PHOTO-SET/ |
+| ART-ROST-PHOTO-02 | S__21069858_0.jpg         | JPG   | ก.พ. 2569      | ◐     | vault/raw/ART-ROST-PHOTO-SET/ |
+| ART-ROST-PHOTO-03 | S__21069856_0.jpg         | JPG   | มี.ค. 2569      | ◐     | re-OCR 2026-08-10             |
+| ART-ROST-PHOTO-04 | S__21069852_0.jpg         | JPG   | เม.ย. 2569 (1) | ◐     | vault/raw/ART-ROST-PHOTO-SET/ |
+| ART-ROST-PHOTO-05 | S__21069855_0.jpg         | JPG   | เม.ย. 2569 (2) | ◐     | vault/raw/ART-ROST-PHOTO-SET/ |
+| ART-ROST-PHOTO-06 | S__21069853_0.jpg         | JPG   | พ.ค. 2569      | ◐     | re-OCR 2026-08-10             |
+| ART-ROST-PHOTO-07 | S__21069854_0.jpg         | JPG   | มิ.ย. 2569      | ◐     | vault/raw/ART-ROST-PHOTO-SET/ |
+| ART-ROST-PHOTO-08 | S__21069860.jpg           | JPG   | ส.ค. 2566      | ◐     | re-OCR 2026-08-10             |
+| ART-OT-01         | 3942F9C6-…jpg             | JPG   | OT พ.ค. 2569   | ◐     | vault/raw/ART-ROST-PHOTO-SET/ |
 
-**ฟิลด์ที่ต้องสังเกต (กรอกหลังได้ไฟล์):**
+**ฟิลด์ที่สังเกตจากภาพตาราง (กรอกแล้ว — 2026-08-10):**
 
-| ฟิลด์               | มีในไฟล์ | ชื่อคอลัมน์จริง (blur ใน repo) | map ไป Shift-Flow       |
-| ----------------- | :----: | ------------------------- | ----------------------- |
-| รหัสพนักงาน         |        |                           | StaffProfile.code       |
-| ชื่อ                |        |                           | (display name — จำกัดสิทธิ์) |
-| วันที่               |        |                           | local schedule date     |
-| กะ/เวร            |        |                           | ShiftInstance           |
-| bench/area        |        |                           | WorkArea                |
-| competency ที่ต้องใช้ |        |                           | CoverageRequirement     |
-| หมายเหตุ           |        |                           | Assignment.note         |
+| ฟิลด์               |    มีในไฟล์    | ชื่อคอลัมน์จริง (blur ใน repo) | map ไป Shift-Flow             |
+| ----------------- | :----------: | ------------------------- | ----------------------------- |
+| รหัสพนักงาน         |      ✓       | รหัส (6 หลัก)               | StaffProfile.code → STAFF-xxx |
+| ชื่อ                |      ✓       | พนักงาน                    | (display name — จำกัดสิทธิ์)       |
+| กลุ่ม/grade         |      ✓       | หัวหน้า/MT/PT/ผู้ช่วย          | StaffGrade                    |
+| วันที่               |      ✓       | คอลัมน์ 1–31                | local schedule date           |
+| กะ/เวร            |      ✓       | รหัสในเซลล์                 | ShiftCode → ShiftInstance     |
+| bench/area        | ✓ (ใน token) | MI, IM, BB, …             | WorkArea (**MI/IM แยก**)      |
+| เวลา hint         |  ✓ (บางรหัส)  | 7BB, MI20, F/16           | ShiftTemplate start/end       |
+| competency ที่ต้องใช้ |      ✗       | —                         | infer จาก WorkArea + grade    |
+| หมายเหตุ           |      ✗       | —                         | —                             |
+| สีแดงบนกระดาษ      |  ✓ (marker)  | —                         | **ไม่ map** (UNKNOWN)          |
 
 ---
 
@@ -131,18 +143,20 @@
 
 ---
 
-## 5. โครงสร้างเก็บ off-repo (แนะนำ)
+## 5. โครงสร้างเก็บ off-repo
+
+โฟลเดอร์ [`pilot-vault/`](../../pilot-vault/) ถูกเตรียมไว้แล้วใน repo (โครงสร้าง + README) — เนื้อหาไฟล์จริง **ไม่ commit**
 
 ```
-pilot-vault/                    # ไม่ commit — เก็บ local/ hospital storage
+pilot-vault/
 ├── raw/                        # ไฟล์ดิบจากหน่วยงาน
-│   ├── ART-ROST-01.xlsx
-│   └── ...
 ├── anonymized/                 # หลัง anonymize
-│   ├── roster_cycle_N-1_anon.xlsx
-│   └── ...
-└── manifest.json               # hash, วันที่รับ, ผู้ส่งมอบ
+├── consent/                    # consent สัมภาษณ์ / ส่งมอบไฟล์
+├── manifest.json               # คัดลอกจาก manifest.example.json — ไม่ commit
+└── README.md                   # คู่มือใช้งาน
 ```
+
+เมื่อได้รับ artifact: อัปเดตตาราง §3 สถานะเป็น `◐` และเพิ่มรายการใน `manifest.json`
 
 ---
 
@@ -161,6 +175,8 @@ pilot-vault/                    # ไม่ commit — เก็บ local/ hospi
 
 ## 7. Change Log
 
-| วันที่ | Artifact ID | การเปลี่ยนแปลง         | ผู้บันทึก |
-| --- | ----------- | -------------------- | ----- |
-|     |             | สร้าง inventory เริ่มต้น |       |
+| วันที่        | Artifact ID        | การเปลี่ยนแปลง                                     | ผู้บันทึก     |
+| ---------- | ------------------ | ------------------------------------------------ | --------- |
+| 2026-08-10 | ART-ROST-PHOTO-*   | เพิ่มชุดภาพตาราง 8 เดือน + OT; กรอก §3.1             | Discovery |
+| 2026-08-10 | ART-ROST-PHOTO-SET | ปิด temp/; raw → vault; export validation-dataset | Discovery |
+|            |                    | สร้าง inventory เริ่มต้น                             |           |

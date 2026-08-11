@@ -1,0 +1,21 @@
+node_modules
+.next
+generated
+pnpm-lock.yaml
+playwright-report
+test-results
+coverage
+
+# เอกสาร discovery/demo ที่มีอยู่ก่อน scaffold — format เฉพาะ platform code
+docs/
+demo/
+AGENTS.md
+CHANGELOG.md
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+GOVERNANCE.md
+README.md
+SECURITY.md
+.changeset/
+.github/ISSUE_TEMPLATE/
+.github/pull_request_template.md

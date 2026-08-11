@@ -1,0 +1,113 @@
+# Rule instances — pilot lab example (synthetic)
+# effective_from: 2026-01-01
+
+- rule_template_id: MIN_REST_BETWEEN_SHIFTS
+  enabled: true
+  severity: HARD
+  override_class: NEVER
+  params:
+    minRestHours: 11
+
+- rule_template_id: MAX_HOURS_IN_WINDOW
+  enabled: true
+  severity: SOFT
+  override_class: APPROVER_REQUIRED
+  params:
+    maxHours: 48
+    windowDays: 7
+
+- rule_template_id: MAX_CONSECUTIVE_NIGHTS
+  enabled: true
+  severity: SOFT
+  override_class: APPROVER_REQUIRED
+  params:
+    maxNights: 3
+    nightCodes:
+      - N1-MI
+      - N1-IM
+      - N2
+      - บด
+
+- rule_template_id: FORBIDDEN_CODE_SEQUENCE
+  enabled: true
+  severity: HARD
+  override_class: NEVER
+  params:
+    sequences:
+      - from: N1-MI
+        to: MI18
+      - from: N1-IM
+        to: HE18
+
+- rule_template_id: REQUIRED_COVERAGE
+  enabled: true
+  severity: HARD
+  override_class: NEVER
+  params:
+    sourceFile: shift_demands.csv
+
+- rule_template_id: REQUIRED_COMPETENCY_IN_SHIFT
+  enabled: true
+  severity: HARD
+  override_class: NEVER
+  params:
+    enforceExpiry: true
+
+- rule_template_id: GRADE_CODE_WHITELIST
+  enabled: true
+  severity: HARD
+  override_class: NEVER
+  params:
+    sourceFile: shift_codes.csv
+
+- rule_template_id: PREFERRED_PATTERN
+  enabled: true
+  severity: SOFT
+  override_class: SCHEDULER_ALLOWED
+  params:
+    description: assistant rotation example
+    gradeCode: ASSISTANT
+    pattern:
+      - F16
+      - B17
+      - บด
+      - off
+
+# Stage A — ลงวันหยุด (HC-010 / HC-011)
+- rule_template_id: DAY_OFF_QUOTA
+  enabled: true
+  severity: HARD
+  override_class: APPROVER_REQUIRED
+  params:
+    daysOffPerCycle: 8
+    minWeekendDaysOff: 0
+    scope: GROUP
+
+- rule_template_id: MAX_STAFF_OFF_PER_DAY
+  enabled: true
+  severity: HARD
+  override_class: APPROVER_REQUIRED
+  params:
+    maxOffWeekday: 2
+    maxOffWeekend: 4
+    maxOffHoliday: 3
+    scope: GROUP
+
+# Stage B — เกลี่ยงาน (SC-001/002/007 / HC-012)
+- rule_template_id: FAIR_DISTRIBUTION
+  enabled: true
+  severity: SOFT
+  override_class: SCHEDULER_ALLOWED
+  params:
+    dimension: TOTAL_HOURS
+    scope: GROUP
+    toleranceHours: 4
+    normalizeByFte: true
+    lookbackMonths: 6
+
+- rule_template_id: OT_LIMIT
+  enabled: true
+  severity: HARD
+  override_class: NEVER
+  params:
+    maxOtHoursPerStaffPerCycle: 20

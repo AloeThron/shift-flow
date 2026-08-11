@@ -1,0 +1,22 @@
+# Validation dataset — นิรนามจาก pilot-vault (commit ได้)
+version: 1
+generated_at: "2026-08-10T18:38:45.261643+00:00"
+provenance:
+  source_vault: pilot-vault/anonymized/
+  export_script: scripts/export_validation_fixtures.py
+  ocr_pipeline: scripts/build_roster_artifacts.py
+  raw_archive: pilot-vault/raw/ART-ROST-PHOTO-SET/
+disclaimer: ANONYMIZED_PILOT_DATA — ใช้ regression/validation เท่านั้น ไม่ map กับ starter packs
+counts:
+  ASSIGNED: 2759
+  LEAVE: 6
+  NO_SHIFT: 214
+  OFF: 1151
+  UNKNOWN: 526
+files:
+  - staff_master.csv
+  - roster_long.csv
+  - edge_cases/roster_cells.csv
+  - golden/status_summary.json
+  - golden/parse_shift_tokens.json
+  - golden/fairness_metrics.json

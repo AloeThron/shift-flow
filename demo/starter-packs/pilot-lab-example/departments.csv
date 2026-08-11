@@ -1,0 +1,8 @@
+code,display_name_th,display_name_en,sort_order,active
+MI,จุลชีววิทยา MI,Demo Microbiology MI,1,true
+IM,ภูมิคุ้มกัน IM,Demo Immunology IM,2,true
+BB,ธนาคารเลือด,Blood Bank,3,true
+CH,เคมี,Chemistry,4,true
+HE,โลหิต,Hematology,5,true
+INC,สถานี INC,Demo Incubator Station,6,true
+Set,ห้อง Set,Demo Set Lab,7,true

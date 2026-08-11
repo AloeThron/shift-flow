@@ -1,0 +1,28 @@
+{
+  "$schema": "shift-flow/pilot-vault-manifest/v1",
+  "pilotSiteId": "PILOT-LAB-001",
+  "updatedAt": "2026-08-10",
+  "storageRoot": "pilot-vault",
+  "artifacts": [
+    {
+      "id": "ART-ROST-02",
+      "description": "ตารางเวรรอบ N-1",
+      "rawPath": "raw/ART-ROST-02_roster_cycle_N-1.xlsx",
+      "anonymizedPath": null,
+      "status": "not_requested",
+      "receivedAt": null,
+      "anonymizedAt": null,
+      "handedBy": "STKH-___",
+      "sha256": null,
+      "notes": ""
+    }
+  ],
+  "consents": [
+    {
+      "sessionId": "INT-SCH-001",
+      "path": "consent/INT-SCH-001-consent.pdf",
+      "date": null,
+      "type": "interview_verbal_or_written"
+    }
+  ]
+}

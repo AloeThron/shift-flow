@@ -1,0 +1,48 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Added
+
+- Admin UI จัดการสิทธิปฏิบัติงานตามรหัสเวรบน `/settings/staff` (checkbox + ทุกรหัสเวร)
+- Parallel pilot runbook with go-live gate and rollback procedure (`docs/pilot/parallel-pilot.md`)
+- Go-live gate evaluator (`src/domain/pilot/`) and `pnpm pilot:evaluate` CLI
+- Simulated 2-cycle shadow reports for gate testing (`demo/pilot-shadow/`)
+- Open Source foundation: MIT license, governance, security policy, contribution guide
+- GitHub issue/PR templates and Dependabot configuration
+- Changesets configuration for release management
+- Synthetic demo data and starter packs in `demo/starter-packs/`
+- Domain documentation: configuration model and rule template registry
+
+### Changed
+
+- **Breaking:** ลบ model `Competency` และ `StaffCompetencyAuthorization` — สิทธิปฏิบัติงานผูก `StaffShiftAuthorization` ต่อ `shiftCodeId` โดยตรง; ไม่ migrate ข้อมูลเดิม (ใช้ starter pack + admin UI ตั้งใหม่)
+- ลบ `requiredCompetencyId` จาก `ShiftCodeDemand` และ `requiredCompetencyIds` จาก `ShiftTemplate`
+- Starter pack: MT staff มีสิทธิครบ demand weekday โดยไม่หมดอายุ; N1-MI/N1-IM ปิด needsConfirmation
+- Stage B error แยก block reason (สิทธิรหัสเวร / grade / Stage A) ในข้อความ unfilled mandatory
+- `authCoversShiftCode` นับวันหมดอายุ inclusive ถึงสิ้นวัน local
+- Stage B ตรวจสิทธิตาม `shiftCodeId` (`shift-auth.ts`); block reason `SHIFT_AUTH`
+- Rule `REQUIRED_COMPETENCY_IN_SHIFT` ยังใช้ template id เดิม — ตรวจสอบสิทธิรหัสเวรของ assignment
+- Stage B min-cost flow: convex ladder ต่อคน (หน่วยเวร) บน arc staff→sink; fill ใช้ fillPool→fillCode ladder กระจายรหัส; soft penalty หมุน work area ผ่าน Lagrangian
+- Discovery gate reframed: Engine Gate passed; site-specific values become org config
+
+### Removed
+
+- Competency master panel และ CRUD actions
+- `competencies.csv` จาก starter pack
+
+## [0.0.0] - 2026-08-10
+
+### Added
+
+- Initial discovery artifacts: shift code taxonomy, domain model draft, constraint catalog
+- Pilot vault structure (local, gitignored) and roster artifact build script
+- AGENTS.md for AI-assisted development
+
+[Unreleased]: https://github.com/<org>/shift-flow/compare/v0.0.0...HEAD
+[0.0.0]: https://github.com/<org>/shift-flow/releases/tag/v0.0.0

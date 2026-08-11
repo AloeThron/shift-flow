@@ -1,0 +1,101 @@
+{
+  "pilotId": "PILOT-SHADOW-2026-001",
+  "organizationId": "PILOT-LAB-001",
+  "startedAt": "2026-07-13T08:00:00+07:00",
+  "completedAt": "2026-08-09T18:00:00+07:00",
+  "notes": "รายงานจำลองสำหรับทดสอบ gate evaluator — ไม่ใช่ผล pilot หน้างานจริง",
+  "cycles": [
+    {
+      "cycleId": "CYCLE-1",
+      "cycleStartDate": "2026-07-21",
+      "cycleEndDate": "2026-08-03",
+      "mode": "shadow",
+      "hardSafetyViolations": 0,
+      "competencyRequiredCount": 48,
+      "competencyCorrectCount": 48,
+      "unapprovedCoverageGaps": 0,
+      "schedulingHoursTotal": 11.5,
+      "schedulingHoursActive": 8,
+      "baselineSchedulingHoursTotal": 18,
+      "acknowledgementRate": 0.96,
+      "fairnessMetrics": [
+        {
+          "id": "night-per-fte",
+          "nameTh": "เวรดึกต่อ FTE",
+          "baselineValue": 4.2,
+          "pilotValue": 4.0,
+          "higherIsBetter": false
+        },
+        {
+          "id": "weekend-per-fte",
+          "nameTh": "เวรวันหยุดต่อ FTE",
+          "baselineValue": 2.1,
+          "pilotValue": 2.0,
+          "higherIsBetter": false
+        },
+        {
+          "id": "hours-per-fte",
+          "nameTh": "ชั่วโมงรวมต่อ FTE",
+          "baselineValue": 168,
+          "pilotValue": 168,
+          "higherIsBetter": false
+        }
+      ],
+      "deterministicReplayPassed": true,
+      "duplicateAssignmentCount": 0
+    },
+    {
+      "cycleId": "CYCLE-2",
+      "cycleStartDate": "2026-08-04",
+      "cycleEndDate": "2026-08-17",
+      "mode": "shadow",
+      "hardSafetyViolations": 0,
+      "competencyRequiredCount": 52,
+      "competencyCorrectCount": 52,
+      "unapprovedCoverageGaps": 0,
+      "schedulingHoursTotal": 10.5,
+      "schedulingHoursActive": 7.5,
+      "baselineSchedulingHoursTotal": 16,
+      "acknowledgementRate": 0.97,
+      "fairnessMetrics": [
+        {
+          "id": "night-per-fte",
+          "nameTh": "เวรดึกต่อ FTE",
+          "baselineValue": 4.0,
+          "pilotValue": 3.8,
+          "higherIsBetter": false
+        },
+        {
+          "id": "weekend-per-fte",
+          "nameTh": "เวรวันหยุดต่อ FTE",
+          "baselineValue": 2.0,
+          "pilotValue": 2.0,
+          "higherIsBetter": false
+        },
+        {
+          "id": "hours-per-fte",
+          "nameTh": "ชั่วโมงรวมต่อ FTE",
+          "baselineValue": 168,
+          "pilotValue": 167,
+          "higherIsBetter": false
+        }
+      ],
+      "deterministicReplayPassed": true,
+      "duplicateAssignmentCount": 0
+    }
+  ],
+  "operational": {
+    "restoreDrillPassed": true,
+    "fallbackRosterVerified": true,
+    "shareLinkRevokeTestsPassed": true,
+    "schedulerSelfConfigPassed": true,
+    "syntheticOrgSetupWithinOneHour": true,
+    "taskSuccessRate": 0.92,
+    "stakeholderSignOff": {
+      "hrLegal": true,
+      "labHead": true,
+      "quality": true,
+      "dpoIt": true
+    }
+  }
+}

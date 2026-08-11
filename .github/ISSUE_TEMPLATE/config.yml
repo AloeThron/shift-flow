@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Contributing Guide
+    url: https://github.com/<org>/shift-flow/blob/main/CONTRIBUTING.md
+    about: วิธีมีส่วนร่วมและ PR checklist
+  - name: Security Policy
+    url: https://github.com/<org>/shift-flow/blob/main/SECURITY.md
+    about: รายงานช่องโหว่ (ไม่เปิด public issue)

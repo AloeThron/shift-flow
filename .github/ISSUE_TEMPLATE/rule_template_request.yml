@@ -1,0 +1,45 @@
+name: Rule Template Request
+description: ขอเพิ่ม rule template generic ใหม่ใน registry
+title: "[Rule]: "
+labels: ["rule-template", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Rule template ใหม่ต้อง **generic** — ใช้ได้หลายโรงพยาบาล ไม่ hardcode รหัสเวรเฉพาะแล็บ
+        ดู registry ปัจจุบัน: `docs/domain/rule-templates.md`
+
+  - type: textarea
+    id: scenario
+    attributes:
+      label: สถานการณ์หน้างาน (นิรนาม)
+      description: ตัวอย่าง violation ที่ต้องการจับ
+    validations:
+      required: true
+
+  - type: textarea
+    id: params
+    attributes:
+      label: พารามิเตอร์ที่ admin ควรตั้งได้
+      placeholder: เช่น minHours, windowDays, forbiddenSequence
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: ควรเป็น hard หรือ soft โดย default?
+      options:
+        - HARD (safety / compliance)
+        - SOFT (fairness / preference)
+        - admin chooses
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: ตรวจแล้วว่าไม่มี template ที่มีอยู่ครอบคลุม
+          required: true
+        - label: ตัวอย่างไม่มี PII / รหัสพนักงานจริง
+          required: true
