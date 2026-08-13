@@ -1,9 +1,8 @@
-import type { WorkloadStatsSnapshot } from "@/domain/optimize/fairness/workload-stats";
-
 import { ExportWorkloadButton } from "@/components/schedule/workload/export-workload-button";
 import { GroupWorkloadSummary } from "@/components/schedule/workload/group-workload-summary";
 import { StaffWorkloadTable } from "@/components/schedule/workload/staff-workload-table";
 import { FAIRNESS_DIMENSION_LABELS } from "@/components/schedule/workload/workload-labels";
+import type { WorkloadStatsSnapshot } from "@/domain/optimize/fairness/workload-stats";
 
 /** หน้ามุมมอง workload เต็ม */
 export function WorkloadStatsView({
@@ -56,8 +55,7 @@ export function WorkloadStatsView({
       </section>
 
       <p className="text-muted-foreground text-xs">
-        วัตถุประสงค์: ความเป็นธรรมของการจัดเวร — ไม่ใช่การประเมินผลงาน · ข้อมูล ณ{" "}
-        {snapshot.asOfDate}
+        วัตถุประสงค์: ความเป็นธรรมของการจัดเวร — ไม่ใช่การประเมินผลงาน · ข้อมูล ณ {snapshot.asOfDate}
       </p>
     </div>
   );

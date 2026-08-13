@@ -2,10 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-import {
-  ShiftCodeEditDialog,
-  type ShiftCodeRow,
-} from "@/components/config/shift-code-edit-dialog";
+import { ShiftCodeEditDialog, type ShiftCodeRow } from "@/components/config/shift-code-edit-dialog";
 import {
   SHIFT_CODE_TABLE_COLUMNS,
   SHIFT_CODE_TABLE_MIN_WIDTH,
@@ -67,9 +64,7 @@ export function ShiftCodesSettingsPanel({
     dialog?.mode === "edit" && dialog.shiftCodeId ? byId.get(dialog.shiftCodeId) : undefined;
 
   const activeDemands =
-    dialog?.shiftCodeId != null
-      ? [...(demandsByShiftCodeId.get(dialog.shiftCodeId) ?? [])]
-      : [];
+    dialog?.shiftCodeId != null ? [...(demandsByShiftCodeId.get(dialog.shiftCodeId) ?? [])] : [];
 
   const openCreate = () => {
     setDialog({ open: true, mode: "create" });
@@ -96,12 +91,7 @@ export function ShiftCodesSettingsPanel({
       <CardHeader className="flex flex-row items-center justify-between gap-4 space-y-0">
         <CardTitle className="text-base">รายการรหัส ({shiftCodes.length})</CardTitle>
         {canWrite ? (
-          <Button
-            type="button"
-            size="sm"
-            disabled={dialog?.open === true}
-            onClick={openCreate}
-          >
+          <Button type="button" size="sm" disabled={dialog?.open === true} onClick={openCreate}>
             เพิ่มรหัสเวร
           </Button>
         ) : null}

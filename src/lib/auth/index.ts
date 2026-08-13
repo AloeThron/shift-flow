@@ -7,7 +7,7 @@ import { verify } from "@/lib/auth/password";
 import { logger } from "@/lib/observability/logger";
 import { metrics } from "@/lib/observability/metrics";
 import { prisma } from "@/lib/prisma";
-import { loginRateLimitKey, loginRateLimiter } from "@/lib/security/rate-limit";
+import { loginRateLimiter, loginRateLimitKey } from "@/lib/security/rate-limit";
 
 /** ข้อมูล session JWT ที่ขยายแล้ว */
 declare module "next-auth" {

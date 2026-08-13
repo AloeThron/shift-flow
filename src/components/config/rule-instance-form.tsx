@@ -84,7 +84,9 @@ export function RuleInstanceForm({ canWrite, initial, onDone }: RuleInstanceForm
       severity: String(formData.get("severity") ?? "HARD") as "HARD" | "SOFT",
       weight: formData.get("weight") ? Number(formData.get("weight")) : undefined,
       overrideClass: String(formData.get("overrideClass") ?? "NEVER") as
-        "NEVER" | "APPROVER_REQUIRED" | "SCHEDULER_ALLOWED",
+        | "NEVER"
+        | "APPROVER_REQUIRED"
+        | "SCHEDULER_ALLOWED",
       enabled: formData.get("enabled") === "on",
       effectiveFrom: String(formData.get("effectiveFrom") ?? ""),
       effectiveTo: String(formData.get("effectiveTo") ?? "") || undefined,

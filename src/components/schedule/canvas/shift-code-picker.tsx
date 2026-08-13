@@ -30,7 +30,12 @@ type PickerListEntry = {
 };
 
 type PickerSection =
-  "recommended" | "available" | "unavailable" | "override" | "plannedOff" | "swap";
+  | "recommended"
+  | "available"
+  | "unavailable"
+  | "override"
+  | "plannedOff"
+  | "swap";
 
 /** พารามิเตอร์ popup เลือกรหัสเวร */
 export type ShiftCodePickerProps = {
@@ -220,7 +225,7 @@ function formatPickerDate(localDate: string): string {
   });
 }
 
-const SKELETON_ROW_COUNT = 4;
+const SKELETON_KEYS = ["sk-a", "sk-b", "sk-c", "sk-d"] as const;
 
 /** skeleton แถวตัวเลือกระหว่างจัดอันดับ */
 function PickerOptionSkeleton() {
@@ -249,24 +254,35 @@ function PickerOptionRow({
   const { suggestion } = entry;
   const isBlocked = !entry.selectable;
 
+  /** เลือกแถวถ้าใช้ได้ — ใช้ร่วมคลิกและคีย์บอร์ด */
+  const selectIfAllowed = () => {
+    if (!entry.selectable) {
+      return;
+    }
+    if (suggestion.action.kind === "OVERRIDE") {
+      onRequestOverride(entry);
+      return;
+    }
+    onSelect(suggestion.action);
+  };
+
   return (
     <div
       id={entry.id}
       role="option"
+      tabIndex={-1}
       aria-selected={active}
       aria-disabled={isBlocked}
-      className={`flex w-full flex-col gap-0.5 rounded-lg px-2 py-1.5 text-left text-sm outline-none ${active ? "bg-accent text-accent-foreground" : ""
-        } ${isBlocked ? "text-muted-foreground cursor-not-allowed opacity-70" : "hover:bg-accent/70 cursor-pointer"}`}
+      className={`flex w-full flex-col gap-0.5 rounded-lg px-2 py-1.5 text-left text-sm outline-none ${
+        active ? "bg-accent text-accent-foreground" : ""
+      } ${isBlocked ? "text-muted-foreground cursor-not-allowed opacity-70" : "hover:bg-accent/70 cursor-pointer"}`}
       onMouseEnter={onHover}
-      onClick={() => {
-        if (!entry.selectable) {
-          return;
+      onClick={selectIfAllowed}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          selectIfAllowed();
         }
-        if (suggestion.action.kind === "OVERRIDE") {
-          onRequestOverride(entry);
-          return;
-        }
-        onSelect(suggestion.action);
       }}
     >
       <div className="flex items-center justify-between gap-2">
@@ -334,9 +350,8 @@ function PickerActionFooter({
   }
 
   return (
-    <div
-      className="flex flex-wrap gap-2 border-t px-3 py-2"
-      role="group"
+    <fieldset
+      className="m-0 flex min-w-0 flex-wrap gap-2 border-0 border-t px-3 py-2"
       aria-label="การจัดการเซลล์"
     >
       {canPin ? (
@@ -354,7 +369,7 @@ function PickerActionFooter({
           </Button>
         </>
       ) : null}
-    </div>
+    </fieldset>
   );
 }
 
@@ -418,7 +433,7 @@ export function ShiftCodePicker({
 
     const firstSelectable = selectableIndices[0] ?? 0;
     setActiveIndex(firstSelectable);
-  }, [open, selectableIndices, suggestions]);
+  }, [open, selectableIndices]);
 
   useEffect(() => {
     if (activeIndex >= filteredEntries.length) {
@@ -439,7 +454,9 @@ export function ShiftCodePicker({
       }
 
       const selectable =
-        selectableIndices.length > 0 ? selectableIndices : filteredEntries.map((_, index) => index);
+        selectableIndices.length > 0
+          ? selectableIndices
+          : Array.from({ length: filteredEntries.length }, (_, index) => index);
 
       const currentPos = selectable.indexOf(activeIndex);
       const startPos = currentPos >= 0 ? currentPos : 0;
@@ -715,8 +732,8 @@ export function ShiftCodePicker({
                     กำลังจัดอันดับรหัสเวร…
                   </div>
                   <div className="space-y-0.5">
-                    {Array.from({ length: SKELETON_ROW_COUNT }, (_, index) => (
-                      <PickerOptionSkeleton key={`skeleton-${index}`} />
+                    {SKELETON_KEYS.map((skeletonKey) => (
+                      <PickerOptionSkeleton key={skeletonKey} />
                     ))}
                   </div>
                 </>
@@ -726,6 +743,8 @@ export function ShiftCodePicker({
                 </p>
               ) : (
                 groupedSections.map((group) => (
+                  // กลุ่มใน listbox ต้องเป็น role=group ตาม ARIA — ไม่ใช้ fieldset
+                  // biome-ignore lint/a11y/useSemanticElements: กลุ่มใน listbox ใช้ role=group ตาม ARIA
                   <div key={group.key} role="group" aria-label={SECTION_LABELS[group.key]}>
                     <p className="text-muted-foreground px-2 py-1 text-xs font-semibold tracking-wide uppercase">
                       {SECTION_LABELS[group.key]}

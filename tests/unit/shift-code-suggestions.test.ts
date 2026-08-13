@@ -8,8 +8,8 @@ import { buildValidationScheduleInput } from "@/domain/optimize/fairness/validat
 import {
   buildSuggestionBaseline,
   compareSuggestionRank,
-  rankShiftCodeCandidates,
   type NonWorkingDayKindRef,
+  rankShiftCodeCandidates,
   type SuggestionRank,
 } from "@/domain/schedule/suggest";
 import { buildAssignmentInterval } from "@/domain/schedule/time";

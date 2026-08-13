@@ -5,11 +5,11 @@ import type { ScheduleSlot, ShiftCodeSnapshot, StaffSnapshot } from "@/domain/sc
 import { buildValidationContext } from "@/domain/schedule/validate";
 
 import type {
-    BalancePlanInput,
-    BalanceShiftCodeRef,
-    BalanceSlot,
-    FillPool,
-    StaffSlotBlockReason,
+  BalancePlanInput,
+  BalanceShiftCodeRef,
+  BalanceSlot,
+  FillPool,
+  StaffSlotBlockReason,
 } from "./types";
 import { OT_SLOT_BASE_PENALTY } from "./types";
 
@@ -80,10 +80,7 @@ export function buildFillPools(
   const validationCtx = createSlotValidationContext(input);
   const mandatoryByDate = new Map<string, number>();
   for (const slot of mandatorySlots) {
-    mandatoryByDate.set(
-      slot.scheduleDate,
-      (mandatoryByDate.get(slot.scheduleDate) ?? 0) + 1,
-    );
+    mandatoryByDate.set(slot.scheduleDate, (mandatoryByDate.get(slot.scheduleDate) ?? 0) + 1);
   }
 
   const dates = eachDateInRange(input.cycleStartDate, input.cycleEndDate);
@@ -280,7 +277,11 @@ export function classifyMandatorySlotBlockReason(
     return "GRADE";
   }
 
-  const interval = buildAssignmentInterval(shiftCode, slot.scheduleDate, validationCtx.input.timezone);
+  const interval = buildAssignmentInterval(
+    shiftCode,
+    slot.scheduleDate,
+    validationCtx.input.timezone,
+  );
   const startMs = Date.parse(interval.startAt);
   const endMs = Date.parse(interval.endAt);
   const withAuth = withGrade.filter((member) =>
@@ -381,7 +382,8 @@ export function listEligibleStaffForSlot(
   }
 
   return input.staff.filter(
-    (member) => getStaffSlotBlockReason(input, member, slot, shiftCode, validationCtx) === undefined,
+    (member) =>
+      getStaffSlotBlockReason(input, member, slot, shiftCode, validationCtx) === undefined,
   );
 }
 

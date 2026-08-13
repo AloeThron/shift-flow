@@ -1,11 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { GroupWorkloadStats } from "@/domain/optimize/fairness/workload-stats";
-
 import {
   FAIRNESS_DIMENSION_LABELS,
   formatWorkloadNumber,
   WORKLOAD_METRIC_LABELS,
 } from "@/components/schedule/workload/workload-labels";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { GroupWorkloadStats } from "@/domain/optimize/fairness/workload-stats";
 
 /** สรุป workload และ fairness ต่อกลุ่ม */
 export function GroupWorkloadSummary({

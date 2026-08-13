@@ -51,9 +51,7 @@ export function ShiftCodeDepartmentPanel({
 
   return (
     <div className="space-y-3">
-      <p className="text-muted-foreground text-xs">
-        แผนกที่ผูกกับรหัส {canonicalCode}
-      </p>
+      <p className="text-muted-foreground text-xs">แผนกที่ผูกกับรหัส {canonicalCode}</p>
 
       <div className="space-y-1">
         <Label htmlFor={`department-${shiftCodeId}`}>แผนก</Label>

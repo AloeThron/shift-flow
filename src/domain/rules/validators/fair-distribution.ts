@@ -1,10 +1,10 @@
-import type { RuleValidatorFn } from "@/domain/rules/types";
 import {
-  groupStaffIdsByScope,
-  staffFairnessMetric,
   type FairnessDimension,
   type FairnessScope,
+  groupStaffIdsByScope,
+  staffFairnessMetric,
 } from "@/domain/rules/helpers/schedule-metrics";
+import type { RuleValidatorFn } from "@/domain/rules/types";
 import type { ConstraintViolation } from "@/domain/schedule/types";
 
 /** SC-001/002/007 — กระจายภาระอย่างเป็นธรรม (soft) */

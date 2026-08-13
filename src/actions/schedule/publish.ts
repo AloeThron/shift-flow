@@ -1,10 +1,10 @@
 "use server";
 
+import type { ActionResult } from "@/domain/action-result";
 import { canTransitionScheduleVersion } from "@/domain/schedule/lifecycle";
-import { publishScheduleSchema, type PublishScheduleInput } from "@/domain/schedule/schemas";
+import { type PublishScheduleInput, publishScheduleSchema } from "@/domain/schedule/schemas";
 import { createShareToken, hashShareToken } from "@/domain/schedule/share/token";
 import { validateSchedule } from "@/domain/schedule/validate";
-import type { ActionResult } from "@/domain/action-result";
 import { env } from "@/env";
 import { actionErrorMessage } from "@/lib/auth/get-organization-context";
 import { requireSchedulePublishAccess } from "@/lib/auth/schedule-access";

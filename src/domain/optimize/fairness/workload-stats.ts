@@ -1,14 +1,14 @@
 import { resolveOtLimitParams } from "@/domain/optimize/balance/types";
 import {
   computeStaffHourOffset,
-  resolveFairDistributionParams,
   type FairDistributionParams,
+  resolveFairDistributionParams,
 } from "@/domain/optimize/fairness/carry-over";
 import {
   computeGroupFairnessReports,
   computeSpread,
-  roundFairnessMetric,
   type GroupFairnessReport,
+  roundFairnessMetric,
 } from "@/domain/optimize/fairness/metrics";
 import {
   aggregateStaffWorkloadMonthly,
@@ -16,9 +16,9 @@ import {
   type WorkloadMonthlyInput,
 } from "@/domain/optimize/fairness/workload-monthly";
 import {
+  type FairnessDimension,
   lookbackYearMonths,
   staffFairnessMetric,
-  type FairnessDimension,
 } from "@/domain/rules/helpers/schedule-metrics";
 import type {
   PlannedNonWorkingDaySnapshot,

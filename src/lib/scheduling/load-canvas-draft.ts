@@ -1,25 +1,25 @@
 import {
-    buildScheduleCanvasGrid,
-    type CanvasAssignmentInput,
-    type CanvasPlannedOffInput,
-    type CanvasStaffGroupInput,
-    type CanvasStaffInput,
-    type ScheduleCanvasGrid,
+  buildScheduleCanvasGrid,
+  type CanvasAssignmentInput,
+  type CanvasPlannedOffInput,
+  type CanvasStaffGroupInput,
+  type CanvasStaffInput,
+  type ScheduleCanvasGrid,
 } from "@/domain/schedule/canvas-grid";
 import {
-    mergeStaffDayOffQuotas,
-    resolveDefaultDayOffQuota,
-    type StaffDayOffQuotaByStaffId,
+  mergeStaffDayOffQuotas,
+  resolveDefaultDayOffQuota,
+  type StaffDayOffQuotaByStaffId,
 } from "@/domain/schedule/day-off-quota-draft";
 import { buildAssignmentInterval, localDateTimeToIso } from "@/domain/schedule/time";
 import type {
-    PlannedNonWorkingDaySnapshot,
-    RuleInstanceSnapshot,
-    ScheduleAssignment,
-    ScheduleEngineInput,
-    ShiftCodeSnapshot,
-    ShiftDemandSnapshot,
-    StaffSnapshot,
+  PlannedNonWorkingDaySnapshot,
+  RuleInstanceSnapshot,
+  ScheduleAssignment,
+  ScheduleEngineInput,
+  ShiftCodeSnapshot,
+  ShiftDemandSnapshot,
+  StaffSnapshot,
 } from "@/domain/schedule/types";
 import { withLegacyShiftDemandAlias } from "@/domain/schedule/validate";
 import { weekdayMaskToDayType } from "@/domain/starter-pack/day-type";
@@ -272,11 +272,7 @@ export async function loadCanvasDraftSnapshot(
     draft.id,
   );
 
-  const quotaRows = await loadDraftStaffDayOffQuotas(
-    db,
-    options.organizationId,
-    draft.id,
-  );
+  const quotaRows = await loadDraftStaffDayOffQuotas(db, options.organizationId, draft.id);
 
   const [
     assignmentRows,

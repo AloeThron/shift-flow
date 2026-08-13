@@ -29,10 +29,13 @@ export const validateDayOffQuota: RuleValidatorFn = (context, ruleInstance) => {
   for (const member of context.staff) {
     const offDates = collectStaffOffDates(context, member.id);
     const offCount = offDates.size;
-    const memberRequiredOffDays =
-      context.staffDayOffQuotas?.[member.id] ?? requiredOffDays;
+    const memberRequiredOffDays = context.staffDayOffQuotas?.[member.id] ?? requiredOffDays;
 
-    if (memberRequiredOffDays !== null && memberRequiredOffDays !== undefined && offCount < memberRequiredOffDays) {
+    if (
+      memberRequiredOffDays !== null &&
+      memberRequiredOffDays !== undefined &&
+      offCount < memberRequiredOffDays
+    ) {
       violations.push({
         code: "DAY_OFF_QUOTA",
         source: "RULE",

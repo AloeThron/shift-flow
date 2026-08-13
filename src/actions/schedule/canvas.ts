@@ -2,34 +2,34 @@
 
 import type { ActionResult } from "@/domain/action-result";
 import {
-    commitCanvasChangesSchema,
-    type CommitCanvasChangesInput,
+  type CommitCanvasChangesInput,
+  commitCanvasChangesSchema,
 } from "@/domain/schedule/schemas";
 import { validateIncremental } from "@/domain/schedule/validate";
 import { actionErrorMessage } from "@/lib/auth/get-organization-context";
 import {
-    canWriteScheduleDraft,
-    getOrganizationTimezone,
-    requireScheduleDraftWriteAccess,
-    requireScheduleReadAccess,
+  canWriteScheduleDraft,
+  getOrganizationTimezone,
+  requireScheduleDraftWriteAccess,
+  requireScheduleReadAccess,
 } from "@/lib/auth/schedule-access";
 import { recordAuditEvent } from "@/lib/db/audit";
 import { createScopedRepository } from "@/lib/db/scoped-repository";
 import { prisma } from "@/lib/prisma";
 import {
-    applyCanvasCellChange,
-    applyCanvasPlannedOffChange,
-    mergeCellChangesIntoEngineInput,
-    mergePlannedOffChanges,
-    resolveBlockingNewHardViolations,
-    resolveShiftCodeInput,
-    summarizeCommitAudit,
+  applyCanvasCellChange,
+  applyCanvasPlannedOffChange,
+  mergeCellChangesIntoEngineInput,
+  mergePlannedOffChanges,
+  resolveBlockingNewHardViolations,
+  resolveShiftCodeInput,
+  summarizeCommitAudit,
 } from "@/lib/scheduling/apply-canvas-changes";
 import { assertOptimisticVersion, bumpOptimisticVersion } from "@/lib/scheduling/draft-concurrency";
 import { ensurePlanningCycles } from "@/lib/scheduling/ensure-planning-cycles";
 import {
-    loadCanvasDraftSnapshot,
-    type CanvasDraftSnapshot,
+  type CanvasDraftSnapshot,
+  loadCanvasDraftSnapshot,
 } from "@/lib/scheduling/load-canvas-draft";
 import { persistStaffDayOffQuotas, persistStaffRowOrders } from "@/lib/scheduling/persist-draft";
 import { isDateInCycle } from "@/lib/scheduling/solver-input";
@@ -249,12 +249,7 @@ export async function commitCanvasChangesAction(
       }
 
       if (staffDayOffQuotas.length > 0) {
-        await persistStaffDayOffQuotas(
-          tx,
-          ctx.organizationId,
-          data.draftId,
-          staffDayOffQuotas,
-        );
+        await persistStaffDayOffQuotas(tx, ctx.organizationId, data.draftId, staffDayOffQuotas);
       }
     });
 

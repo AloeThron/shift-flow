@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-    parseDateInput,
-    staffShiftAuthorizationFormSchema,
-} from "@/domain/config/schemas";
+import { parseDateInput, staffShiftAuthorizationFormSchema } from "@/domain/config/schemas";
 import { authCoversShiftCode, staffHasShiftAuthForInterval } from "@/domain/schedule/shift-auth";
 
 describe("staffShiftAuthorizationFormSchema", () => {

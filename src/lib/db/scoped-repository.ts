@@ -269,10 +269,7 @@ export function createScopedRepository(ctx: OrganizationContext, prisma: PrismaC
         }),
       create: (data: TenantCreateData<Prisma.ShiftCodeDemandUncheckedCreateInput>) =>
         prisma.shiftCodeDemand.create({ data: tenantData(ctx, data) }),
-      update: async (args: {
-        id: string;
-        data: Prisma.ShiftCodeDemandUncheckedUpdateInput;
-      }) => {
+      update: async (args: { id: string; data: Prisma.ShiftCodeDemandUncheckedUpdateInput }) => {
         const result = await prisma.shiftCodeDemand.updateMany({
           where: { id: args.id, organizationId: orgId },
           data: args.data,

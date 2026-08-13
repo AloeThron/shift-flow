@@ -2,12 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 
-import { departmentFormSchema, type DepartmentFormInput } from "@/domain/config/schemas";
+import { type DepartmentFormInput, departmentFormSchema } from "@/domain/config/schemas";
 import type { ActionResult } from "@/domain/config/types";
 import { requirePermission } from "@/domain/rbac/check-permission";
 import {
-    actionErrorMessage,
-    requireOrganizationContext,
+  actionErrorMessage,
+  requireOrganizationContext,
 } from "@/lib/auth/get-organization-context";
 import { recordConfigChange } from "@/lib/db/audit";
 import { createScopedRepository } from "@/lib/db/scoped-repository";

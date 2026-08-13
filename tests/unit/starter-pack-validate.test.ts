@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import {
-    loadAllStarterPacks,
-    loadStarterPack,
-    loadStarterPackManifest,
-    validateStarterPack,
+  loadAllStarterPacks,
+  loadStarterPack,
+  loadStarterPackManifest,
+  validateStarterPack,
 } from "@/domain/starter-pack";
 
 describe("starter pack manifest", () => {
@@ -71,9 +71,9 @@ describe("starter pack validation", () => {
     const snapshot = loadStarterPack("pilot-lab-example");
 
     expect(snapshot.staff.every((row) => row.staffGroupSection)).toBe(true);
-    expect(snapshot.staff.find((row) => row.staffCode === "STAFF-DEMO-PL-007")?.staffGroupSection).toBe(
-      "PART_TIME",
-    );
+    expect(
+      snapshot.staff.find((row) => row.staffCode === "STAFF-DEMO-PL-007")?.staffGroupSection,
+    ).toBe("PART_TIME");
     expect(
       snapshot.staff.find((row) => row.staffCode === "STAFF-DEMO-PL-008")?.staffGroupSection,
     ).toBe("RESULT_NOT_CAPABLE");

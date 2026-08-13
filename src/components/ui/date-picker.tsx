@@ -68,8 +68,10 @@ function DatePicker({
     setValue("");
   };
 
+  const showClear = Boolean(allowClear && value && !disabled);
+
   return (
-    <>
+    <div className="relative">
       <input type="hidden" name={name} value={value} required={required && !value} />
       <Popover open={open} onOpenChange={setOpen} modal={false}>
         <PopoverTrigger asChild>
@@ -81,29 +83,15 @@ function DatePicker({
             aria-required={required || undefined}
             className={cn(
               "border-input bg-background dark:bg-input/30 h-9 w-full justify-start rounded-[1.25rem] px-3 text-left text-sm font-normal shadow-xs",
+              showClear && "pr-9",
               !value && "text-muted-foreground",
               className,
             )}
           >
             <CalendarIcon className="text-muted-foreground size-4 shrink-0" />
-            <span className="flex-1 truncate">{value ? formatDisplayDate(value) : placeholder}</span>
-            {allowClear && value && !disabled ? (
-              <span
-                role="button"
-                tabIndex={0}
-                aria-label="ล้างวันที่"
-                className="text-muted-foreground hover:text-foreground ml-1 inline-flex size-5 shrink-0 items-center justify-center rounded-full"
-                onClick={handleClear}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    setValue("");
-                  }
-                }}
-              >
-                <XIcon className="size-3.5" />
-              </span>
-            ) : null}
+            <span className="flex-1 truncate">
+              {value ? formatDisplayDate(value) : placeholder}
+            </span>
           </Button>
         </PopoverTrigger>
         <PopoverContent
@@ -125,7 +113,17 @@ function DatePicker({
           />
         </PopoverContent>
       </Popover>
-    </>
+      {showClear ? (
+        <button
+          type="button"
+          aria-label="ล้างวันที่"
+          className="text-muted-foreground hover:text-foreground absolute top-1/2 right-2 inline-flex size-5 -translate-y-1/2 items-center justify-center rounded-full"
+          onClick={handleClear}
+        >
+          <XIcon className="size-3.5" />
+        </button>
+      ) : null}
+    </div>
   );
 }
 

@@ -10,10 +10,7 @@ export default async function SettingsLayout({ children }: { children: React.Rea
   return (
     <PageContainer maxWidth="6xl" className="grid gap-6 px-4 py-6 lg:grid-cols-[220px_1fr]">
       <aside className="space-y-4">
-        <ConfigPageHeader
-          title="ตั้งค่าองค์กร"
-          description="จัดการนโยบายและรายการรหัสของหน่วยงาน"
-        />
+        <ConfigPageHeader title="ตั้งค่าองค์กร" description="จัดการนโยบายและรายการรหัสของหน่วยงาน" />
         <SettingsNav />
       </aside>
       <section className="min-w-0 space-y-6">{children}</section>

@@ -1,12 +1,12 @@
 "use server";
 
+import type { ActionResult } from "@/domain/action-result";
 import {
   reorderStaffGroupsSchema,
+  type StaffGroupFormInput,
   staffGroupFormSchema,
   staffRowOrderSchema,
-  type StaffGroupFormInput,
 } from "@/domain/schedule/schemas";
-import type { ActionResult } from "@/domain/action-result";
 import { actionErrorMessage } from "@/lib/auth/get-organization-context";
 import {
   requireScheduleDraftWriteAccess,

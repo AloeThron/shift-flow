@@ -1,15 +1,15 @@
 import { staffHasShiftAuthForInterval } from "@/domain/schedule/shift-auth";
 import {
-    buildAssignmentInterval,
-    demandAppliesToDate,
-    eachDateInRange,
-    intervalsOverlap,
+  buildAssignmentInterval,
+  demandAppliesToDate,
+  eachDateInRange,
+  intervalsOverlap,
 } from "@/domain/schedule/time";
 import type {
-    FeasibilityIssue,
-    FeasibilityResult,
-    ScheduleEngineInput,
-    ScheduleSlot,
+  FeasibilityIssue,
+  FeasibilityResult,
+  ScheduleEngineInput,
+  ScheduleSlot,
 } from "@/domain/schedule/types";
 
 /** ตรวจว่า staff ว่างในช่วงเวลา */

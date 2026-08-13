@@ -1,12 +1,10 @@
 import Link from "next/link";
-
-import type { WorkloadStatsSnapshot } from "@/domain/optimize/fairness/workload-stats";
-
 import {
   FAIRNESS_DIMENSION_LABELS,
   formatWorkloadNumber,
   WORKLOAD_METRIC_LABELS,
 } from "@/components/schedule/workload/workload-labels";
+import type { WorkloadStatsSnapshot } from "@/domain/optimize/fairness/workload-stats";
 
 /** นับคนที่เกิน tolerance รวมทุกกลุ่ม */
 export function countOutOfToleranceStaff(snapshot: WorkloadStatsSnapshot): number {

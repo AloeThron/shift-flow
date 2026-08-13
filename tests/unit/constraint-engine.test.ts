@@ -2,15 +2,15 @@ import * as fc from "fast-check";
 import { describe, expect, it } from "vitest";
 
 import {
-    analyzeFeasibility,
-    buildAssignmentInterval,
-    intervalsOverlap,
-    solveSchedule,
-    validateSchedule,
-    type RuleInstanceSnapshot,
-    type ScheduleEngineInput,
-    type ScheduleSlot,
-    type ShiftCodeSnapshot,
+  analyzeFeasibility,
+  buildAssignmentInterval,
+  intervalsOverlap,
+  type RuleInstanceSnapshot,
+  type ScheduleEngineInput,
+  type ScheduleSlot,
+  type ShiftCodeSnapshot,
+  solveSchedule,
+  validateSchedule,
 } from "@/domain/schedule";
 
 const TIMEZONE = "Asia/Bangkok";

@@ -1,13 +1,11 @@
 "use client";
 
-import { ChevronDown, ChevronRight } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-
-import type { CanvasInteractionMode } from "./schedule-steps";
-
 import { formatWorkloadNumber } from "@/components/schedule/workload/workload-labels";
 import { Input } from "@/components/ui/input";
-import type { ScheduleCanvasGrid, ScheduleCanvasRow } from "@/domain/schedule/canvas-grid";
+import type {
+  ScheduleCanvasGrid as CanvasGridModel,
+  ScheduleCanvasRow,
+} from "@/domain/schedule/canvas-grid";
 import {
   computeCanvasCellHours,
   computeCanvasStaffRowTotals,
@@ -15,10 +13,12 @@ import {
 } from "@/domain/schedule/canvas-hours";
 import type { ShiftCodeSuggestion, SuggestionAction } from "@/domain/schedule/suggest";
 import type { ShiftCodeOption } from "@/lib/scheduling/load-canvas-draft";
-
+import { ChevronDown, ChevronRight } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CanvasCellLockMarker } from "./canvas-cell-lock-marker";
 import { CanvasCellOtMarker } from "./canvas-cell-ot-marker";
 import { canvasCellClassName, isCanvasCellLocked, shiftCodeMetaById } from "./cell-style";
+import type { CanvasInteractionMode } from "./schedule-steps";
 import { ShiftCodePicker, type ShiftCodePickerSelectOptions } from "./shift-code-picker";
 
 const THAI_WEEKDAYS = ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"] as const;
@@ -90,7 +90,7 @@ export function ScheduleCanvasGrid({
   onQuotaChange,
   onQuotaBlur,
 }: {
-  grid: ScheduleCanvasGrid;
+  grid: CanvasGridModel;
   shiftCodes: readonly ShiftCodeOption[];
   canWrite: boolean;
   selection: CanvasCellSelection | null;
@@ -280,300 +280,303 @@ export function ScheduleCanvasGrid({
   };
 
   if (grid.rows.length === 0 || grid.dates.length === 0) {
-    return (
-      <p className="text-muted-foreground py-8 text-center text-sm">
-        ยังไม่มีข้อมูลพนักงานในรอบนี้
-      </p>
-    );
+    return <p className="text-muted-foreground py-8 text-center text-sm">ยังไม่มีข้อมูลพนักงานในรอบนี้</p>;
   }
 
   return (
-    <div
-      ref={gridContainerRef}
-      className="overflow-x-auto rounded-lg border"
-      tabIndex={0}
-      role="region"
-      aria-label="ตารางจัดเวรแก้ไขได้"
-      onKeyDown={handleKeyDown}
-    >
-      <table className="w-max min-w-full border-collapse text-xs" aria-label="ตารางจัดเวร">
-        <thead>
-          <tr className="bg-muted/40">
-            <th className={STAFF_NAME_COLUMN_CLASS}>พนักงาน / กลุ่ม</th>
-            <th className={OFF_QUOTA_HEADER_CLASS} title="โควตาวันหยุดต่อเดือน">
-              OFF
-            </th>
-            {grid.dates.map((date) => {
-              const header = dayHeader(date);
-              const isWeekend = header.weekday === "ส" || header.weekday === "อา";
-              const isHoliday = holidaySet.has(date);
-              return (
-                <th
-                  key={date}
-                  className={`sticky top-0 z-10 border-b px-1.5 py-2 text-center font-medium ${isWeekend ? "bg-muted/70 text-muted-foreground" : "bg-muted/40"
-                    } ${isHoliday ? "ring-1 ring-amber-400/60 ring-inset" : ""}`}
-                  title={isHoliday ? "วันหยุดนักขัตฤกษ์" : undefined}
-                >
-                  <div>{header.weekday}</div>
-                  <div>{header.day}</div>
-                </th>
-              );
-            })}
-            <th className={SUMMARY_HOURS_COLUMN_CLASS} title="ชั่วโมงทำงานรวม">
-              ชม.
-            </th>
-            <th className={SUMMARY_OT_COLUMN_CLASS} title="OT สะสม">
-              OT
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {grid.rows.map((row) => {
-            if (row.kind === "group") {
-              const groupKey = row.groupId ?? row.groupCode;
-              const collapsed = collapsedGroups.has(groupKey);
-
-              return (
-                <tr key={`group:${groupKey}`} className="bg-muted/20">
+    <section className="rounded-lg border" aria-label="ตารางจัดเวรแก้ไขได้">
+      <div
+        ref={gridContainerRef}
+        className="overflow-x-auto outline-none"
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: โฟกัสกรอบตารางเพื่อลูกศรเลื่อนเซลล์
+        tabIndex={0}
+        role="application"
+        aria-label="ตารางจัดเวร ใช้ลูกศรเลื่อนเซลล์"
+        onKeyDown={handleKeyDown}
+      >
+        <table className="w-max min-w-full border-collapse text-xs" aria-label="ตารางจัดเวร">
+          <thead>
+            <tr className="bg-muted/40">
+              <th className={STAFF_NAME_COLUMN_CLASS}>พนักงาน / กลุ่ม</th>
+              <th className={OFF_QUOTA_HEADER_CLASS} title="โควตาวันหยุดต่อเดือน">
+                OFF
+              </th>
+              {grid.dates.map((date) => {
+                const header = dayHeader(date);
+                const isWeekend = header.weekday === "ส" || header.weekday === "อา";
+                const isHoliday = holidaySet.has(date);
+                return (
                   <th
-                    colSpan={grid.dates.length + 4}
-                    className="sticky left-0 border-b px-2 py-1.5 text-left"
+                    key={date}
+                    className={`sticky top-0 z-10 border-b px-1.5 py-2 text-center font-medium ${isWeekend ? "bg-muted/70 text-muted-foreground" : "bg-muted/40"
+                      } ${isHoliday ? "ring-1 ring-amber-400/60 ring-inset" : ""}`}
+                    title={isHoliday ? "วันหยุดนักขัตฤกษ์" : undefined}
                   >
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        className="hover:bg-muted inline-flex items-center gap-1 rounded px-1 py-0.5"
-                        onClick={() => onToggleGroup(groupKey)}
-                        aria-expanded={!collapsed}
-                        aria-label={`${collapsed ? "ขยาย" : "ยุบ"}กลุ่ม ${row.displayName}`}
-                      >
-                        {collapsed ? (
-                          <ChevronRight className="size-4" aria-hidden />
-                        ) : (
-                          <ChevronDown className="size-4" aria-hidden />
-                        )}
-                      </button>
+                    <div>{header.weekday}</div>
+                    <div>{header.day}</div>
+                  </th>
+                );
+              })}
+              <th className={SUMMARY_HOURS_COLUMN_CLASS} title="ชั่วโมงทำงานรวม">
+                ชม.
+              </th>
+              <th className={SUMMARY_OT_COLUMN_CLASS} title="OT สะสม">
+                OT
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {grid.rows.map((row) => {
+              if (row.kind === "group") {
+                const groupKey = row.groupId ?? row.groupCode;
+                const collapsed = collapsedGroups.has(groupKey);
 
-                      {renamingGroupId === row.groupId && row.groupId ? (
-                        <Input
-                          value={renameDraft}
-                          onChange={(event) => setRenameDraft(event.target.value)}
-                          onBlur={() => {
-                            onRenameGroup(row.groupId!, renameDraft);
-                            setRenamingGroupId(null);
-                          }}
-                          onKeyDown={(event) => {
-                            if (event.key === "Enter" && row.groupId) {
-                              onRenameGroup(row.groupId, renameDraft);
-                              setRenamingGroupId(null);
-                            }
-                          }}
-                          className="h-7 max-w-xs text-xs"
-                          autoFocus
-                        />
-                      ) : (
+                return (
+                  <tr key={`group:${groupKey}`} className="bg-muted/20">
+                    <th
+                      colSpan={grid.dates.length + 4}
+                      className="sticky left-0 border-b px-2 py-1.5 text-left"
+                    >
+                      <div className="flex items-center gap-2">
                         <button
                           type="button"
-                          className="font-semibold hover:underline"
-                          disabled={!canWrite || !row.groupId}
-                          onDoubleClick={() => {
-                            if (row.groupId && canWrite) {
-                              setRenamingGroupId(row.groupId);
-                              setRenameDraft(row.displayName);
-                            }
-                          }}
+                          className="hover:bg-muted inline-flex items-center gap-1 rounded px-1 py-0.5"
+                          onClick={() => onToggleGroup(groupKey)}
+                          aria-expanded={!collapsed}
+                          aria-label={`${collapsed ? "ขยาย" : "ยุบ"}กลุ่ม ${row.displayName}`}
                         >
-                          {row.displayName}
+                          {collapsed ? (
+                            <ChevronRight className="size-4" aria-hidden />
+                          ) : (
+                            <ChevronDown className="size-4" aria-hidden />
+                          )}
                         </button>
-                      )}
-                    </div>
-                  </th>
-                </tr>
-              );
-            }
 
-            if (row.kind === "section") {
-              if (collapsedGroups.has(row.groupKey)) {
+                        {renamingGroupId === row.groupId && row.groupId ? (
+                          <Input
+                            value={renameDraft}
+                            onChange={(event) => setRenameDraft(event.target.value)}
+                            onBlur={() => {
+                              onRenameGroup(row.groupId!, renameDraft);
+                              setRenamingGroupId(null);
+                            }}
+                            onKeyDown={(event) => {
+                              if (event.key === "Enter" && row.groupId) {
+                                onRenameGroup(row.groupId, renameDraft);
+                                setRenamingGroupId(null);
+                              }
+                            }}
+                            className="h-7 max-w-xs text-xs"
+                            autoFocus
+                          />
+                        ) : (
+                          <button
+                            type="button"
+                            className="font-semibold hover:underline"
+                            disabled={!canWrite || !row.groupId}
+                            onDoubleClick={() => {
+                              if (row.groupId && canWrite) {
+                                setRenamingGroupId(row.groupId);
+                                setRenameDraft(row.displayName);
+                              }
+                            }}
+                          >
+                            {row.displayName}
+                          </button>
+                        )}
+                      </div>
+                    </th>
+                  </tr>
+                );
+              }
+
+              if (row.kind === "section") {
+                if (collapsedGroups.has(row.groupKey)) {
+                  return null;
+                }
+
+                if (!showEmptySections && row.isEmpty) {
+                  return null;
+                }
+
+                return (
+                  <tr key={`section:${row.groupKey}:${row.section}`} className="bg-muted/10">
+                    <th
+                      colSpan={grid.dates.length + 4}
+                      className="text-muted-foreground sticky left-0 border-b px-8 py-1 text-left text-[11px] font-medium"
+                    >
+                      {row.displayName}
+                    </th>
+                  </tr>
+                );
+              }
+
+              const groupKey = row.row.staffGroupId ?? "__ungrouped__";
+              if (collapsedGroups.has(groupKey)) {
                 return null;
               }
 
-              if (!showEmptySections && row.isEmpty) {
-                return null;
-              }
+              const rowTotals = computeCanvasStaffRowTotals(row.row.cells, shiftHoursMetaById);
+              const dayOffQuota = staffDayOffQuotas.get(row.row.staffProfileId);
 
               return (
-                <tr key={`section:${row.groupKey}:${row.section}`} className="bg-muted/10">
-                  <th
-                    colSpan={grid.dates.length + 4}
-                    className="text-muted-foreground sticky left-0 border-b px-8 py-1 text-left text-[11px] font-medium"
-                  >
-                    {row.displayName}
+                <tr key={row.row.staffProfileId} className="hover:bg-muted/20">
+                  <th className={STAFF_NAME_CELL_CLASS}>
+                    <div className="truncate font-medium">{row.row.staffName}</div>
+                    <div className="text-muted-foreground truncate text-[11px]">
+                      {row.row.staffCode}
+                    </div>
                   </th>
+                  <td className={STAFF_OFF_QUOTA_CELL_CLASS}>
+                    <Input
+                      type="text"
+                      inputMode="numeric"
+                      autoComplete="off"
+                      spellCheck={false}
+                      value={
+                        dayOffQuota === null || dayOffQuota === undefined ? "" : String(dayOffQuota)
+                      }
+                      placeholder={String(defaultDayOffQuota)}
+                      disabled={!canWrite}
+                      aria-label={`โควตาวันหยุด ${row.row.staffName}`}
+                      className="focus-visible:ring-ring/50 block h-full w-full min-h-0 rounded-none border-0 bg-transparent px-0 py-0 text-center text-xs tabular-nums shadow-none focus-visible:ring-1 md:text-xs"
+                      onChange={(event) =>
+                        onQuotaChange(
+                          row.row.staffProfileId,
+                          sanitizeDayOffQuotaInput(event.target.value),
+                        )
+                      }
+                      onBlur={() => onQuotaBlur(row.row.staffProfileId)}
+                      onClick={(event) => event.stopPropagation()}
+                      onKeyDown={(event) => event.stopPropagation()}
+                    />
+                  </td>
+                  {row.row.cells.map((cell, dateIndex) => {
+                    const date = grid.dates[dateIndex]!;
+                    const header = dayHeader(date);
+                    const isWeekend = header.weekday === "ส" || header.weekday === "อา";
+                    const isHoliday = holidaySet.has(date);
+                    const isFocused =
+                      selection?.staffProfileId === row.row.staffProfileId &&
+                      selection.dateIndex === dateIndex;
+                    const shiftMeta = cell.shiftCodeId
+                      ? (shiftMetaById.get(cell.shiftCodeId) ?? null)
+                      : null;
+                    const cellHours = computeCanvasCellHours(
+                      cell,
+                      shiftMeta
+                        ? { standardHours: shiftMeta.standardHours, otHours: shiftMeta.otHours }
+                        : null,
+                    );
+                    const showOtMarker = hasCellOt(cellHours);
+                    const displayValue = cell.isPlannedOff
+                      ? (cell.nonWorkingDayKindCode ?? "OFF")
+                      : cell.shiftCode;
+                    const isLocked = isCanvasCellLocked({
+                      isPinned: cell.isPinned,
+                      plannedOffLocked: cell.plannedOffLocked,
+                    });
+                    const lockLabel = cell.plannedOffLocked ? " (ล็อกวันหยุด)" : " (ล็อกเซลล์)";
+                    const hoursLabel =
+                      cellHours.workHours > 0 ? ` · ${cellHours.workHours} ชม.` : "";
+                    const otLabel = cellHours.otHours > 0 ? ` · OT ${cellHours.otHours} ชม.` : "";
+
+                    const cellSelection = {
+                      staffProfileId: row.row.staffProfileId,
+                      dateIndex,
+                    };
+
+                    const cellButton = (
+                      <button
+                        type="button"
+                        className="block min-h-[1.25rem] w-full"
+                        disabled={!canWrite}
+                        aria-haspopup={canWrite && !isPaintMode ? "dialog" : undefined}
+                        aria-expanded={isFocused && pickerOpen && !isPaintMode ? true : undefined}
+                        aria-label={
+                          isPaintMode
+                            ? `สลับวันหยุด ${row.row.staffName} วันที่ ${date}${displayValue ? `: ${displayValue}` : ""}${hoursLabel}${otLabel}${isLocked ? lockLabel : ""}`
+                            : `รหัสเวร ${row.row.staffName} วันที่ ${date}${displayValue ? `: ${displayValue}` : ""}${hoursLabel}${otLabel}${isLocked ? lockLabel : ""}`
+                        }
+                        onClick={() => {
+                          if (isPaintMode) {
+                            return;
+                          }
+                          openPickerForSelection(cellSelection);
+                        }}
+                        onPointerDown={(event) => {
+                          if (!isPaintMode || event.button !== 0) {
+                            return;
+                          }
+                          event.preventDefault();
+                          beginPaint(cellSelection);
+                        }}
+                        onPointerEnter={() => {
+                          if (!isPainting || !isPaintMode) {
+                            return;
+                          }
+                          paintCell(cellSelection);
+                        }}
+                      >
+                        {displayValue ?? "—"}
+                      </button>
+                    );
+
+                    return (
+                      <td
+                        key={`${row.row.staffProfileId}:${date}`}
+                        className={canvasCellClassName({
+                          shiftCode: cell.shiftCode,
+                          shiftCodeMeta: shiftMeta,
+                          isPlannedOff: cell.isPlannedOff,
+                          isWeekend,
+                          isHoliday,
+                          isFocused,
+                        })}
+                      >
+                        {isLocked ? <CanvasCellLockMarker /> : null}
+                        {showOtMarker ? <CanvasCellOtMarker /> : null}
+                        {isFocused && canWrite && !isPaintMode ? (
+                          <ShiftCodePicker
+                            open={pickerOpen}
+                            onOpenChange={onPickerOpenChange}
+                            anchor={cellButton}
+                            staffName={row.row.staffName}
+                            localDate={date}
+                            suggestions={pickerSuggestions}
+                            suggestionsLoading={pickerSuggestionsLoading}
+                            isPinned={cell.isPinned}
+                            isPlannedOff={cell.isPlannedOff}
+                            plannedOffLocked={cell.plannedOffLocked}
+                            canPin={Boolean(cell.shiftCodeId) && !cell.isPlannedOff}
+                            onSelect={(action, options) =>
+                              onApplyAction(row.row.staffProfileId, date, action, options)
+                            }
+                            onClearDayOff={onClearDayOff}
+                            onLockPin={onLockPin}
+                            onLockPlannedOff={onLockPlannedOff}
+                            onUnlockPin={onUnlockPin}
+                            onUnlockPlannedOff={onUnlockPlannedOff}
+                            onRequestFocusReturn={() => gridContainerRef.current?.focus()}
+                          />
+                        ) : (
+                          cellButton
+                        )}
+                      </td>
+                    );
+                  })}
+                  <td className={STAFF_SUMMARY_HOURS_CELL_CLASS}>
+                    {formatWorkloadNumber(rowTotals.workHours)}
+                  </td>
+                  <td className={STAFF_SUMMARY_OT_CELL_CLASS}>
+                    {formatWorkloadNumber(rowTotals.otHours)}
+                  </td>
                 </tr>
               );
-            }
-
-            const groupKey = row.row.staffGroupId ?? "__ungrouped__";
-            if (collapsedGroups.has(groupKey)) {
-              return null;
-            }
-
-            const rowTotals = computeCanvasStaffRowTotals(row.row.cells, shiftHoursMetaById);
-            const dayOffQuota = staffDayOffQuotas.get(row.row.staffProfileId);
-
-            return (
-              <tr key={row.row.staffProfileId} className="hover:bg-muted/20">
-                <th className={STAFF_NAME_CELL_CLASS}>
-                  <div className="truncate font-medium">{row.row.staffName}</div>
-                  <div className="text-muted-foreground truncate text-[11px]">{row.row.staffCode}</div>
-                </th>
-                <td className={STAFF_OFF_QUOTA_CELL_CLASS}>
-                  <Input
-                    type="text"
-                    inputMode="numeric"
-                    autoComplete="off"
-                    spellCheck={false}
-                    value={dayOffQuota === null || dayOffQuota === undefined ? "" : String(dayOffQuota)}
-                    placeholder={String(defaultDayOffQuota)}
-                    disabled={!canWrite}
-                    aria-label={`โควตาวันหยุด ${row.row.staffName}`}
-                    className="focus-visible:ring-ring/50 block h-full w-full min-h-0 rounded-none border-0 bg-transparent px-0 py-0 text-center text-xs tabular-nums shadow-none focus-visible:ring-1 md:text-xs"
-                    onChange={(event) =>
-                      onQuotaChange(
-                        row.row.staffProfileId,
-                        sanitizeDayOffQuotaInput(event.target.value),
-                      )
-                    }
-                    onBlur={() => onQuotaBlur(row.row.staffProfileId)}
-                    onClick={(event) => event.stopPropagation()}
-                    onKeyDown={(event) => event.stopPropagation()}
-                  />
-                </td>
-                {row.row.cells.map((cell, dateIndex) => {
-                  const date = grid.dates[dateIndex]!;
-                  const header = dayHeader(date);
-                  const isWeekend = header.weekday === "ส" || header.weekday === "อา";
-                  const isHoliday = holidaySet.has(date);
-                  const isFocused =
-                    selection?.staffProfileId === row.row.staffProfileId &&
-                    selection.dateIndex === dateIndex;
-                  const shiftMeta = cell.shiftCodeId
-                    ? (shiftMetaById.get(cell.shiftCodeId) ?? null)
-                    : null;
-                  const cellHours = computeCanvasCellHours(
-                    cell,
-                    shiftMeta
-                      ? { standardHours: shiftMeta.standardHours, otHours: shiftMeta.otHours }
-                      : null,
-                  );
-                  const showOtMarker = hasCellOt(cellHours);
-                  const displayValue = cell.isPlannedOff
-                    ? (cell.nonWorkingDayKindCode ?? "OFF")
-                    : cell.shiftCode;
-                  const isLocked = isCanvasCellLocked({
-                    isPinned: cell.isPinned,
-                    plannedOffLocked: cell.plannedOffLocked,
-                  });
-                  const lockLabel = cell.plannedOffLocked ? " (ล็อกวันหยุด)" : " (ล็อกเซลล์)";
-                  const hoursLabel =
-                    cellHours.workHours > 0 ? ` · ${cellHours.workHours} ชม.` : "";
-                  const otLabel = cellHours.otHours > 0 ? ` · OT ${cellHours.otHours} ชม.` : "";
-
-                  const cellSelection = {
-                    staffProfileId: row.row.staffProfileId,
-                    dateIndex,
-                  };
-
-                  const cellButton = (
-                    <button
-                      type="button"
-                      className="block min-h-[1.25rem] w-full"
-                      disabled={!canWrite}
-                      aria-haspopup={canWrite && !isPaintMode ? "dialog" : undefined}
-                      aria-expanded={isFocused && pickerOpen && !isPaintMode ? true : undefined}
-                      aria-label={
-                        isPaintMode
-                          ? `สลับวันหยุด ${row.row.staffName} วันที่ ${date}${displayValue ? `: ${displayValue}` : ""}${hoursLabel}${otLabel}${isLocked ? lockLabel : ""}`
-                          : `รหัสเวร ${row.row.staffName} วันที่ ${date}${displayValue ? `: ${displayValue}` : ""}${hoursLabel}${otLabel}${isLocked ? lockLabel : ""}`
-                      }
-                      onClick={() => {
-                        if (isPaintMode) {
-                          return;
-                        }
-                        openPickerForSelection(cellSelection);
-                      }}
-                      onPointerDown={(event) => {
-                        if (!isPaintMode || event.button !== 0) {
-                          return;
-                        }
-                        event.preventDefault();
-                        beginPaint(cellSelection);
-                      }}
-                      onPointerEnter={() => {
-                        if (!isPainting || !isPaintMode) {
-                          return;
-                        }
-                        paintCell(cellSelection);
-                      }}
-                    >
-                      {displayValue ?? "—"}
-                    </button>
-                  );
-
-                  return (
-                    <td
-                      key={`${row.row.staffProfileId}:${date}`}
-                      className={canvasCellClassName({
-                        shiftCode: cell.shiftCode,
-                        shiftCodeMeta: shiftMeta,
-                        isPlannedOff: cell.isPlannedOff,
-                        isWeekend,
-                        isHoliday,
-                        isFocused,
-                      })}
-                    >
-                      {isLocked ? <CanvasCellLockMarker /> : null}
-                      {showOtMarker ? <CanvasCellOtMarker /> : null}
-                      {isFocused && canWrite && !isPaintMode ? (
-                        <ShiftCodePicker
-                          open={pickerOpen}
-                          onOpenChange={onPickerOpenChange}
-                          anchor={cellButton}
-                          staffName={row.row.staffName}
-                          localDate={date}
-                          suggestions={pickerSuggestions}
-                          suggestionsLoading={pickerSuggestionsLoading}
-                          isPinned={cell.isPinned}
-                          isPlannedOff={cell.isPlannedOff}
-                          plannedOffLocked={cell.plannedOffLocked}
-                          canPin={Boolean(cell.shiftCodeId) && !cell.isPlannedOff}
-                          onSelect={(action, options) =>
-                            onApplyAction(row.row.staffProfileId, date, action, options)
-                          }
-                          onClearDayOff={onClearDayOff}
-                          onLockPin={onLockPin}
-                          onLockPlannedOff={onLockPlannedOff}
-                          onUnlockPin={onUnlockPin}
-                          onUnlockPlannedOff={onUnlockPlannedOff}
-                          onRequestFocusReturn={() => gridContainerRef.current?.focus()}
-                        />
-                      ) : (
-                        cellButton
-                      )}
-                    </td>
-                  );
-                })}
-                <td className={STAFF_SUMMARY_HOURS_CELL_CLASS}>
-                  {formatWorkloadNumber(rowTotals.workHours)}
-                </td>
-                <td className={STAFF_SUMMARY_OT_CELL_CLASS}>
-                  {formatWorkloadNumber(rowTotals.otHours)}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+            })}
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 }

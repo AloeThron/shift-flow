@@ -6,10 +6,10 @@ import {
   clearCanvasPlannedDayOffAction,
   commitCanvasChangesAction,
   getScheduleCanvasAction,
+  type ScheduleCanvasPayload,
   setCanvasPlannedDayOffAction,
   toggleCanvasCellPinAction,
   updateCanvasCellAction,
-  type ScheduleCanvasPayload,
 } from "@/actions/schedule/canvas";
 import { runBalanceSolverAction, runDayOffSolverAction } from "@/actions/schedule/solver";
 import { updateStaffGroupDisplayNameAction } from "@/actions/schedule/staff-groups";
@@ -22,7 +22,11 @@ import {
   recomputeWorkloadStatsFromDraft,
   type WorkloadStatsSnapshot,
 } from "@/domain/optimize/fairness/workload-stats";
-import { buildScheduleCanvasGrid, canvasStaffRows, type ScheduleCanvasCell } from "@/domain/schedule/canvas-grid";
+import {
+  buildScheduleCanvasGrid,
+  canvasStaffRows,
+  type ScheduleCanvasCell,
+} from "@/domain/schedule/canvas-grid";
 import {
   isValidDayOffQuotaValue,
   staffDayOffQuotaMapFromRecord,
@@ -49,7 +53,7 @@ import {
 
 import { shiftCodeMetaById } from "./cell-style";
 import { computeScheduleAchievementStatus } from "./schedule-achievement";
-import { ScheduleCanvasGrid, type CanvasCellSelection } from "./schedule-canvas-grid";
+import { type CanvasCellSelection, ScheduleCanvasGrid } from "./schedule-canvas-grid";
 import { ScheduleCanvasToolbar } from "./schedule-canvas-toolbar";
 import { ScheduleStatusPanel } from "./schedule-status-panel";
 import { ScheduleStepBar } from "./schedule-step-bar";
@@ -124,8 +128,8 @@ function BalanceRunSummary({ summary }: { summary: Record<string, unknown> }) {
       ) : null}
       {blockingIssues.length > 0 ? (
         <ul className="text-muted-foreground mt-1 max-h-24 list-inside list-disc overflow-y-auto text-xs">
-          {blockingIssues.slice(0, 5).map((issue, index) => (
-            <li key={`${issue.messageTh ?? "issue"}-${index}`}>{issue.messageTh ?? "มีปัญหา feasibility"}</li>
+          {blockingIssues.slice(0, 5).map((issue) => (
+            <li key={issue.messageTh ?? "issue"}>{issue.messageTh ?? "มีปัญหา feasibility"}</li>
           ))}
         </ul>
       ) : null}
@@ -146,7 +150,9 @@ export function ScheduleCanvas({
   const [payload, setPayload] = useState(initial);
   const [grid, setGrid] = useState(initial.grid);
   const [staffDayOffQuotas, setStaffDayOffQuotas] = useState(() => quotaStateFromPayload(initial));
-  const [dirtyQuotaStaffIds, setDirtyQuotaStaffIds] = useState<ReadonlySet<string>>(() => new Set());
+  const [dirtyQuotaStaffIds, setDirtyQuotaStaffIds] = useState<ReadonlySet<string>>(
+    () => new Set(),
+  );
   const [optimisticVersion, setOptimisticVersion] = useState(initial.optimisticVersion);
   const [selection, setSelection] = useState<CanvasCellSelection | null>(null);
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -287,11 +293,7 @@ export function ScheduleCanvas({
     setActiveStep(resolveInitialStep(stepStates));
   }, [stepStates]);
 
-  const interactionMode = resolveCanvasInteractionMode(
-    payload.canWrite,
-    activeStep,
-    validation,
-  );
+  const interactionMode = resolveCanvasInteractionMode(payload.canWrite, activeStep, validation);
 
   useEffect(() => {
     if (interactionMode === "PAINT_OFF" && pickerOpen) {
@@ -529,7 +531,10 @@ export function ScheduleCanvas({
           if (blocksScheduling) {
             nextAssignments = assignments.filter(
               (item) =>
-                !(item.staffProfileId === change.staffProfileId && item.localDate === change.localDate),
+                !(
+                  item.staffProfileId === change.staffProfileId &&
+                  item.localDate === change.localDate
+                ),
             );
           }
           nextPlannedOff.push({
@@ -605,16 +610,16 @@ export function ScheduleCanvas({
       const change: CanvasPlannedOffChangeInput =
         cell.isPlannedOff && cell.nonWorkingDayKindCode === selectedKind.code
           ? {
-            staffProfileId,
-            localDate,
-            action: "clear",
-          }
+              staffProfileId,
+              localDate,
+              action: "clear",
+            }
           : {
-            staffProfileId,
-            localDate,
-            action: "set",
-            nonWorkingDayKindId: paintKindId,
-          };
+              staffProfileId,
+              localDate,
+              action: "set",
+              nonWorkingDayKindId: paintKindId,
+            };
 
       paintPendingRef.current.push(change);
       applyLocalPlannedOffChange(change);
@@ -1254,7 +1259,7 @@ export function ScheduleCanvas({
   ]);
 
   return (
-    <div className="space-y-4" role="region" aria-label="Canvas จัดเวร" aria-busy={pending}>
+    <section className="space-y-4" aria-label="Canvas จัดเวร" aria-busy={pending}>
       <ScheduleStepBar
         activeStep={activeStep}
         stepStates={stepStates}
@@ -1326,6 +1331,6 @@ export function ScheduleCanvas({
         departmentLabelById={departmentLabelById}
         shiftCodeLabelById={shiftCodeLabelById}
       />
-    </div>
+    </section>
   );
 }

@@ -1,14 +1,13 @@
-import type { Prisma, PrismaClient } from "@/generated/client/client";
-
 import { getRuleTemplate } from "@/domain/rules/registry";
 import { buildAssignmentInterval, localDateTimeToIso } from "@/domain/schedule/time";
 import { buildDemandName, dayTypeToWeekdayMask } from "@/domain/starter-pack/day-type";
 import { validateNormalizedRuleParams } from "@/domain/starter-pack/normalize-rule-params";
 import type {
-    RosterMonthSampleRow,
-    StarterPackApplyStats,
-    StarterPackSnapshot,
+  RosterMonthSampleRow,
+  StarterPackApplyStats,
+  StarterPackSnapshot,
 } from "@/domain/starter-pack/types";
+import type { Prisma, PrismaClient } from "@/generated/client/client";
 
 /** ตัวเลือก apply starter pack */
 export type ApplyStarterPackOptions = {

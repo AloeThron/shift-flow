@@ -1,5 +1,5 @@
-import type { RuleValidatorFn } from "@/domain/rules/types";
 import { isStaffOffOnDate } from "@/domain/rules/helpers/schedule-metrics";
+import type { RuleValidatorFn } from "@/domain/rules/types";
 import { eachDateInRange, resolveDayType } from "@/domain/schedule/time";
 import type { ConstraintViolation } from "@/domain/schedule/types";
 

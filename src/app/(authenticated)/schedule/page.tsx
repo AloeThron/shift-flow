@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 
 import { requireScheduleReadAccess } from "@/lib/auth/schedule-access";
-import { ensurePlanningCycles } from "@/lib/scheduling/ensure-planning-cycles";
 import { prisma } from "@/lib/prisma";
+import { ensurePlanningCycles } from "@/lib/scheduling/ensure-planning-cycles";
 
 /** หน้า schedule root — redirect ไป canvas รอบที่แก้ได้ */
 export default async function ScheduleIndexPage() {

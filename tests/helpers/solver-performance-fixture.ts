@@ -1,10 +1,8 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-
-import type { DayOffPlanInput } from "@/domain/optimize/day-off";
 import type { BalancePlanInput } from "@/domain/optimize/balance/types";
+import type { DayOffPlanInput } from "@/domain/optimize/day-off";
 import { buildValidationScheduleInput } from "@/domain/optimize/fairness/validation-roster";
-import { buildDemandSlots } from "@/lib/scheduling/build-demand-slots";
 import type {
   RuleInstanceSnapshot,
   ScheduleAssignment,
@@ -13,6 +11,7 @@ import type {
   ShiftDemandSnapshot,
   StaffSnapshot,
 } from "@/domain/schedule/types";
+import { buildDemandSlots } from "@/lib/scheduling/build-demand-slots";
 
 const PACK = join(process.cwd(), "demo/starter-packs/pilot-lab-example");
 const OFF_KIND_ID = "kind-off";

@@ -68,13 +68,17 @@ export function RulesSettingsPanel({ rules, canWrite }: RulesSettingsPanelProps)
                 <span className="font-medium leading-snug">
                   {template?.displayNameTh ?? rule.ruleTemplateId}
                 </span>
-                <span className="text-muted-foreground font-mono text-xs">{rule.ruleTemplateId}</span>
+                <span className="text-muted-foreground font-mono text-xs">
+                  {rule.ruleTemplateId}
+                </span>
               </ConfigTableCell>
               <ConfigTableCell>
                 <SeverityBadge severity={rule.severity} />
               </ConfigTableCell>
               <ConfigTableCell>
-                <span className="text-xs leading-snug">{OVERRIDE_CLASS_LABELS[rule.overrideClass]}</span>
+                <span className="text-xs leading-snug">
+                  {OVERRIDE_CLASS_LABELS[rule.overrideClass]}
+                </span>
               </ConfigTableCell>
               <ConfigTableCell>
                 <span className="whitespace-nowrap text-xs">

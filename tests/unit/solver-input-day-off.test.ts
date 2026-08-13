@@ -45,9 +45,7 @@ function canvasSnapshot(engineInput: ScheduleEngineInput): CanvasDraftSnapshot {
 }
 
 /** history window ขั้นต่ำ */
-function historySnapshot(
-  overrides: Partial<HistoryWindowSnapshot> = {},
-): HistoryWindowSnapshot {
+function historySnapshot(overrides: Partial<HistoryWindowSnapshot> = {}): HistoryWindowSnapshot {
   return {
     policy: buildDefaultSchedulingPolicySnapshot("org-a", "2026-02-28"),
     asOfDate: "2026-02-28",

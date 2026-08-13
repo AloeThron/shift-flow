@@ -33,13 +33,7 @@ type ShiftCodeTableRowProps = {
 };
 
 /** cell กลางตารางพร้อม wrapper จัดเนื้อหา */
-function TableCell({
-  className,
-  children,
-}: {
-  className?: string;
-  children: ReactNode;
-}) {
+function TableCell({ className, children }: { className?: string; children: ReactNode }) {
   return (
     <td className={cn(shiftCodeTableCellClass, className)}>
       <div className={shiftCodeTableCellContentClass}>{children}</div>

@@ -63,7 +63,7 @@ Registry ปัจจุบันมี 8 templates: `MIN_REST_BETWEEN_SHIFTS`, 
 
 ```bash
 pnpm test
-pnpm check   # format + lint + typecheck + test + build
+pnpm check   # biome check + typecheck + test + build
 ```
 
 - unit test ต่อ validator

@@ -1,20 +1,20 @@
-import { yearMonthFromDate } from "@/domain/rules/helpers/schedule-metrics";
 import {
   aggregateStaffWorkloadMonthly,
   type WorkloadMonthlyInput,
 } from "@/domain/optimize/fairness/workload-monthly";
-import {
-  buildDefaultSchedulingPolicySnapshot,
-  resolveEffectiveSchedulingPolicy,
-} from "@/domain/scheduling/policy";
-import type { SchedulingPolicySnapshot } from "@/domain/scheduling/policy";
-import { computeHistoryWindow, yearMonthsBeforeWindow } from "@/domain/scheduling/window";
+import { yearMonthFromDate } from "@/domain/rules/helpers/schedule-metrics";
 import type {
   PlannedNonWorkingDaySnapshot,
   ScheduleAssignment,
   ShiftCodeSnapshot,
   StaffSnapshot,
 } from "@/domain/schedule/types";
+import type { SchedulingPolicySnapshot } from "@/domain/scheduling/policy";
+import {
+  buildDefaultSchedulingPolicySnapshot,
+  resolveEffectiveSchedulingPolicy,
+} from "@/domain/scheduling/policy";
+import { computeHistoryWindow, yearMonthsBeforeWindow } from "@/domain/scheduling/window";
 import type { PrismaClient } from "@/generated/client/client";
 
 import {

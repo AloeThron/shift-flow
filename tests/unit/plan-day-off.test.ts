@@ -359,9 +359,7 @@ describe("planDayOff — Stage A", () => {
   it("คงวันหยุด REQUEST unlocked ที่ลงไว้ก่อน", () => {
     const result = planDayOff(
       baseInput({
-        plannedNonWorkingDays: [
-          plannedOffSnapshot("staff-1", "2026-03-02", { source: "REQUEST" }),
-        ],
+        plannedNonWorkingDays: [plannedOffSnapshot("staff-1", "2026-03-02", { source: "REQUEST" })],
         dayOffRequests: [{ staffId: "staff-1", localDate: "2026-03-02" }],
       }),
     );
@@ -393,9 +391,7 @@ describe("planDayOff — Stage A", () => {
     expect(result.feasible).toBe(true);
     expect(offCountByStaff(result.plannedNonWorkingDays).get("staff-1")).toBe(1);
     expect(offCountByStaff(result.plannedNonWorkingDays).get("staff-2")).toBe(3);
-    expect(
-      result.plannedNonWorkingDays.filter((row) => row.staffId === "staff-3"),
-    ).toHaveLength(0);
+    expect(result.plannedNonWorkingDays.filter((row) => row.staffId === "staff-3")).toHaveLength(0);
   });
 
   it("แทนที่ QUOTA unlocked จากรอบก่อนเมื่อ re-run เกลีย", () => {
@@ -421,8 +417,8 @@ describe("planDayOff — Stage A", () => {
     expect(result.feasible).toBe(true);
     expect(offCountByStaff(result.plannedNonWorkingDays).get("staff-01")).toBe(8);
     expect(tailOffRatio(result.plannedNonWorkingDays, "2026-03-25")).toBeLessThanOrEqual(0.5);
-    expect(
-      result.plannedNonWorkingDays.every((row) => row.source === "QUOTA" && !row.locked),
-    ).toBe(true);
+    expect(result.plannedNonWorkingDays.every((row) => row.source === "QUOTA" && !row.locked)).toBe(
+      true,
+    );
   });
 });

@@ -1,9 +1,9 @@
 # Parallel Pilot — ทดสอบคู่ขนานและ Go-live Gate
 
-> อัปเดต: 2026-08-11  
+> อัปเดต: 2026-08-13  
 > Phase 4 — รัน **shadow** คู่ขนานกับ Excel/กระดาษ ≥ **2 รอบตาราง** ก่อน cutover  
 > เกณฑ์อัตโนมัติ: [`src/domain/pilot/go-live-gate.ts`](../../src/domain/pilot/go-live-gate.ts)  
-> Baseline เปรียบเทียบ: [`baseline.md`](baseline.md)
+> ตัวชี้วัดรายรอบ: รายงาน JSON ตาม [`src/domain/pilot/schemas.ts`](../../src/domain/pilot/schemas.ts) — รายงานที่มี PII อยู่นอก repo
 
 ---
 
@@ -46,7 +46,7 @@ flowchart LR
 
 ### 3.1 ก่อนเริ่มรอบ
 
-- [ ] กรอก [`baseline.md`](baseline.md) §1 metadata สำหรับรอบนี้
+- [ ] เตรียม metadata รอบนี้ในรายงาน JSON (cycle id, ช่วงวันที่, จำนวน staff)
 - [ ] Export published roster manual ล่าสุดเป็น fallback (CSV/PDF)
 - [ ] ยืนยัน config org (รหัสเวร, coverage, rule instance) ครบและมี effective date
 - [ ] รัน restore drill ถ้ายังไม่ผ่านในรอบ pilot นี้ — [`../operations/backup-restore.md`](../operations/backup-restore.md)
@@ -64,7 +64,7 @@ flowchart LR
 - [ ] รัน validator บน shadow published-equivalent revision
 - [ ] นับ hard safety violations, competency, coverage gaps
 - [ ] วัด fairness metrics เปรียบ baseline
-- [ ] กรอก quick capture ใน [`baseline.md`](baseline.md) §7
+- [ ] บันทึกตัวชี้วัดรอบนี้ลงรายงาน JSON ตาม schema go-live gate
 
 ### 3.4 สิ่งที่ห้ามทำ
 
@@ -197,14 +197,13 @@ Exit code `0` = ผ่าน go-live, `1` = ไม่ผ่าน
 
 ### Gate evaluation
 - [ ] `pnpm pilot:evaluate <report.json>` → PASS
-- [ ] กรอก [`baseline.md`](baseline.md) §8
 ```
 
 ---
 
 ## 9. เอกสารที่เกี่ยวข้อง
 
-- [`baseline.md`](baseline.md) — ตัวชี้วัด manual ก่อน pilot
+- [`src/domain/pilot/schemas.ts`](../../src/domain/pilot/schemas.ts) — schema ตัวชี้วัดรายรอบ
 - [`../operations/backup-restore.md`](../operations/backup-restore.md) — RPO/RTO, restore drill
 - [`../operations/incident-response.md`](../operations/incident-response.md) — SEV-1 hard safety
 - [`../security/rbac.md`](../security/rbac.md) — สิทธิ์ publish / override
@@ -218,3 +217,4 @@ Exit code `0` = ผ่าน go-live, `1` = ไม่ผ่าน
 | ---------- | ----------------------------------------------------------------- |
 | 2026-08-10 | สร้าง runbook parallel pilot + go-live/rollback gate               |
 | 2026-08-11 | แทน `ops.swap-concurrency` ด้วย `ops.share-link-revoke` (two-role) |
+| 2026-08-13 | ตัด `baseline.md` ค่าจำลอง — ตัวชี้วัดอยู่ในรายงาน JSON ของ gate           |

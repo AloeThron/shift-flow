@@ -2,28 +2,28 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import {
-    findStarterPackEntry,
-    loadStarterPackManifest,
-    resolveStarterPackDirectory,
+  findStarterPackEntry,
+  loadStarterPackManifest,
+  resolveStarterPackDirectory,
 } from "./load-manifest";
 import { parseOptionalNumber, parseStarterPackCsv, splitPipeCodes } from "./parse-csv";
 import {
-    parseOrganizationYaml,
-    parseRuleInstancesYaml,
-    parseSchedulingPolicyYaml,
+  parseOrganizationYaml,
+  parseRuleInstancesYaml,
+  parseSchedulingPolicyYaml,
 } from "./parse-yaml";
 import {
-    departmentRowSchema,
-    holidayRowSchema,
-    organizationYamlSchema,
-    rosterMonthSampleRowSchema,
-    schedulingPolicyYamlSchema,
-    shiftCodeRowSchema,
-    shiftDemandRowSchema,
-    staffShiftAuthorizationRowSchema,
-    staffGradeRowSchema,
-    staffGroupRowSchema,
-    staffRowSchema,
+  departmentRowSchema,
+  holidayRowSchema,
+  organizationYamlSchema,
+  rosterMonthSampleRowSchema,
+  schedulingPolicyYamlSchema,
+  shiftCodeRowSchema,
+  shiftDemandRowSchema,
+  staffGradeRowSchema,
+  staffGroupRowSchema,
+  staffRowSchema,
+  staffShiftAuthorizationRowSchema,
 } from "./schemas";
 import type { RosterMonthSampleRow, StarterPackSnapshot } from "./types";
 
@@ -192,12 +192,14 @@ export function loadStarterPack(
       nameTh: row.name_th,
       nameEn: row.name_en,
     })),
-    rosterMonthSample: rosterMonthRows.map((row): RosterMonthSampleRow => ({
-      staffCode: row.staff_code,
-      localDate: row.local_date,
-      canonicalCode: row.canonical_code,
-      notes: row.notes ?? "",
-    })),
+    rosterMonthSample: rosterMonthRows.map(
+      (row): RosterMonthSampleRow => ({
+        staffCode: row.staff_code,
+        localDate: row.local_date,
+        canonicalCode: row.canonical_code,
+        notes: row.notes ?? "",
+      }),
+    ),
     ruleInstances,
   };
 }

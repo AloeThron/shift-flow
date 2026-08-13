@@ -1,16 +1,11 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 
 import { configTableHeadClass } from "@/components/config/config-table-layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
 export type ConfigPanelMode = { type: "idle" } | { type: "create" } | { type: "edit"; id: string };
@@ -84,8 +79,7 @@ export function ConfigResourcePanel({
         ? `แก้ไข: ${getEditTitle(mode.id)}`
         : null;
 
-  const editorContent =
-    mode.type !== "idle" ? renderEditor(mode, close) : null;
+  const editorContent = mode.type !== "idle" ? renderEditor(mode, close) : null;
 
   return (
     <div className="space-y-6">
@@ -122,10 +116,10 @@ export function ConfigResourcePanel({
               <tr className="border-b">
                 {columns
                   ? columns.map((column) => (
-                    <th key={column.id} className={configTableHeadClass}>
-                      {column.label}
-                    </th>
-                  ))
+                      <th key={column.id} className={configTableHeadClass}>
+                        {column.label}
+                      </th>
+                    ))
                   : tableHead}
               </tr>
             </thead>

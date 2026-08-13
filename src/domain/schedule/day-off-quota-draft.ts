@@ -22,9 +22,7 @@ const MAX_DAYS_OFF_QUOTA = 31;
 function findEnabledDayOffQuotaRule(
   ruleInstances: readonly RuleInstanceSnapshot[],
 ): RuleInstanceSnapshot | undefined {
-  return ruleInstances.find(
-    (rule) => rule.enabled && rule.ruleTemplateId === "DAY_OFF_QUOTA",
-  );
+  return ruleInstances.find((rule) => rule.enabled && rule.ruleTemplateId === "DAY_OFF_QUOTA");
 }
 
 /** คำนวณโควตา default จาก rule DAY_OFF_QUOTA */
@@ -86,7 +84,9 @@ export function validateStaffDayOffQuotasComplete(
   staffIds: readonly string[],
   quotas: ReadonlyMap<string, number | null | undefined>,
 ): StaffDayOffQuotaValidation {
-  const missingStaffIds = staffIds.filter((staffId) => !isValidDayOffQuotaValue(quotas.get(staffId)));
+  const missingStaffIds = staffIds.filter(
+    (staffId) => !isValidDayOffQuotaValue(quotas.get(staffId)),
+  );
 
   if (missingStaffIds.length > 0) {
     return { ok: false, missingStaffIds };

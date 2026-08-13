@@ -10,8 +10,9 @@ const DEFAULT_PACK_ID = process.env.SEED_STARTER_PACK ?? "pilot-lab-example";
 async function main(): Promise<void> {
   const { prisma } = await import("../src/lib/prisma");
   const { hash } = await import("../src/lib/auth/password");
-  const { DEV_DEMO_ACCOUNTS, DEV_DEMO_PASSWORD } =
-    await import("../src/lib/auth/dev-demo-accounts");
+  const { DEV_DEMO_ACCOUNTS, DEV_DEMO_PASSWORD } = await import(
+    "../src/lib/auth/dev-demo-accounts"
+  );
   const { loadStarterPack } = await import("../src/domain/starter-pack");
   const { applyStarterPack } = await import("../src/lib/starter-pack/apply-pack");
 

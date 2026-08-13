@@ -303,10 +303,7 @@ function PublishShareContent({
 }
 
 /** Dialog เผยแพร่และจัดการลิงก์แชร์ — trigger ใน toolbar */
-export function PublishShareDialog({
-  busy = false,
-  ...contentProps
-}: PublishShareDialogProps) {
+export function PublishShareDialog({ busy = false, ...contentProps }: PublishShareDialogProps) {
   const { canPublish, canShare } = contentProps;
 
   if (!canPublish && !canShare) {

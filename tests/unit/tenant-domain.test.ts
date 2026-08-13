@@ -1,10 +1,8 @@
-import type { OrganizationRole } from "@/generated/client/client";
 import { describe, expect, it } from "vitest";
-
 import {
   ForbiddenError,
-  PERMISSIONS,
   hasPermission,
+  PERMISSIONS,
   permissionsForRole,
   requirePermission,
   roleHasPermission,
@@ -14,6 +12,7 @@ import {
   isEditableScheduleVersion,
   isImmutableScheduleVersion,
 } from "@/domain/schedule";
+import type { OrganizationRole } from "@/generated/client/client";
 import { tenantData, tenantWhere } from "@/lib/db/scoped-repository";
 
 const TWO_ROLES = ["SYSTEM_ADMIN", "SCHEDULER"] as const satisfies readonly OrganizationRole[];

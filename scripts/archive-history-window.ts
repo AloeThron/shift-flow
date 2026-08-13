@@ -7,8 +7,9 @@ config();
 /** CLI — สรุปข้อมูลเก่ากว่าหน้าต่างเป็น StaffWorkloadMonthly */
 async function main(): Promise<void> {
   const { prisma } = await import("../src/lib/prisma");
-  const { archiveHistoryWindowForAllOrganizations } =
-    await import("../src/lib/scheduling/archive-history-window");
+  const { archiveHistoryWindowForAllOrganizations } = await import(
+    "../src/lib/scheduling/archive-history-window"
+  );
 
   const asOfDate = process.argv.find((arg) => arg.startsWith("--as-of="))?.split("=")[1];
   const deleteDetailedData = process.argv.includes("--delete-detailed-data");

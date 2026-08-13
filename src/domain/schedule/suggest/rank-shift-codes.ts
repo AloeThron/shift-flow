@@ -1,24 +1,24 @@
 import { resolveFairDistributionParams } from "@/domain/optimize/fairness/carry-over";
 import { groupStaffIdsByScope, staffFairnessMetric } from "@/domain/rules/helpers/schedule-metrics";
 import {
-    addDaysToDate,
-    buildAssignmentInterval,
-    demandAppliesToDate,
+  addDaysToDate,
+  buildAssignmentInterval,
+  demandAppliesToDate,
 } from "@/domain/schedule/time";
 import type {
-    ConstraintViolation,
-    ScheduleEngineInput,
-    ShiftCodeSnapshot,
+  ConstraintViolation,
+  ScheduleEngineInput,
+  ShiftCodeSnapshot,
 } from "@/domain/schedule/types";
 import { buildValidationContext, validateIncremental } from "@/domain/schedule/validate";
 
 import type {
-    CoverageGapSnapshot,
-    RankShiftCodeCandidatesParams,
-    SameDayAssignmentRef,
-    ShiftCodeSuggestion,
-    SuggestionBaseline,
-    SuggestionRank,
+  CoverageGapSnapshot,
+  RankShiftCodeCandidatesParams,
+  SameDayAssignmentRef,
+  ShiftCodeSuggestion,
+  SuggestionBaseline,
+  SuggestionRank,
 } from "./types";
 
 /** สร้างคีย์ violation สำหรับเทียบ baseline */
@@ -306,11 +306,7 @@ function evaluateShiftCode(
 
   const rank: SuggestionRank = {
     blocked: newHard.length > 0,
-    coverageGapFilled: countCoverageGapsFilled(
-      shiftCode,
-      localDate,
-      baseline.coverageGaps,
-    ),
+    coverageGapFilled: countCoverageGapsFilled(shiftCode, localDate, baseline.coverageGaps),
     fairnessGain,
     softScoreDelta: validation.softScore - baseline.softScore,
     recentUsage: baseline.recentUsageByCode.get(shiftCode.code) ?? 0,

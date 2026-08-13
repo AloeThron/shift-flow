@@ -38,7 +38,7 @@
 - การตั้งค่า policy ขององค์กรที่ admin ตั้งเอง (เช่น ปิด soft rule)
 - การไม่มี public registration (invite-only เป็น design)
 - Social engineering หรือ physical access
-- ปัญหาใน dependency ที่มี patch แล้ว — รายงานผ่าน Dependabot/advisory ปกติได้
+- ปัญหาใน dependency ที่มี patch แล้ว — รายงานผ่าน GitHub advisory ปกติได้
 
 ## Response Timeline / ระยะเวลาตอบกลับ
 
@@ -64,5 +64,5 @@
 
 ## Related Documents
 
-- [`docs/privacy/data-inventory.md`](docs/privacy/data-inventory.md)
+- [`docs/privacy/data-policy.md`](docs/privacy/data-policy.md)
 - [`GOVERNANCE.md`](GOVERNANCE.md)

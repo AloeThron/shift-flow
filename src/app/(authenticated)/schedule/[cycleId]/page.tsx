@@ -55,8 +55,9 @@ export default async function ScheduleCanvasPage({
 
   const canPublish = canPublishSchedule(ctx);
   const canShare = canShareSchedule(ctx);
-  const initialShareLinks =
-    canShare ? await loadShareLinksForCycle(ctx.organizationId, cycleId) : [];
+  const initialShareLinks = canShare
+    ? await loadShareLinksForCycle(ctx.organizationId, cycleId)
+    : [];
 
   return (
     <div className="space-y-4">
@@ -70,12 +71,12 @@ export default async function ScheduleCanvasPage({
         publishShare={
           canPublish || canShare
             ? {
-              canPublish,
-              canShare,
-              publishedVersionId: publishedVersion?.id ?? null,
-              publishedVersionNumber: publishedVersion?.versionNumber ?? null,
-              initialShareLinks,
-            }
+                canPublish,
+                canShare,
+                publishedVersionId: publishedVersion?.id ?? null,
+                publishedVersionNumber: publishedVersion?.versionNumber ?? null,
+                initialShareLinks,
+              }
             : null
         }
       />

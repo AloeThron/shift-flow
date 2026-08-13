@@ -49,7 +49,9 @@ function deriveInitialState(authorizations: readonly StaffShiftAuthorizationView
   return {
     coversAll: Boolean(coversAllAuth),
     selectedIds: new Set(individualAuths.map((item) => item.shiftCodeId as string)),
-    assessedAt: reference ? formatDateInput(new Date(reference.assessedAt)) : formatDateInput(new Date()),
+    assessedAt: reference
+      ? formatDateInput(new Date(reference.assessedAt))
+      : formatDateInput(new Date()),
     expiresAt: reference?.expiresAt ? formatDateInput(new Date(reference.expiresAt)) : "",
     level: reference?.level ?? "",
     authorizedByStaffId: reference?.authorizedByStaffId ?? "",
@@ -204,9 +206,7 @@ export function StaffShiftAuthPanel({
           ) : (
             groupedCodes.map(([departmentCode, codes]) => (
               <div key={departmentCode} className="space-y-2">
-                <p className="text-muted-foreground text-xs font-medium">
-                  แผนก {departmentCode}
-                </p>
+                <p className="text-muted-foreground text-xs font-medium">แผนก {departmentCode}</p>
                 <div className="grid gap-2 sm:grid-cols-2">
                   {codes.map((item) => {
                     const checked = coversAll || selectedIds.has(item.id);

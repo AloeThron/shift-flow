@@ -1,6 +1,6 @@
 import { getWorkloadStatsAction } from "@/actions/schedule/workload";
-import { WorkloadStatsView } from "@/components/schedule/workload/workload-stats-view";
 import { PageHeader } from "@/components/layout/page-header";
+import { WorkloadStatsView } from "@/components/schedule/workload/workload-stats-view";
 import { requireScheduleReadAccess } from "@/lib/auth/schedule-access";
 
 /** หน้าสถิติ workload — 6 เดือนย้อนหลัง + รอบปัจจุบัน */

@@ -1,10 +1,9 @@
-import { PrismaClient } from "@/generated/client/client";
 import { neonConfig } from "@neondatabase/serverless";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { PrismaPg } from "@prisma/adapter-pg";
 import ws from "ws";
-
 import { env } from "@/env";
+import { PrismaClient } from "@/generated/client/client";
 
 /** สร้าง Prisma driver adapter factory ตาม DATABASE_PROVIDER */
 function createAdapter(): PrismaNeon | PrismaPg {

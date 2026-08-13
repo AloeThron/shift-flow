@@ -29,9 +29,7 @@ export const shiftCodeFormSchema = z.object({
     .optional()
     .or(z.literal("")),
   standardHours: z.coerce.number().min(0).max(24).optional(),
-  allowedGradeCodes: z
-    .array(z.string().min(1))
-    .min(1, "ต้องเลือกระดับพนักงานอย่างน้อย 1 รายการ"),
+  allowedGradeCodes: z.array(z.string().min(1)).min(1, "ต้องเลือกระดับพนักงานอย่างน้อย 1 รายการ"),
   needsConfirmation: z.coerce.boolean(),
   deprecated: z.coerce.boolean(),
 });

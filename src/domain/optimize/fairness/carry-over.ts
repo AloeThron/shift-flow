@@ -1,18 +1,18 @@
 import {
-    buildToleranceLadder,
-    FLOW_COST_SCALE,
-    type ConvexCostLadder,
+  buildToleranceLadder,
+  type ConvexCostLadder,
+  FLOW_COST_SCALE,
 } from "@/domain/optimize/flow";
 import {
-    groupStaffIdsByScope,
-    staffFairnessMetric,
-    type FairnessDimension,
-    type FairnessScope,
+  type FairnessDimension,
+  type FairnessScope,
+  groupStaffIdsByScope,
+  staffFairnessMetric,
 } from "@/domain/rules/helpers/schedule-metrics";
 import type {
-    RuleInstanceSnapshot,
-    ScheduleEngineInput,
-    StaffSnapshot,
+  RuleInstanceSnapshot,
+  ScheduleEngineInput,
+  StaffSnapshot,
 } from "@/domain/schedule/types";
 import { buildValidationContext } from "@/domain/schedule/validate";
 

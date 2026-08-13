@@ -8,13 +8,13 @@ import {
   convexLadderCapacity,
   expandConvexLadderToArcs,
   FLOW_COST_SCALE,
+  type FlowArcInput,
+  type MinCostFlowProblem,
+  type MinCostFlowSolution,
   solveMinCostFlow,
   sortArcsDeterministic,
   totalConvexCost,
   verifyFlowConservation,
-  type FlowArcInput,
-  type MinCostFlowProblem,
-  type MinCostFlowSolution,
 } from "@/domain/optimize/flow";
 
 /** brute force min-cost flow สำหรับ instance เล็ก — ใช้เทียบ SSP */

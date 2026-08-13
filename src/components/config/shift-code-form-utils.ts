@@ -82,13 +82,8 @@ export function buildShiftCodeFormInputFromFormData(formData: FormData): ShiftCo
 }
 
 /** สลับการเลือก grade code ใน draft */
-export function toggleGradeSelection(
-  selected: readonly string[],
-  code: string,
-): string[] {
-  return selected.includes(code)
-    ? selected.filter((item) => item !== code)
-    : [...selected, code];
+export function toggleGradeSelection(selected: readonly string[], code: string): string[] {
+  return selected.includes(code) ? selected.filter((item) => item !== code) : [...selected, code];
 }
 
 /** หา grade codes ที่ไม่อยู่ใน master active */
@@ -109,10 +104,7 @@ function parseGradeCodesFromFormData(formData: FormData): string[] {
 }
 
 /** ข้อความแสดงช่วงเวลาเวร */
-export function formatShiftTimeRange(
-  startTime: string | null,
-  endTime: string | null,
-): string {
+export function formatShiftTimeRange(startTime: string | null, endTime: string | null): string {
   if (!startTime || !endTime) {
     return "—";
   }

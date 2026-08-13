@@ -85,13 +85,13 @@ function ViolationList({
         {title}
       </p>
       <ul className="space-y-1">
-        {items.map((item, index) => {
+        {items.map((item) => {
           const meta = formatViolationMeta(item, staffLabelById, departmentLabelById);
           const details = formatViolationDetails(item.code, item.details);
 
           return (
             <li
-              key={`${item.code}:${item.staffId ?? ""}:${item.scheduleDate ?? ""}:${index}`}
+              key={`${item.code}:${item.staffId ?? ""}:${item.assignmentId ?? ""}:${item.scheduleDate ?? ""}:${item.messageTh}`}
               className="rounded border px-2 py-1.5"
             >
               <div className="flex flex-wrap items-center gap-1.5">

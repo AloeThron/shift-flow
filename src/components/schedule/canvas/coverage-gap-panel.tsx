@@ -32,12 +32,16 @@ export function CoverageGapSection({
         <p className="text-muted-foreground">ไม่พบช่องว่าง coverage ในขอบเขตที่ตรวจ</p>
       ) : (
         <ul className="space-y-1">
-          {coverageIssues.map((issue, index) => {
-            const display = formatCoverageGapDisplay(issue, departmentLabelById, shiftCodeLabelById);
+          {coverageIssues.map((issue) => {
+            const display = formatCoverageGapDisplay(
+              issue,
+              departmentLabelById,
+              shiftCodeLabelById,
+            );
 
             return (
               <li
-                key={`${issue.scheduleDate ?? ""}:${issue.shiftCodeId ?? ""}:${issue.startTime ?? ""}:${issue.endTime ?? ""}:${index}`}
+                key={`${issue.kind}:${issue.scheduleDate ?? ""}:${issue.shiftCodeId ?? ""}:${issue.requirementId ?? ""}:${issue.startTime ?? ""}:${issue.endTime ?? ""}:${issue.messageTh}`}
                 className="rounded border px-2 py-1.5"
               >
                 <p>{display.headline}</p>

@@ -2,9 +2,9 @@ import { runEngineInvariants } from "@/domain/rules/invariants";
 import type { ValidationContext } from "@/domain/rules/types";
 import { getRuleValidator } from "@/domain/rules/validators";
 import type {
-    ConstraintViolation,
-    ScheduleEngineInput,
-    ValidationResult,
+  ConstraintViolation,
+  ScheduleEngineInput,
+  ValidationResult,
 } from "@/domain/schedule/types";
 
 /** input เก่าที่ยังส่ง coverageRequirements มาจาก bundle/cache ก่อนย้าย model */
@@ -24,9 +24,7 @@ export function withLegacyShiftDemandAlias(
 }
 
 /** รวม shiftDemands จาก field ใหม่หรือ legacy alias */
-function resolveShiftDemands(
-  input: ScheduleEngineInput,
-): ScheduleEngineInput["shiftDemands"] {
+function resolveShiftDemands(input: ScheduleEngineInput): ScheduleEngineInput["shiftDemands"] {
   if (input.shiftDemands !== undefined) {
     return input.shiftDemands;
   }

@@ -1,17 +1,13 @@
 import { describe, expect, it } from "vitest";
 
 import type { BalancePlanInput } from "@/domain/optimize/balance";
-import {
-    buildBalanceSlots,
-    buildFillPools,
-    solveBalance,
-} from "@/domain/optimize/balance";
+import { buildBalanceSlots, buildFillPools, solveBalance } from "@/domain/optimize/balance";
 import { runLagrangianBalance } from "@/domain/optimize/lagrangian";
 import { solveSchedule } from "@/domain/schedule";
 import type {
-    RuleInstanceSnapshot,
-    ScheduleSlot,
-    ShiftCodeSnapshot,
+  RuleInstanceSnapshot,
+  ScheduleSlot,
+  ShiftCodeSnapshot,
 } from "@/domain/schedule/types";
 import { loadStarterPack } from "@/domain/starter-pack/load-pack";
 

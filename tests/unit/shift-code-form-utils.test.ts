@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 
 import {
-    buildShiftCodeFormInput,
-    emptyShiftCodeDraft,
-    formatShiftTimeRange,
-    shiftCodeRowToDraft,
-    toggleGradeSelection
+  buildShiftCodeFormInput,
+  emptyShiftCodeDraft,
+  formatShiftTimeRange,
+  shiftCodeRowToDraft,
+  toggleGradeSelection,
 } from "@/components/config/shift-code-form-utils";
 import { shiftCodeFormSchema } from "@/domain/config/schemas";
 

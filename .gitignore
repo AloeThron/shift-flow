@@ -21,6 +21,9 @@ backups/
 .env.*.local
 .env.test
 
+# Python
+__pycache__/
+
 # OS / IDE
 .DS_Store
 *.pem

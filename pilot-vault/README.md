@@ -52,15 +52,15 @@ consent/
 
 ## ความสัมพันธ์กับ repo
 
-| ข้อมูล                 | เก็บที่                                   |
-| -------------------- | -------------------------------------- |
-| ไฟล์ Excel/PDF ดิบ     | `pilot-vault/raw/`                     |
-| ไฟล์นิรนาม             | `pilot-vault/anonymized/`              |
-| metadata / checklist | `docs/discovery/artifact-inventory.md` |
-| สรุปสัมภาษณ์นิรนาม       | `docs/discovery/notes/INT-*.md`        |
-| กติกาที่ยืนยัน            | `docs/domain/constraint-catalog.md`    |
-| ตัวเลข baseline       | `docs/pilot/baseline.md`               |
-| regression (commit)  | `demo/validation-dataset/`             |
+| ข้อมูล                 | เก็บที่                                                             |
+| -------------------- | ---------------------------------------------------------------- |
+| ไฟล์ Excel/PDF ดิบ     | `pilot-vault/raw/`                                               |
+| ไฟล์นิรนาม             | `pilot-vault/anonymized/`                                        |
+| metadata / checklist | `docs/discovery/artifact-inventory.md`                           |
+| backlog คำถามหน้างาน   | `docs/discovery/clarification-requests.md`                       |
+| กติกาที่ยืนยัน            | `docs/domain/constraint-catalog.md`                              |
+| ตัวชี้วัด go-live        | รายงาน JSON ตาม `src/domain/pilot/schemas.ts` (นอก repo ถ้ามี PII) |
+| regression (commit)  | `demo/validation-dataset/`                                       |
 
 ---
 

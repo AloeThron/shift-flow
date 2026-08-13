@@ -12,8 +12,7 @@ export const configTableHeadClass =
 export const configTableCellClass = "px-2 py-2.5 text-center align-middle";
 
 /** wrapper จัดเนื้อหาใน cell ให้อยู่กลาง */
-export const configTableCellContentClass =
-  "flex flex-col items-center justify-center gap-1.5";
+export const configTableCellContentClass = "flex flex-col items-center justify-center gap-1.5";
 
 /** คอลัมน์ตารางกติกาเวร */
 export const RULES_TABLE_COLUMNS = [

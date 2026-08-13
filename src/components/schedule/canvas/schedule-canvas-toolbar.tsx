@@ -13,8 +13,29 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { NonWorkingDayKindOption } from "@/lib/scheduling/load-canvas-draft";
+import { cn } from "@/lib/utils";
 
 import type { ScheduleStepId } from "./schedule-steps";
+
+/** กลุ่มปุ่มในแถบเครื่องมือ — fieldset เพื่อ a11y */
+function ToolbarGroup({
+  label,
+  className,
+  children,
+}: {
+  label: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <fieldset
+      className={cn("m-0 flex min-w-0 flex-wrap items-center gap-2 border-0 p-0", className)}
+      aria-label={label}
+    >
+      {children}
+    </fieldset>
+  );
+}
 
 /** แถบเครื่องมือ canvas — ปุ่มตามขั้นตอนที่เลือก */
 export function ScheduleCanvasToolbar({
@@ -49,7 +70,7 @@ export function ScheduleCanvasToolbar({
       <div className="space-y-2">
         <p className="text-muted-foreground text-sm">โหมดดูอย่างเดียว — ไม่มีสิทธิ์แก้ draft</p>
         {activeStep === "TIDY" ? (
-          <div className="flex flex-wrap items-center gap-2" role="group" aria-label="ตัวเลือกการแสดงผล">
+          <ToolbarGroup label="ตัวเลือกการแสดงผล">
             <Button
               type="button"
               size="sm"
@@ -60,7 +81,7 @@ export function ScheduleCanvasToolbar({
               {showEmptySections ? <Eye aria-hidden /> : <EyeOff aria-hidden />}
               {showEmptySections ? "ซ่อนหมวดว่าง" : "แสดงหมวดว่าง"}
             </Button>
-          </div>
+          </ToolbarGroup>
         ) : null}
       </div>
     );
@@ -68,7 +89,7 @@ export function ScheduleCanvasToolbar({
 
   if (activeStep === "TIDY") {
     return (
-      <div className="flex flex-wrap items-center gap-2" role="group" aria-label="ตัวเลือกการแสดงผล">
+      <ToolbarGroup label="ตัวเลือกการแสดงผล">
         <Button
           type="button"
           size="sm"
@@ -79,7 +100,7 @@ export function ScheduleCanvasToolbar({
           {showEmptySections ? <Eye aria-hidden /> : <EyeOff aria-hidden />}
           {showEmptySections ? "ซ่อนหมวดว่าง" : "แสดงหมวดว่าง"}
         </Button>
-      </div>
+      </ToolbarGroup>
     );
   }
 
@@ -87,7 +108,7 @@ export function ScheduleCanvasToolbar({
     const selectId = "canvas-paint-off-kind";
 
     return (
-      <div className="flex flex-wrap items-center gap-3" role="group" aria-label="ชนิดวันหยุดที่จะลง">
+      <ToolbarGroup label="ชนิดวันหยุดที่จะลง" className="gap-3">
         <div className="flex items-center gap-2">
           <Label htmlFor={selectId} className="text-sm whitespace-nowrap">
             ชนิดวันหยุด
@@ -110,29 +131,41 @@ export function ScheduleCanvasToolbar({
           </Select>
         </div>
         {activeStep === "AUTO_OFF" ? (
-          <Button type="button" size="sm" variant="outline" disabled={busy} onClick={onRunDayOffSolver}>
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            disabled={busy}
+            onClick={onRunDayOffSolver}
+          >
             <Sparkles aria-hidden />
             เกลียววันหยุด auto
           </Button>
         ) : null}
-      </div>
+      </ToolbarGroup>
     );
   }
 
   if (activeStep === "AUTO_OFF") {
     return (
-      <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Solver วันหยุด">
-        <Button type="button" size="sm" variant="default" disabled={busy} onClick={onRunDayOffSolver}>
+      <ToolbarGroup label="Solver วันหยุด">
+        <Button
+          type="button"
+          size="sm"
+          variant="default"
+          disabled={busy}
+          onClick={onRunDayOffSolver}
+        >
           <Sparkles aria-hidden />
           เกลียววันหยุด
         </Button>
-      </div>
+      </ToolbarGroup>
     );
   }
 
   if (activeStep === "AUTO_BALANCE") {
     return (
-      <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Solver เกลี่ยงาน">
+      <ToolbarGroup label="Solver เกลี่ยงาน">
         <Button
           type="button"
           size="sm"
@@ -143,7 +176,7 @@ export function ScheduleCanvasToolbar({
           <Scale aria-hidden />
           เกลี่ยงาน
         </Button>
-      </div>
+      </ToolbarGroup>
     );
   }
 
@@ -157,9 +190,7 @@ export function ScheduleCanvasToolbar({
 
   if (activeStep === "PUBLISH") {
     return publishActions ? (
-      <div className="flex flex-wrap items-center gap-2" role="group" aria-label="เผยแพร่และแชร์">
-        {publishActions}
-      </div>
+      <ToolbarGroup label="เผยแพร่และแชร์">{publishActions}</ToolbarGroup>
     ) : null;
   }
 

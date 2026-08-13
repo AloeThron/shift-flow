@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, PencilLine, type LucideIcon } from "lucide-react";
+import { BarChart3, type LucideIcon, PencilLine } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 

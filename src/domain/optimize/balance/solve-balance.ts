@@ -1,13 +1,13 @@
 import {
-    buildStaffShiftLadder,
-    resolveFairDistributionParams,
+  buildStaffShiftLadder,
+  resolveFairDistributionParams,
 } from "@/domain/optimize/fairness/carry-over";
 import {
-    buildToleranceLadder,
-    expandConvexLadderToArcs,
-    FLOW_COST_SCALE,
-    solveMinCostFlow,
-    sortArcsDeterministic,
+  buildToleranceLadder,
+  expandConvexLadderToArcs,
+  FLOW_COST_SCALE,
+  solveMinCostFlow,
+  sortArcsDeterministic,
 } from "@/domain/optimize/flow";
 import type { FlowArcInput, FlowNodeId, MinCostFlowProblem } from "@/domain/optimize/flow/types";
 import { assignmentOtHours } from "@/domain/rules/helpers/schedule-metrics";
@@ -15,25 +15,25 @@ import { buildAssignmentInterval } from "@/domain/schedule/time";
 import type { ScheduleAssignment, ShiftCodeSnapshot } from "@/domain/schedule/types";
 
 import {
-    buildBalanceSlots,
-    buildFillPools,
-    createSlotValidationContext,
-    listEligibleStaffForSlot,
-    listFillArcOptions,
-    otArcPenaltyCost,
-    summarizeMandatorySlotBlockReasons,
-    type MandatorySlotBlockSummary,
-    type SlotValidationContext,
+  buildBalanceSlots,
+  buildFillPools,
+  createSlotValidationContext,
+  listEligibleStaffForSlot,
+  listFillArcOptions,
+  type MandatorySlotBlockSummary,
+  otArcPenaltyCost,
+  type SlotValidationContext,
+  summarizeMandatorySlotBlockReasons,
 } from "./build-slot-graph";
 import type {
-    ArcCostAdjustment,
-    BalancePlanInput,
-    BalancePlanResult,
-    BalanceShiftCodeRef,
-    BalanceSlot,
-    FillPool,
-    OtLimitParams,
-    StaffSlotBlockReason,
+  ArcCostAdjustment,
+  BalancePlanInput,
+  BalancePlanResult,
+  BalanceShiftCodeRef,
+  BalanceSlot,
+  FillPool,
+  OtLimitParams,
+  StaffSlotBlockReason,
 } from "./types";
 import { FILL_SKIP_PENALTY, resolveOtLimitParams } from "./types";
 
@@ -254,13 +254,7 @@ function buildBalanceFlowGraph(args: {
   for (const member of sortedStaff) {
     nodes.add(staffNodeId(member.id));
     const maxShifts = resolveStaffMaxShifts(args.input, member, otLimit);
-    const ladder = buildStaffShiftLadder(
-      args.input,
-      member,
-      maxShifts,
-      avgShiftHours,
-      fairParams,
-    );
+    const ladder = buildStaffShiftLadder(args.input, member, maxShifts, avgShiftHours, fairParams);
     arcs.push(
       ...expandConvexLadderToArcs({
         from: staffNodeId(member.id),
@@ -403,9 +397,7 @@ function addMandatoryAssignmentArcs(args: {
   for (const member of args.eligibleStaff) {
     const staffDay = ensureStaffDayNode(args.staffDayNodes, member.id, args.slot.scheduleDate);
     const adjustment =
-      args.adjustmentMap.get(
-        adjustmentKey(member.id, args.slot.id, args.shiftCode.id),
-      ) ?? 0;
+      args.adjustmentMap.get(adjustmentKey(member.id, args.slot.id, args.shiftCode.id)) ?? 0;
 
     args.arcs.push({
       id: assignArcId(args.slot.id, member.id, args.shiftCode.id),
@@ -489,9 +481,7 @@ function addFillPoolArcs(args: {
       }
 
       const adjustment =
-        args.adjustmentMap.get(
-          adjustmentKey(member.id, args.pool.id, option.shiftCodeId),
-        ) ?? 0;
+        args.adjustmentMap.get(adjustmentKey(member.id, args.pool.id, option.shiftCodeId)) ?? 0;
 
       args.arcs.push({
         id: assignArcId(args.pool.id, member.id, option.shiftCodeId),
@@ -568,9 +558,7 @@ function buildAdjustmentMap(
 
 /** คีย์ arc adjustment */
 function adjustmentKey(staffId: string, slotId: string, shiftCodeId?: string): string {
-  return shiftCodeId
-    ? `${staffId}\x1f${slotId}\x1f${shiftCodeId}`
-    : `${staffId}\x1f${slotId}`;
+  return shiftCodeId ? `${staffId}\x1f${slotId}\x1f${shiftCodeId}` : `${staffId}\x1f${slotId}`;
 }
 
 /** id arc มอบหมาย */
@@ -638,8 +626,7 @@ function extractAssignments(args: {
       continue;
     }
 
-    const slot =
-      mandatorySlotById.get(parsed.slotId) ?? fillPoolById.get(parsed.slotId);
+    const slot = mandatorySlotById.get(parsed.slotId) ?? fillPoolById.get(parsed.slotId);
     const shiftCode = shiftCodeById.get(parsed.shiftCodeId);
     if (!slot || !shiftCode) {
       continue;
@@ -736,9 +723,7 @@ function ensureStaffDayNode(
 }
 
 /** แกะ staffId/date จาก staffDay node */
-function parseStaffDayNode(
-  node: FlowNodeId,
-): { staffId: string; date: string } | undefined {
+function parseStaffDayNode(node: FlowNodeId): { staffId: string; date: string } | undefined {
   const prefix = "stage-b::staff-day::";
   if (!node.startsWith(prefix)) {
     return undefined;

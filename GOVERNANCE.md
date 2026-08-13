@@ -6,16 +6,16 @@
 
 ## Mission / พันธกิจ
 
-Shift-Flow เป็น open-source **policy engine สำหรับจัดตารางเวรห้องปฏิบัติการ** ที่แยก engine capability ออกจาก site policy — โรงพยาบาลแต่ละแห่งตั้งค่ารหัสเวร, coverage และกติกาผ่าน admin UI โดยไม่ต้อง fork โค้ด
+พันธกิจ ขอบเขต และข้อจำกัดความรับผิดชอบอยู่ที่ [`README.md`](README.md) — engine แยกจาก site policy ของแต่ละองค์กร
 
 ---
 
 ## Roles / บทบาท
 
-| บทบาท            | ความรับผิดชอบ                                                            |
-| ---------------- | ------------------------------------------------------------------------ |
-| **Maintainers**  | merge PR, release, security response, roadmap ระยะสั้น                   |
-| **Contributors** | issue, PR, docs, tests, rule templates                                   |
+| บทบาท            | ความรับผิดชอบ                                                           |
+| ---------------- | --------------------------------------------------------------------- |
+| **Maintainers**  | merge PR, release, security response, roadmap ระยะสั้น                  |
+| **Contributors** | issue, PR, docs, tests, rule templates                                |
 | **Pilot sites**  | feedback หน้างาน, validation dataset (นิรนาม), ไม่ veto การ merge โดยตรง |
 
 Maintainers เริ่มต้น: ทีมที่เปิด repo จนกว่าจะมีการโอนสิทธิ์อย่างเป็นทางการ
@@ -28,7 +28,7 @@ Maintainers เริ่มต้น: ทีมที่เปิด repo จน
 
 - Rule template ใหม่, validator, solver, auth, tenant boundary → **PR + review จาก maintainer**
 - Template ใหม่ต้องเป็น **generic** — ห้าม hardcode ค่าเฉพาะแล็บเดียว
-- Breaking change → RFC สั้นใน issue ก่อน implement; บันทึกใน CHANGELOG
+- Breaking change → RFC สั้นใน issue ก่อน implement; บันทึกใน [`CHANGELOG.md`](CHANGELOG.md)
 
 ### 2. การเปลี่ยน Site Policy (ข้อมูล)
 
@@ -37,16 +37,17 @@ Maintainers เริ่มต้น: ทีมที่เปิด repo จน
 
 ### 3. การเปลี่ยนเอกสาร Discovery
 
-- `docs/domain/*`, `docs/discovery/*` — อัปเดตผ่าน PR; pilot data นิรนามอยู่นอก repo (`pilot-vault/` gitignore)
+- `docs/domain/*`, [`docs/discovery/clarification-requests.md`](docs/discovery/clarification-requests.md), [`docs/discovery/artifact-inventory.md`](docs/discovery/artifact-inventory.md) — อัปเดตผ่าน PR
+- ข้อมูลนำร่องนิรนามอยู่นอก repo (`pilot-vault/` gitignore)
 
 ---
 
 ## Contribution Path / เส้นทางมีส่วนร่วม
 
 1. อ่าน [`CONTRIBUTING.md`](CONTRIBUTING.md) และ [`AGENTS.md`](AGENTS.md)
-2. เปิด issue อธิบายปัญหา/ฟีเจอร์ (ใช้ template)
-3. Fork → branch → PR ไป `main` (หรือ `dev` ถ้า maintainer ระบุ)
-4. CI ต้องผ่าน: lint, typecheck, tests, build _(เมื่อ scaffold พร้อม)_
+2. Fork → branch → PR ไป `main` (หรือ `dev` ถ้า maintainer ระบุ)
+3. เปิด issue เมื่อต้องการหารือ หรือเมื่อขอ rule template ใหม่ — ไม่บังคับทุก PR
+4. CI ต้องผ่าน: lint (Biome), typecheck, tests (build อยู่ใน job `e2e` เมื่อมีไฟล์แอปเปลี่ยน)
 
 ### Rule Template Requests
 
@@ -62,7 +63,7 @@ Maintainers เริ่มต้น: ทีมที่เปิด repo จน
 ## Releases / การปล่อยเวอร์ชัน
 
 - **Semantic Versioning** (SemVer)
-- Changelog ผ่าน [Changesets](https://github.com/changesets/changesets) — ดู [`.changeset/README.md`](.changeset/README.md)
+- บันทึกการเปลี่ยนแปลงใน [`CHANGELOG.md`](CHANGELOG.md) ด้วยมือ (Keep a Changelog)
 - Pre-1.0: API อาจเปลี่ยนได้; pilot phase ไม่ guarantee backward compatibility
 
 ---
@@ -89,11 +90,7 @@ Maintainers เริ่มต้น: ทีมที่เปิด repo จน
 
 ## Disclaimers / ข้อจำกัดความรับผิดชอบ
 
-Shift-Flow **ไม่ใช่**:
-
-- ระบบบันทึกข้อมูลผู้ป่วย (ไม่เก็บผล LAB หรือ PHI)
-- ที่ปรึกษากฎหมายแรงงาน — กติกาเป็นที่ HR/นิติกรของแต่ละหน่วยงานรับรอง
-- การรับรอง ISO 15189 — รองรับ competency tracking แต่การ audit เป็นหน้าที่หน่วยงาน
+ดูตารางใน [`README.md`](README.md) — สรุปสั้น: ไม่ใช่ระบบผู้ป่วย, ไม่ใช่ที่ปรึกษากฎหมายแรงงาน, ไม่รับรอง ISO แทนหน่วยงาน
 
 ---
 

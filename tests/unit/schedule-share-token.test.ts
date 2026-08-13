@@ -1,5 +1,5 @@
-import * as fc from "fast-check";
 import { createHash } from "node:crypto";
+import * as fc from "fast-check";
 import { describe, expect, it } from "vitest";
 
 import { createShareToken, hashShareToken, isShareLinkActive } from "@/domain/schedule/share/token";

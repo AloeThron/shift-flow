@@ -1,11 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { StaffWorkloadTrend } from "@/domain/optimize/fairness/workload-stats";
-
 import {
   formatWorkloadNumber,
   formatYearMonthLabel,
   WORKLOAD_METRIC_LABELS,
 } from "@/components/schedule/workload/workload-labels";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { StaffWorkloadTrend } from "@/domain/optimize/fairness/workload-stats";
 
 /** ตาราง workload ต่อคนพร้อมแนวโน้มรายเดือน */
 export function StaffWorkloadTable({

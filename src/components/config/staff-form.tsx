@@ -9,10 +9,7 @@ import {
   updateStaffProfileAction,
 } from "@/actions/config/staff";
 import { AdvancedSection } from "@/components/config/advanced-section";
-import {
-  CONTRACT_TYPE_LABELS,
-  STAFF_GROUP_SECTION_LABELS,
-} from "@/components/config/ui-labels";
+import { CONTRACT_TYPE_LABELS, STAFF_GROUP_SECTION_LABELS } from "@/components/config/ui-labels";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -57,7 +54,9 @@ export function StaffForm({ grades, groups, canWrite, initial, onDone }: StaffFo
       email: String(formData.get("email") ?? ""),
       staffGradeId: String(formData.get("staffGradeId") ?? ""),
       staffGroupId: String(formData.get("staffGroupId") ?? ""),
-      staffGroupSection: String(formData.get("staffGroupSection") ?? "RESULT_CAPABLE") as StaffGroupSection,
+      staffGroupSection: String(
+        formData.get("staffGroupSection") ?? "RESULT_CAPABLE",
+      ) as StaffGroupSection,
       rowOrder: Number(formData.get("rowOrder") ?? 0),
       active: formData.get("active") === "on",
       contractType: String(formData.get("contractType") ?? "FULL_TIME") as
@@ -199,10 +198,12 @@ export function StaffForm({ grades, groups, canWrite, initial, onDone }: StaffFo
             defaultValue={initial?.contractType ?? "FULL_TIME"}
             disabled={!canWrite || pending}
           >
-            {(Object.entries(CONTRACT_TYPE_LABELS) as [
-              "FULL_TIME" | "PART_TIME" | "NO_GUARANTEED_HOURS",
-              string,
-            ][]).map(([value, label]) => (
+            {(
+              Object.entries(CONTRACT_TYPE_LABELS) as [
+                "FULL_TIME" | "PART_TIME" | "NO_GUARANTEED_HOURS",
+                string,
+              ][]
+            ).map(([value, label]) => (
               <option key={value} value={value}>
                 {label}
               </option>

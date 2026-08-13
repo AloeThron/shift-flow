@@ -11,17 +11,12 @@ import {
   buildShiftCodeFormInput,
   emptyShiftCodeDraft,
   findOrphanGradeCodes,
+  type ShiftCodeDraft,
   shiftCodeRowToDraft,
   toggleGradeSelection,
-  type ShiftCodeDraft,
 } from "@/components/config/shift-code-form-utils";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -173,9 +168,7 @@ function ShiftCodeDetailsTab({
               ))}
             </div>
           ) : (
-            <p className="text-muted-foreground text-sm">
-              ยังไม่มีระดับพนักงาน — ตั้งค่าที่หน้าบุคลากรก่อน
-            </p>
+            <p className="text-muted-foreground text-sm">ยังไม่มีระดับพนักงาน — ตั้งค่าที่หน้าบุคลากรก่อน</p>
           )}
           {orphanGradeCodes.length > 0 ? (
             <p className="text-amber-600 text-xs">
@@ -263,11 +256,7 @@ export function ShiftCodeEditDialog({
       setActiveTab("details");
       setError(null);
       setSavedShiftCodeId(null);
-      setDraft(
-        shiftCode
-          ? shiftCodeRowToDraft(shiftCode)
-          : emptyShiftCodeDraft(gradeCodes),
-      );
+      setDraft(shiftCode ? shiftCodeRowToDraft(shiftCode) : emptyShiftCodeDraft(gradeCodes));
     }
     prevOpenRef.current = open;
   }, [open, shiftCode, gradeCodes]);
@@ -353,7 +342,9 @@ export function ShiftCodeEditDialog({
           </TabsList>
 
           {secondaryTabsLocked ? (
-            <p className="text-muted-foreground text-xs">บันทึกข้อมูลรหัสก่อน จึงจะกำหนดแผนกและ demand ได้</p>
+            <p className="text-muted-foreground text-xs">
+              บันทึกข้อมูลรหัสก่อน จึงจะกำหนดแผนกและ demand ได้
+            </p>
           ) : null}
 
           <TabsContent value="details" className="mt-4">

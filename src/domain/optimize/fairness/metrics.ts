@@ -1,11 +1,11 @@
 import {
-  groupStaffIdsByScope,
-  staffFairnessMetric,
   type FairnessDimension,
   type FairnessScope,
+  groupStaffIdsByScope,
+  staffFairnessMetric,
 } from "@/domain/rules/helpers/schedule-metrics";
-import { buildValidationContext } from "@/domain/schedule/validate";
 import type { ScheduleEngineInput } from "@/domain/schedule/types";
+import { buildValidationContext } from "@/domain/schedule/validate";
 
 /** สรุป spread ของค่าในกลุ่ม */
 export type SpreadSummary = {

@@ -1,7 +1,7 @@
 # AGENTS.md — คู่มือสำหรับ agent ที่ทำงานใน Shift-Flow
 
-> อัปเดตเมื่อ: 2026-08-11 
-> บริบท: two-role consolidation + share link; canvas popup (override/swap/planned off); starter pack Stage A/B rules; ปิด `temp/`
+> อัปเดตเมื่อ: 2026-08-13  
+> บริบท: two-role + share link; canvas popup; starter pack Stage A/B; Biome; discovery เหลือ Q backlog + artifact inventory
 
 ---
 
@@ -15,7 +15,8 @@
 | `docs/domain/scheduling-workflow.md`        | สองระยะ Stage A/B, สเปก canvas, workload                                    |
 | `docs/domain/constraint-catalog.md`         | กติกา + หลักฐาน OCR (ยังไม่ sign-off)                                           |
 | `docs/discovery/artifact-inventory.md`      | รายการ ART-ROST-PHOTO / ART-OT                                              |
-| `docs/discovery/clarification-requests.md`  | backlog คำขอความชัดเจน Q1–Q21 (หน้างาน / artifact)                             |
+| `docs/discovery/clarification-requests.md`  | backlog คำขอความชัดเจน Q1–Q21                                                 |
+| `docs/privacy/data-policy.md`               | นโยบายข้อมูล + บัญชีข้อมูล (ไม่มีโมเดล Competency)                                  |
 | `pilot-vault/anonymized/`                   | `staff_master.csv`, `roster_long.csv`, `id_map.csv` (gitignore)             |
 | `pilot-vault/raw/ART-ROST-PHOTO-SET/`       | JPG + transcript ดิบ (gitignore, มี PII)                                      |
 | `pilot-vault/manifest.json`                 | index ไฟล์ vault (gitignore)                                                 |
@@ -40,7 +41,7 @@
 ### นโยบาย
 
 1. **อย่าเดาเซลล์ `?`** → คง `UNKNOWN` ใน validation dataset
-2. **อย่ากรอก `docs/pilot/baseline.md`** จนกว่าจะมี baseline จริงจากหน้างาน
+2. ตัวชี้วัด baseline จริงอยู่ในการวัดหน้างาน / รายงาน JSON ของ go-live gate — **ห้าม** ใส่ค่าจำลองลง repo
 3. โรงพยาบาลใหม่ใช้ **starter pack + admin config** — ไม่ต้องพึ่ง transcript OCR ของ pilot
 4. re-OCR (ถ้าจำเป็น) แก้ transcript ใน `pilot-vault/raw/ART-ROST-PHOTO-SET/` แล้วรัน `build_roster_artifacts.py` + `pnpm fixtures:export`
 
@@ -77,7 +78,6 @@ Backlog Q1–Q21 อยู่ที่ [`docs/discovery/clarification-requests.m
 5. นัดผู้จัดเวรตอบชุดสั้นใน clarification-requests (**Q1–Q4, Q8**)
 6. ใช้ `demo/validation-dataset/` เป็น regression เมื่อแก้ validator/optimizer
 7. รัน parallel pilot shadow ≥ 2 รอบ + `pnpm pilot:evaluate` รวม gate `ops.share-link-revoke`
-8. หลังมี baseline จริง → กรอก `docs/pilot/baseline.md`
 
 ---
 
@@ -87,7 +87,6 @@ Backlog Q1–Q21 อยู่ที่ [`docs/discovery/clarification-requests.m
 | ------------------------------------ | ---------------------------------------------------- |
 | [`AGENTS.md`](AGENTS.md)             | กฎถาวรทั้งหมด — source of truth                        |
 | [`.agents/skills/`](.agents/skills/) | workflow skills (OCR, rule template, discovery sync) |
-| [`.cursor/`](.cursor/)               | **เฉพาะ** hooks กับ commands — ไม่ใส่ skills หรือ rules  |
 
 ### Agent skills
 
@@ -95,7 +94,7 @@ Backlog Q1–Q21 อยู่ที่ [`docs/discovery/clarification-requests.m
 | -------------------------------------------------------------------------- | -------------------------------------------------------------- |
 | [`roster-ocr-pipeline`](.agents/skills/roster-ocr-pipeline/SKILL.md)       | rebuild vault, export validation dataset (transcript ใน vault) |
 | [`rule-template-workflow`](.agents/skills/rule-template-workflow/SKILL.md) | เพิ่ม/แก้ rule template, validator, sync registry                 |
-| [`discovery-doc-sync`](.agents/skills/discovery-doc-sync/SKILL.md)         | ปิด Q*, บันทึกสัมภาษณ์, sync คำตอบหน้างานเข้า domain docs              |
+| [`discovery-doc-sync`](.agents/skills/discovery-doc-sync/SKILL.md)         | ปิด Q*, sync คำตอบหน้างานเข้า domain docs                          |
 
 ---
 
@@ -104,8 +103,10 @@ Backlog Q1–Q21 อยู่ที่ [`docs/discovery/clarification-requests.m
 - ตอบและเขียนเอกสารหลักเป็นภาษาไทยเมื่อเป็นงาน discovery/domain ของ repo นี้
 - ฟังก์ชันโปรแกรมมิ่งแนว functional; ห้าม `any` ใน TypeScript
 - comment สั้นเป็นภาษาไทยใน section/function ที่เขียนใหม่
+- lint/format ด้วย [Biome](https://biomejs.dev/) — `pnpm lint` / `pnpm lint:fix` (ไม่ใช้ ESLint หรือ Prettier)
 - ไม่ commit ของใน `pilot-vault/raw|anonymized|consent|manifest.json`
 - ไม่สร้าง summary markdown นอกงานที่ถูกขอ
 - ไม่ hardcode รหัสเวร/ชื่อแผนก/ชั่วโมงของแล็บนำร่องใน `src/` — ค่า org-specific อยู่ใน config/DB หรือ `demo/starter-packs/`
 - rule template ใหม่ต้อง generic — เปิด issue ประเภท Rule Template Request ก่อน implement
+- user-facing change บันทึกใน [`CHANGELOG.md`](CHANGELOG.md) ด้วยมือ
 - รายงานช่องโหว่ตาม `SECURITY.md` ไม่เปิด public issue

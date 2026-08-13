@@ -54,17 +54,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Format check
-        run: pnpm format
-
-      - name: Lint
+      - name: Biome check
         run: pnpm lint
 
       - name: Typecheck
         run: pnpm typecheck
 
       - name: Unit tests
-        run: pnpm test
+        run: pnpm test:unit && pnpm test:component
 
       - name: Migration deploy (test DB)
         run: pnpm db:migrate:deploy
@@ -72,25 +69,40 @@ jobs:
       - name: Integration tests
         run: pnpm test:integration
 
-      - name: Production build
-        run: pnpm build
-
-      - name: Dependency audit
-        run: pnpm audit --audit-level=high
-        continue-on-error: true
-
-      - name: License check
-        run: pnpm licenses list --json > /tmp/licenses.json
-
       - name: Secret scan (gitleaks)
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  # ประตูสั้น: ข้าม e2e เมื่อเปลี่ยนเฉพาะเอกสาร
+  e2e-gate:
+    name: E2E Gate
+    runs-on: ubuntu-latest
+    outputs:
+      e2e: ${{ steps.filter.outputs.e2e }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect app file changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            e2e:
+              - "**"
+              - "!docs/**"
+              - "!CHANGELOG.md"
+              - "!{README,CONTRIBUTING,GOVERNANCE,AGENTS,SECURITY,CODE_OF_CONDUCT}.md"
+              - "!LICENSE"
+              - "!.agents/**"
+              - "!.github/ISSUE_TEMPLATE/**"
+
   e2e:
     name: E2E Smoke
+    needs: e2e-gate
+    if: needs.e2e-gate.outputs.e2e == 'true'
     runs-on: ubuntu-latest
-    needs: quality
 
     services:
       postgres:

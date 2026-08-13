@@ -94,7 +94,6 @@ export function constructSchedule(
     }
 
     if (!assigned) {
-      continue;
     }
   }
 

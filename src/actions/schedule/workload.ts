@@ -1,8 +1,8 @@
 "use server";
 
+import type { ActionResult } from "@/domain/action-result";
 import type { WorkloadStatsSnapshot } from "@/domain/optimize/fairness/workload-stats";
 import { formatWorkloadStatsCsv } from "@/domain/optimize/fairness/workload-stats";
-import type { ActionResult } from "@/domain/action-result";
 import { actionErrorMessage } from "@/lib/auth/get-organization-context";
 import { requireScheduleReadAccess } from "@/lib/auth/schedule-access";
 import { canExportWorkloadStats } from "@/lib/auth/workload-access";

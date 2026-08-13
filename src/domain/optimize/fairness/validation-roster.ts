@@ -3,10 +3,10 @@ import { join } from "node:path";
 
 import { buildAssignmentInterval } from "@/domain/schedule/time";
 import type {
-    ScheduleAssignment,
-    ScheduleEngineInput,
-    ShiftCodeSnapshot,
-    StaffSnapshot,
+  ScheduleAssignment,
+  ScheduleEngineInput,
+  ShiftCodeSnapshot,
+  StaffSnapshot,
 } from "@/domain/schedule/types";
 
 const DATASET = join(process.cwd(), "demo/validation-dataset");
@@ -90,9 +90,7 @@ function findShiftCodeByRawToken(
     return undefined;
   }
 
-  return shiftCodes.find(
-    (entry) => normalizeToken(entry.code) === normalizeToken(trimmed),
-  );
+  return shiftCodes.find((entry) => normalizeToken(entry.code) === normalizeToken(trimmed));
 }
 
 /** โหลด roster_long จาก validation dataset */

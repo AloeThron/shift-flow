@@ -1,6 +1,6 @@
-import { analyzeFeasibility } from "@/domain/schedule/feasibility";
 import type { BalancePlanInput } from "@/domain/optimize/balance/types";
 import { runLagrangianBalance } from "@/domain/optimize/lagrangian/subgradient";
+import { analyzeFeasibility } from "@/domain/schedule/feasibility";
 import type { SolverInput, SolverResult } from "@/domain/schedule/types";
 import { validateSchedule } from "@/domain/schedule/validate";
 
@@ -32,8 +32,6 @@ export { constructSchedule, rankStaffCandidates } from "./construct";
 
 /** @deprecated ใช้ runLagrangianBalance แทน */
 export { repairHardViolations } from "./repair";
-
+export { createDeterministicRng } from "./rng";
 /** @deprecated ใช้ targeted search ใน lagrangian แทน */
 export { localSearchImprove } from "./search";
-
-export { createDeterministicRng } from "./rng";

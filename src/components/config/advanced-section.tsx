@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-import { useState, type ReactNode, type ToggleEvent } from "react";
+import { type ReactNode, type ToggleEvent, useState } from "react";
 
 import { cn } from "@/lib/utils";
 

@@ -1,3 +1,7 @@
+export type {
+  BuildToleranceLadderInput,
+  ExpandConvexLadderInput,
+} from "@/domain/optimize/flow/convex-cost";
 export {
   buildLinearMarginalLadder,
   buildToleranceLadder,
@@ -5,10 +9,6 @@ export {
   expandConvexLadderToArcs,
   FLOW_COST_SCALE,
   totalConvexCost,
-} from "@/domain/optimize/flow/convex-cost";
-export type {
-  BuildToleranceLadderInput,
-  ExpandConvexLadderInput,
 } from "@/domain/optimize/flow/convex-cost";
 export {
   computeFlowCost,

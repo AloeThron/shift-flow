@@ -29,7 +29,7 @@
 ## Development Setup / การตั้งค่า
 
 ```bash
-git clone https://github.com/<org>/shift-flow.git
+git clone https://github.com/AloeThron/shift-flow.git
 cd shift-flow
 pnpm install
 cp .env.example .env.local
@@ -44,36 +44,31 @@ pnpm dev
 
 ## Branch & Commit / Git workflow
 
-- Branch จาก `main` (หรือ `dev` ตามที่ maintainer ระบุใน issue)
-- ชื่อ branch: `feat/short-desc`, `fix/issue-123-desc`, `docs/rule-templates`
-- Commit message: [Conventional Commits](https://www.conventionalcommits.org/)
-  - `feat(validator): add MIN_REST_BETWEEN_SHIFTS check`
-  - `fix(auth): rate limit login by IP`
-  - `docs: update starter pack README`
+- Branch จาก `main` (หรือ `dev` ตามที่ maintainer ระบุ)
+- Commit message สั้น เน้นเหตุผล
 
 ---
 
 ## Pull Request Checklist
 
-- [ ] Issue อ้างอิง (หรืออธิบายว่าทำไมไม่ต้องมี)
 - [ ] Tests เพิ่ม/อัปเดต (ถ้าแก้ logic)
-- [ ] ไม่มี `any` ใน TypeScript
-- [ ] ไม่ hardcode รหัสเวร/ชื่อแผนก/ชั่วโมงของแล็บนำร่องใน `src/`
-- [ ] Docs อัปเดตถ้าเปลี่ยน API หรือ config model
-- [ ] Changeset เพิ่มถ้าเป็น user-facing change (`pnpm changeset`)
+- [ ] อัปเดต [`CHANGELOG.md`](CHANGELOG.md) ถ้าเป็น user-facing change
 - [ ] ไม่มี secret, PII, หรือไฟล์ `pilot-vault/` ที่ gitignore
+
+Job `e2e` ใน CI ข้ามเมื่อไฟล์ที่เปลี่ยนอยู่ใน `docs/`, `CHANGELOG.md`, markdown ราก, `.agents/` หรือ `.github/ISSUE_TEMPLATE/`
 
 ---
 
 ## Code Style
 
-| หัวข้อ       | กฎ                                                                  |
-| ---------- | ------------------------------------------------------------------- |
-| TypeScript | strict; ห้าม `any`                                                   |
-| Style      | functional; pure domain ไม่มี I/O                                     |
-| Comments   | ภาษาไทยสั้น ๆ ใน section/function ที่เพิ่มใหม่                             |
-| Domain     | config-driven — ค่า org-specific อยู่ใน DB/demo CSV ไม่ใช่ enum ในโค้ด    |
-| Tests      | Vitest + fast-check สำหรับ constraints; integration ใช้ PostgreSQL จริง |
+| หัวข้อ        | กฎ                                                                                   |
+| ----------- | ------------------------------------------------------------------------------------ |
+| TypeScript  | strict; ห้าม `any`                                                                    |
+| Lint/Format | [Biome](https://biomejs.dev/) — `pnpm lint` (`biome check .`); แก้ด้วย `pnpm lint:fix` |
+| Style       | functional; pure domain ไม่มี I/O                                                      |
+| Comments    | ภาษาไทยสั้น ๆ ใน section/function ที่เพิ่มใหม่                                              |
+| Domain      | config-driven — ค่า org-specific อยู่ใน DB/demo CSV ไม่ใช่ enum ในโค้ด                     |
+| Tests       | Vitest + fast-check สำหรับ constraints; integration ใช้ PostgreSQL จริง                  |
 
 ---
 
@@ -81,7 +76,7 @@ pnpm dev
 
 1. เปิด issue **Rule Template Request** พร้อมตัวอย่างนิรนาม
 2. เพิ่ม definition ใน [`docs/domain/rule-templates.md`](docs/domain/rule-templates.md)
-3. Implement validator ที่ `src/domain/rules/` _(เมื่อมี scaffold)_
+3. Implement validator ที่ `src/domain/rules/`
 4. Unit tests + configurability test (org สองแห่ง กติกาต่างกัน ทำงานถูก)
 5. ไม่เพิ่มพารามิเตอร์ที่ผูกกับรหัสเวรเฉพาะแล็บเดียว
 
@@ -89,8 +84,9 @@ pnpm dev
 
 ## Documentation
 
-- Discovery/domain docs: **ภาษาไทย** เป็นหลัก
+- Discovery/domain docs: **ภาษาไทย** เป็นหลัก — ดู [`docs/discovery/README.md`](docs/discovery/README.md)
 - README, CONTRIBUTING, SECURITY: **ไทย + อังกฤษ**
+- นโยบายข้อมูล: [`docs/privacy/data-policy.md`](docs/privacy/data-policy.md)
 - อย่าสร้าง summary markdown นอกงานที่ถูกขอ
 - อย่าคัดลอกตารางยาวจาก `clarification-requests.md` ไปที่อื่น — link แทน
 

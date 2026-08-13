@@ -1,4 +1,7 @@
-import { listDepartmentsAction, listDepartmentsForSelectAction } from "@/actions/config/departments";
+import {
+  listDepartmentsAction,
+  listDepartmentsForSelectAction,
+} from "@/actions/config/departments";
 import {
   listShiftCodeDemandsAction,
   listShiftCodesAction,
@@ -28,10 +31,7 @@ export default async function ShiftCodesSettingsPage() {
 
   return (
     <div className="space-y-6">
-      <ConfigPageHeader
-        title="รหัสเวร"
-        description="รายการรหัสเวร แผนก และกำลังคนขั้นต่ำ"
-      />
+      <ConfigPageHeader title="รหัสเวร" description="รายการรหัสเวร แผนก และกำลังคนขั้นต่ำ" />
 
       <ShiftCodesSettingsPanel
         shiftCodes={shiftCodes}

@@ -1,17 +1,15 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-
-import type { Prisma } from "@/generated/client/client";
-
 import {
   parseDateInput,
-  ruleInstanceFormSchema,
   type RuleInstanceFormInput,
+  ruleInstanceFormSchema,
 } from "@/domain/config/schemas";
 import type { ActionResult } from "@/domain/config/types";
 import { requirePermission } from "@/domain/rbac/check-permission";
 import { getRuleTemplate, validateRuleParams } from "@/domain/rules/registry";
+import type { Prisma } from "@/generated/client/client";
 import {
   actionErrorMessage,
   requireOrganizationContext,

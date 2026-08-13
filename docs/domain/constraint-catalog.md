@@ -104,7 +104,7 @@
 | **Owner**          | HR                                                                                           |
 | **Class**          | HARD                                                                                         |
 | **Override**       | NEVER                                                                                        |
-| **Parameter**      | `minRestHours = 11` (provisional จาก `INT-SCH-001`; รอ HR/นิติกร sign-off)                     |
+| **Parameter**      | `minRestHours = 11` (provisional จาก role play ผู้จัดเวร; รอ HR/นิติกร sign-off)                  |
 | **Description**    | ระหว่าง end ของ assignment หนึ่งกับ start ของ assignment ถัดไปของ staff เดียวกัน ต้อง ≥ minRestHours |
 | **Cross-boundary** | ใช้ assignment จากรอบก่อนหน้า                                                                   |
 
@@ -112,40 +112,40 @@
 
 ### HC-006 — Maximum rolling work hours
 
-| ฟิลด์             | ค่า                                                                                 |
-| --------------- | ---------------------------------------------------------------------------------- |
-| **Source**      | HR policy                                                                          |
-| **Owner**       | HR                                                                                 |
-| **Class**       | HARD                                                                               |
-| **Override**    | NEVER                                                                              |
-| **Parameter**   | `rollingWindowHours = 24`, `maxHoursInWindow = 16` (provisional จาก `INT-SCH-001`) |
-| **Description** | ชั่วโมงงานสะสมใน rolling window ไม่เกิน max                                            |
+| ฟิลด์             | ค่า                                                                                    |
+| --------------- | ------------------------------------------------------------------------------------- |
+| **Source**      | HR policy                                                                             |
+| **Owner**       | HR                                                                                    |
+| **Class**       | HARD                                                                                  |
+| **Override**    | NEVER                                                                                 |
+| **Parameter**   | `rollingWindowHours = 24`, `maxHoursInWindow = 16` (provisional จาก role play ผู้จัดเวร) |
+| **Description** | ชั่วโมงงานสะสมใน rolling window ไม่เกิน max                                               |
 
 ---
 
 ### HC-007 — Consecutive night shifts
 
-| ฟิลด์             | ค่า                                                         |
-| --------------- | ---------------------------------------------------------- |
-| **Source**      | Lab SOP / HR                                               |
-| **Owner**       | Lab Head + HR                                              |
-| **Class**       | HARD                                                       |
-| **Override**    | NEVER                                                      |
-| **Parameter**   | `maxConsecutiveNights = 3` (provisional จาก `INT-SCH-001`) |
-| **Description** | จำนวนเวรดึกติดกันสูงสุดต่อ staff                                  |
+| ฟิลด์             | ค่า                                                            |
+| --------------- | ------------------------------------------------------------- |
+| **Source**      | Lab SOP / HR                                                  |
+| **Owner**       | Lab Head + HR                                                 |
+| **Class**       | HARD                                                          |
+| **Override**    | NEVER                                                         |
+| **Parameter**   | `maxConsecutiveNights = 3` (provisional จาก role play ผู้จัดเวร) |
+| **Description** | จำนวนเวรดึกติดกันสูงสุดต่อ staff                                     |
 
 ---
 
 ### HC-008 — Night-to-day transition
 
-| ฟิลด์             | ค่า                                                                |
-| --------------- | ----------------------------------------------------------------- |
-| **Source**      | HR / occupational health                                          |
-| **Owner**       | HR                                                                |
-| **Class**       | HARD                                                              |
-| **Override**    | NEVER                                                             |
-| **Parameter**   | `minRestAfterNightBeforeDay = 11` (provisional จาก `INT-SCH-001`) |
-| **Description** | หลังเวรดึก ห้ามเริ่ม day shift เร็วกว่าที่กำหนด                             |
+| ฟิลด์             | ค่า                                                                   |
+| --------------- | -------------------------------------------------------------------- |
+| **Source**      | HR / occupational health                                             |
+| **Owner**       | HR                                                                   |
+| **Class**       | HARD                                                                 |
+| **Override**    | NEVER                                                                |
+| **Parameter**   | `minRestAfterNightBeforeDay = 11` (provisional จาก role play ผู้จัดเวร) |
+| **Description** | หลังเวรดึก ห้ามเริ่ม day shift เร็วกว่าที่กำหนด                                |
 
 ---
 
@@ -235,7 +235,7 @@
 
 **หมายเหตุ:** weight เป็นค่าเริ่มต้น — ปรับหลัง benchmark pilot
 
-> Discovery evidence จาก `INT-SCH-001` เป็น role play ของผู้จัดเวรเท่านั้น ค่าที่เติมใน HC-005–008 และน้ำหนัก SC-002–003 ยังเป็น provisional ต้องตรวจสอบกับ HR/นิติกร, Lab Head และ Quality ก่อนเปลี่ยนสถานะเป็น effective
+> Discovery evidence ของ HC-005–008 และน้ำหนัก SC-002–003 มาจาก role play ผู้จัดเวรเท่านั้น ยังเป็น provisional ต้องตรวจสอบกับ HR/นิติกร, Lab Head และ Quality ก่อนเปลี่ยนสถานะเป็น effective
 
 ---
 
@@ -311,7 +311,7 @@
 | วันที่        | Version       | การเปลี่ยนแปลง                                                                                 | ผู้อนุมัติ     |
 | ---------- | ------------- | -------------------------------------------------------------------------------------------- | --------- |
 | 2026-08-10 | RSV-0.1-draft | สร้างร่างเริ่มต้นจากแผน Discovery                                                                 | —         |
-| 2026-08-10 | RSV-0.1-draft | เพิ่ม provisional values จาก `INT-SCH-001` role play; ยังไม่ใช่ sign-off                          | รอยืนยัน    |
+| 2026-08-10 | RSV-0.1-draft | เพิ่ม provisional values จาก role play ผู้จัดเวร; ยังไม่ใช่ sign-off                                 | รอยืนยัน    |
 | 2026-08-10 | RSV-0.1-draft | เพิ่มหลักฐาน OCR ใน HC-003/HC-004: vocabulary แยก grade + MI/IM แยก WorkArea; ไม่เปลี่ยน parameter | Discovery |
 | 2026-08-11 | RSV-0.1-draft | เพิ่ม HC-010–HC-012 (วันหยุด, เพดานหยุดพร้อมกัน, OT); อัปเดต SC-007 carry-over; scenarios Stage A/B  | —         |
 | 2026-08-11 | RSV-0.1-draft | HC-002 อ้าง `PlannedNonWorkingDay`; EC-001 override ใน popup + audit (two-role)               | —         |

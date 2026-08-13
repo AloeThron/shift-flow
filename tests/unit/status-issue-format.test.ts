@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
 
 import {
-    buildStaffLabelMap,
-    buildWorkAreaLabelMap,
-    countUniqueCoverageGapDates,
-    coverageGapSectionBadge,
-    formatCoverageGapDisplay,
-    formatScheduleDateLabel,
-    formatViolationDetails,
-    formatViolationMeta,
+  buildStaffLabelMap,
+  buildWorkAreaLabelMap,
+  countUniqueCoverageGapDates,
+  coverageGapSectionBadge,
+  formatCoverageGapDisplay,
+  formatScheduleDateLabel,
+  formatViolationDetails,
+  formatViolationMeta,
 } from "@/components/schedule/canvas/status-issue-format";
 import type { ScheduleCanvasGrid } from "@/domain/schedule/canvas-grid";
 import type { ConstraintViolation, FeasibilityIssue } from "@/domain/schedule/types";

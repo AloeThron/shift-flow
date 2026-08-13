@@ -13,9 +13,7 @@ export function buildStaffLabelMap(grid: ScheduleCanvasGrid): LabelMap {
 
 /** สร้าง map ชื่อแผนก */
 export function buildDepartmentLabelMap(departments: readonly CanvasDepartmentOption[]): LabelMap {
-  return new Map(
-    departments.map((dept) => [dept.id, `${dept.code} · ${dept.displayName}`]),
-  );
+  return new Map(departments.map((dept) => [dept.id, `${dept.code} · ${dept.displayName}`]));
 }
 
 /** @deprecated ใช้ buildDepartmentLabelMap */
@@ -265,8 +263,7 @@ export function formatCoverageGapDisplay(
   }
 
   const shortfall = issue.shortfallCount ?? 0;
-  const departmentLabel =
-    resolveLabel(departmentLabelById, issue.departmentId) ?? "ไม่ระบุแผนก";
+  const departmentLabel = resolveLabel(departmentLabelById, issue.departmentId) ?? "ไม่ระบุแผนก";
   const shiftCodeLabel = resolveLabel(shiftCodeLabelById, issue.shiftCodeId);
   const timeRange = issue.startTime && issue.endTime ? `${issue.startTime}–${issue.endTime}` : null;
 

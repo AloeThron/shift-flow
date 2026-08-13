@@ -1,12 +1,9 @@
 "use client";
 
 import { Plus, Trash2 } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 
-import {
-  getRuleParamFields,
-  type RuleParamFieldDef,
-} from "@/components/config/rule-param-labels";
+import { getRuleParamFields, type RuleParamFieldDef } from "@/components/config/rule-param-labels";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -122,17 +119,10 @@ function NumberField({
   disabled?: boolean;
   onPatch: (key: string, nextValue: unknown, optional: boolean) => void;
 }) {
-  const fallback =
-    typeof field.min === "number"
-      ? field.min
-      : field.optional
-        ? undefined
-        : 0;
+  const fallback = typeof field.min === "number" ? field.min : field.optional ? undefined : 0;
   const current = value[field.key];
   const displayValue =
-    current === undefined || current === null
-      ? ""
-      : String(readNumber(current, fallback ?? 0));
+    current === undefined || current === null ? "" : String(readNumber(current, fallback ?? 0));
 
   return (
     <div className="space-y-2">
@@ -272,9 +262,7 @@ function StringField({
         value={current}
         placeholder={field.placeholder}
         disabled={disabled}
-        onChange={(event) =>
-          onPatch(field.key, event.target.value, Boolean(field.optional))
-        }
+        onChange={(event) => onPatch(field.key, event.target.value, Boolean(field.optional))}
       />
       {field.hint ? <p className="text-muted-foreground text-xs">{field.hint}</p> : null}
     </div>
@@ -332,6 +320,19 @@ function CodeSequenceListField({
   onPatch: (key: string, nextValue: unknown, optional: boolean) => void;
 }) {
   const sequences = readCodeSequences(value[field.key]);
+  /** id คงที่ต่อแถว — ไม่ใช้ array index เป็น React key */
+  const rowIdsRef = useRef<string[]>([]);
+
+  if (rowIdsRef.current.length < sequences.length) {
+    rowIdsRef.current = [
+      ...rowIdsRef.current,
+      ...Array.from({ length: sequences.length - rowIdsRef.current.length }, () =>
+        crypto.randomUUID(),
+      ),
+    ];
+  } else if (rowIdsRef.current.length > sequences.length) {
+    rowIdsRef.current = rowIdsRef.current.slice(0, sequences.length);
+  }
 
   const updateRow = (index: number, patch: Partial<CodeSequence>) => {
     const next = sequences.map((row, rowIndex) =>
@@ -341,10 +342,12 @@ function CodeSequenceListField({
   };
 
   const addRow = () => {
+    rowIdsRef.current = [...rowIdsRef.current, crypto.randomUUID()];
     onPatch(field.key, [...sequences, { from: "", to: "" }], false);
   };
 
   const removeRow = (index: number) => {
+    rowIdsRef.current = rowIdsRef.current.filter((_, rowIndex) => rowIndex !== index);
     onPatch(
       field.key,
       sequences.filter((_, rowIndex) => rowIndex !== index),
@@ -367,7 +370,7 @@ function CodeSequenceListField({
         <ul className="space-y-2">
           {sequences.map((row, index) => (
             <li
-              key={`sequence-${index}`}
+              key={rowIdsRef.current[index] ?? `sequence-${row.from}-${row.to}`}
               className="grid gap-2 rounded-md border p-3 sm:grid-cols-[1fr_auto_1fr_auto]"
             >
               <div className="space-y-1">
@@ -382,9 +385,7 @@ function CodeSequenceListField({
                   onChange={(event) => updateRow(index, { from: event.target.value })}
                 />
               </div>
-              <span className="text-muted-foreground hidden self-end pb-2 text-sm sm:block">
-                →
-              </span>
+              <span className="text-muted-foreground hidden self-end pb-2 text-sm sm:block">→</span>
               <div className="space-y-1">
                 <Label htmlFor={`sequence-to-${index}`} className="text-xs">
                   รหัสถัดไป
@@ -436,33 +437,18 @@ function ParamField({
 }) {
   switch (field.type) {
     case "number":
-      return (
-        <NumberField field={field} value={value} disabled={disabled} onPatch={onPatch} />
-      );
+      return <NumberField field={field} value={value} disabled={disabled} onPatch={onPatch} />;
     case "boolean":
-      return (
-        <BooleanField field={field} value={value} disabled={disabled} onPatch={onPatch} />
-      );
+      return <BooleanField field={field} value={value} disabled={disabled} onPatch={onPatch} />;
     case "select":
-      return (
-        <SelectField field={field} value={value} disabled={disabled} onPatch={onPatch} />
-      );
+      return <SelectField field={field} value={value} disabled={disabled} onPatch={onPatch} />;
     case "string":
-      return (
-        <StringField field={field} value={value} disabled={disabled} onPatch={onPatch} />
-      );
+      return <StringField field={field} value={value} disabled={disabled} onPatch={onPatch} />;
     case "stringList":
-      return (
-        <StringListField field={field} value={value} disabled={disabled} onPatch={onPatch} />
-      );
+      return <StringListField field={field} value={value} disabled={disabled} onPatch={onPatch} />;
     case "codeSequenceList":
       return (
-        <CodeSequenceListField
-          field={field}
-          value={value}
-          disabled={disabled}
-          onPatch={onPatch}
-        />
+        <CodeSequenceListField field={field} value={value} disabled={disabled} onPatch={onPatch} />
       );
     default: {
       const _exhaustive: never = field;
@@ -484,12 +470,7 @@ export function mergeRuleParams(
 }
 
 /** ฟอร์มค่าตั้งกติกาแบบอ่านง่าย — แทน JSON textarea */
-export function RuleParamsEditor({
-  templateId,
-  value,
-  onChange,
-  disabled,
-}: RuleParamsEditorProps) {
+export function RuleParamsEditor({ templateId, value, onChange, disabled }: RuleParamsEditorProps) {
   const fields = useMemo(() => getRuleParamFields(templateId), [templateId]);
   const mergedValue = useMemo(() => mergeRuleParams(templateId, value), [templateId, value]);
 
@@ -498,11 +479,7 @@ export function RuleParamsEditor({
   };
 
   if (fields.length === 0) {
-    return (
-      <p className="text-muted-foreground text-sm">
-        ไม่มีฟอร์มสำหรับแม่แบบนี้ — ติดต่อผู้ดูแลระบบ
-      </p>
-    );
+    return <p className="text-muted-foreground text-sm">ไม่มีฟอร์มสำหรับแม่แบบนี้ — ติดต่อผู้ดูแลระบบ</p>;
   }
 
   return (
@@ -516,12 +493,7 @@ export function RuleParamsEditor({
               : undefined
           }
         >
-          <ParamField
-            field={field}
-            value={mergedValue}
-            disabled={disabled}
-            onPatch={handlePatch}
-          />
+          <ParamField field={field} value={mergedValue} disabled={disabled} onPatch={handlePatch} />
         </div>
       ))}
     </div>

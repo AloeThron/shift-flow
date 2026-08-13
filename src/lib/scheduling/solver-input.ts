@@ -1,7 +1,7 @@
 import type { BalancePlanInput } from "@/domain/optimize/balance/types";
 import type { DayOffPlanInput, DayOffRequest, HistoricalOffDate } from "@/domain/optimize/day-off";
-import { serializeStaffDayOffQuotas } from "@/domain/schedule/day-off-quota-draft";
 import { isWorkingAssignment } from "@/domain/rules/helpers/schedule-metrics";
+import { serializeStaffDayOffQuotas } from "@/domain/schedule/day-off-quota-draft";
 import { eachDateInRange } from "@/domain/schedule/time";
 import type { ScheduleEngineInput } from "@/domain/schedule/types";
 import { prisma } from "@/lib/prisma";
@@ -86,10 +86,12 @@ export function buildDayOffPlanInput(
     nonWorkingDayKindId: snapshot.defaultOffKindId,
     dayOffRequests: engineInput.plannedNonWorkingDays
       .filter((entry) => !entry.locked && entry.source === "REQUEST")
-      .map((entry): DayOffRequest => ({
-        staffId: entry.staffId,
-        localDate: entry.localDate,
-      })),
+      .map(
+        (entry): DayOffRequest => ({
+          staffId: entry.staffId,
+          localDate: entry.localDate,
+        }),
+      ),
     plannedNonWorkingDays: engineInput.plannedNonWorkingDays,
     historicalOffDates: buildHistoricalOffDates(history),
     staffWorkloadMonthly: engineInput.staffWorkloadMonthly,

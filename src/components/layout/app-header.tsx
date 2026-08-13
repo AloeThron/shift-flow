@@ -5,9 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { ExpandWidthToggle } from "@/components/layout/expand-width-toggle";
+import { MainNavLinks } from "@/components/layout/main-nav";
 import { PageContainer } from "@/components/layout/page-container";
 import { Button } from "@/components/ui/button";
-import { MainNavLinks } from "@/components/layout/main-nav";
 
 type AppHeaderProps = {
   username: string;

@@ -35,10 +35,7 @@ export function weekdayMaskToDayType(
 }
 
 /** สร้างชื่อ demand จากแถว CSV */
-export function buildDemandName(
-  canonicalCode: string,
-  dayType: CoverageDayType,
-): string {
+export function buildDemandName(canonicalCode: string, dayType: CoverageDayType): string {
   return `${canonicalCode} ${dayType}`;
 }
 

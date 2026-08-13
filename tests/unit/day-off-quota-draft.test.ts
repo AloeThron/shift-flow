@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 
 import {
-    isValidDayOffQuotaValue,
-    mergeStaffDayOffQuotas,
-    resolveDefaultDayOffQuota,
-    serializeStaffDayOffQuotas,
-    staffDayOffQuotasForSolver,
-    validateStaffDayOffQuotasComplete,
+  isValidDayOffQuotaValue,
+  mergeStaffDayOffQuotas,
+  resolveDefaultDayOffQuota,
+  serializeStaffDayOffQuotas,
+  staffDayOffQuotasForSolver,
+  validateStaffDayOffQuotasComplete,
 } from "@/domain/schedule/day-off-quota-draft";
 import type { RuleInstanceSnapshot } from "@/domain/schedule/types";
 

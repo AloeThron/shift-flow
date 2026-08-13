@@ -10,10 +10,7 @@ export default async function RulesSettingsPage() {
 
   return (
     <div className="space-y-6">
-      <ConfigPageHeader
-        title="กติกาเวร"
-        description="เปิด-ปิดกติกา และปรับค่าให้เหมาะกับหน่วยงาน"
-      />
+      <ConfigPageHeader title="กติกาเวร" description="เปิด-ปิดกติกา และปรับค่าให้เหมาะกับหน่วยงาน" />
 
       <RulesSettingsPanel rules={rules} canWrite={canWrite} />
     </div>

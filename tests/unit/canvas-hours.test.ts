@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import type { ScheduleCanvasCell } from "@/domain/schedule/canvas-grid";
 import {
+  type CanvasShiftHoursMeta,
   computeCanvasCellHours,
   computeCanvasStaffRowTotals,
   hasCellOt,
-  type CanvasShiftHoursMeta,
 } from "@/domain/schedule/canvas-hours";
 
 const dayShiftMeta: CanvasShiftHoursMeta = { standardHours: 8, otHours: 0 };
@@ -47,9 +47,10 @@ describe("computeCanvasCellHours", () => {
   });
 
   it("รวม plannedOtHours กับ otHours ของรหัสเวร", () => {
-    expect(
-      computeCanvasCellHours(makeCell({ plannedOtHours: 1 }), otShiftMeta),
-    ).toEqual({ workHours: 8, otHours: 3 });
+    expect(computeCanvasCellHours(makeCell({ plannedOtHours: 1 }), otShiftMeta)).toEqual({
+      workHours: 8,
+      otHours: 3,
+    });
   });
 
   it("ไม่มี shiftCodeId คืน 0/0", () => {

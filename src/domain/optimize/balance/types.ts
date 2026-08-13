@@ -1,9 +1,9 @@
 import type {
-    RuleInstanceSnapshot,
-    ScheduleAssignment,
-    ScheduleEngineInput,
-    ScheduleSlot,
-    ShiftCodeSnapshot,
+  RuleInstanceSnapshot,
+  ScheduleAssignment,
+  ScheduleEngineInput,
+  ScheduleSlot,
+  ShiftCodeSnapshot,
 } from "@/domain/schedule/types";
 
 /** ประเภท slot ใน Stage B */

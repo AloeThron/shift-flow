@@ -22,9 +22,7 @@ export default async function PublicSharePage({ params }: { params: Promise<{ to
             ? ` · เผยแพร่ ${new Date(grid.schedule.publishedAt).toLocaleString("th-TH")}`
             : null}
         </p>
-        <p className="text-muted-foreground text-xs">
-          ตารางเวรแบบอ่านอย่างเดียว — ไม่ต้องเข้าสู่ระบบ
-        </p>
+        <p className="text-muted-foreground text-xs">ตารางเวรแบบอ่านอย่างเดียว — ไม่ต้องเข้าสู่ระบบ</p>
       </header>
       <PublishedRosterGrid grid={grid} />
     </div>

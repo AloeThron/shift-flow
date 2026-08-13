@@ -30,11 +30,7 @@ type StaffSettingsPanelProps = {
 };
 
 /** แสดงสรุปสิทธิรหัสเวรในแถวตาราง */
-function ShiftAuthSummaryCell({
-  summary,
-}: {
-  summary: StaffProfileView["shiftAuthSummary"];
-}) {
+function ShiftAuthSummaryCell({ summary }: { summary: StaffProfileView["shiftAuthSummary"] }) {
   if (summary.coversAll) {
     return (
       <span className="inline-flex items-center gap-1.5">
@@ -80,15 +76,16 @@ export function StaffSettingsPanel({
   canWrite,
 }: StaffSettingsPanelProps) {
   const byId = new Map(staffProfiles.map((profile) => [profile.id, profile]));
-  const authorizationsByStaff = authorizations.reduce<
-    Map<string, StaffShiftAuthorizationView[]>
-  >((map, row) => {
-    const { staffProfileId, ...auth } = row;
-    const list = map.get(staffProfileId) ?? [];
-    list.push(auth);
-    map.set(staffProfileId, list);
-    return map;
-  }, new Map());
+  const authorizationsByStaff = authorizations.reduce<Map<string, StaffShiftAuthorizationView[]>>(
+    (map, row) => {
+      const { staffProfileId, ...auth } = row;
+      const list = map.get(staffProfileId) ?? [];
+      list.push(auth);
+      map.set(staffProfileId, list);
+      return map;
+    },
+    new Map(),
+  );
 
   const staffOptions = staffProfiles.map((profile) => ({
     id: profile.id,
@@ -149,9 +146,7 @@ export function StaffSettingsPanel({
       }
       renderEditor={(mode, close) => {
         if (mode.type === "create") {
-          return (
-            <StaffForm grades={grades} groups={groups} canWrite={canWrite} onDone={close} />
-          );
+          return <StaffForm grades={grades} groups={groups} canWrite={canWrite} onDone={close} />;
         }
 
         const profile = byId.get(mode.id);

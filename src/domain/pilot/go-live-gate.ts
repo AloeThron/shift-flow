@@ -1,9 +1,9 @@
 import type {
-    FairnessMetric,
-    GateCriterionResult,
-    GoLiveDecision,
-    ParallelPilotReport,
-    PilotCycleMetrics,
+  FairnessMetric,
+  GateCriterionResult,
+  GoLiveDecision,
+  ParallelPilotReport,
+  PilotCycleMetrics,
 } from "@/domain/pilot/types";
 
 const MIN_CYCLES = 2;

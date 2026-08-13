@@ -14,10 +14,10 @@ import { assignmentOtHours, collectStaffOffDates } from "@/domain/rules/helpers/
 import {
   buildAssignmentInterval,
   eachDateInRange,
-  validateSchedule,
   type RuleInstanceSnapshot,
   type ScheduleEngineInput,
   type ShiftCodeSnapshot,
+  validateSchedule,
 } from "@/domain/schedule";
 import { buildValidationContext } from "@/domain/schedule/validate";
 

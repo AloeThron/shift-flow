@@ -2,12 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 
-import { staffFormSchema, type StaffFormInput } from "@/domain/config/schemas";
+import { type StaffFormInput, staffFormSchema } from "@/domain/config/schemas";
 import type { ActionResult } from "@/domain/config/types";
 import { requirePermission } from "@/domain/rbac/check-permission";
 import {
-    actionErrorMessage,
-    requireOrganizationContext,
+  actionErrorMessage,
+  requireOrganizationContext,
 } from "@/lib/auth/get-organization-context";
 import { recordConfigChange } from "@/lib/db/audit";
 import { createScopedRepository } from "@/lib/db/scoped-repository";
@@ -328,12 +328,7 @@ export async function updateStaffProfileAction(
       },
     });
 
-    await upsertCurrentEmploymentContract(
-      ctx.organizationId,
-      id,
-      data.contractType,
-      data.fte,
-    );
+    await upsertCurrentEmploymentContract(ctx.organizationId, id, data.contractType, data.fte);
 
     await recordConfigChange(repo, ctx, {
       entityType: "StaffProfile",

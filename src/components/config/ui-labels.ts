@@ -1,4 +1,9 @@
-import type { ContractType, OverrideClass, RuleSeverity, StaffGroupSection } from "@/generated/client/client";
+import type {
+  ContractType,
+  OverrideClass,
+  RuleSeverity,
+  StaffGroupSection,
+} from "@/generated/client/client";
 
 /** ป้ายระดับความเข้มของกติกา */
 export const SEVERITY_LABELS: Record<RuleSeverity, string> = {

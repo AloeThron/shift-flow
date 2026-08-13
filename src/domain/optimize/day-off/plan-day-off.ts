@@ -1,28 +1,28 @@
 import { isWorkingAssignment } from "@/domain/rules/helpers/schedule-metrics";
 import { eachDateInRange, resolveDayType } from "@/domain/schedule/time";
 import type {
-    PlannedNonWorkingDaySnapshot,
-    RuleInstanceSnapshot,
-    StaffSnapshot,
+  PlannedNonWorkingDaySnapshot,
+  RuleInstanceSnapshot,
+  StaffSnapshot,
 } from "@/domain/schedule/types";
 
 import type {
-    DayOffCostWeights,
-    DayOffPlanInput,
-    DayOffPlanResult,
-    HistoricalOffDate,
-    PlannedNonWorkingDayPlan,
-    PlannedNonWorkingDaySource,
+  DayOffCostWeights,
+  DayOffPlanInput,
+  DayOffPlanResult,
+  HistoricalOffDate,
+  PlannedNonWorkingDayPlan,
+  PlannedNonWorkingDaySource,
 } from "./types";
 
 export type {
-    DayOffCostWeights,
-    DayOffPlanInput,
-    DayOffPlanResult,
-    DayOffRequest,
-    HistoricalOffDate,
-    PlannedNonWorkingDayPlan,
-    PlannedNonWorkingDaySource
+  DayOffCostWeights,
+  DayOffPlanInput,
+  DayOffPlanResult,
+  DayOffRequest,
+  HistoricalOffDate,
+  PlannedNonWorkingDayPlan,
+  PlannedNonWorkingDaySource,
 } from "./types";
 
 const SOLVER_VERSION = "stage-a-sequential-spacing@1";
@@ -516,11 +516,7 @@ function inferPlannedSource(
   planned: PlannedNonWorkingDaySnapshot,
   input: DayOffPlanInput,
 ): PlannedNonWorkingDaySource {
-  if (
-    planned.source === "REQUEST" ||
-    planned.source === "MANUAL" ||
-    planned.source === "QUOTA"
-  ) {
+  if (planned.source === "REQUEST" || planned.source === "MANUAL" || planned.source === "QUOTA") {
     return planned.source;
   }
 

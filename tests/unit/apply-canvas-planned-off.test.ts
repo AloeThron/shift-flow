@@ -3,7 +3,10 @@ import { describe, expect, it } from "vitest";
 import { buildAssignmentInterval } from "@/domain/schedule/time";
 import type { ScheduleEngineInput } from "@/domain/schedule/types";
 import { validateIncremental } from "@/domain/schedule/validate";
-import { mergePlannedOffChanges, resolveBlockingNewHardViolations } from "@/lib/scheduling/apply-canvas-changes";
+import {
+  mergePlannedOffChanges,
+  resolveBlockingNewHardViolations,
+} from "@/lib/scheduling/apply-canvas-changes";
 
 const TIMEZONE = "Asia/Bangkok";
 

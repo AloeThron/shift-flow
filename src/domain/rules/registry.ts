@@ -4,7 +4,12 @@ import type { OverrideClass, RuleSeverity } from "@/generated/client/client";
 
 /** หมวด rule template */
 export type RuleTemplateCategory =
-  "SAFETY" | "LABOR" | "COVERAGE" | "COMPETENCY" | "FAIRNESS" | "PATTERN";
+  | "SAFETY"
+  | "LABOR"
+  | "COVERAGE"
+  | "COMPETENCY"
+  | "FAIRNESS"
+  | "PATTERN";
 
 /** นิยาม rule template ใน registry */
 export type RuleTemplateDefinition = {
@@ -90,8 +95,7 @@ const otLimitParams = z
     ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message:
-          "ต้องระบุ maxOtHoursPerStaffPerCycle หรือ maxOtHoursPerOrgPerCycle อย่างน้อยหนึ่งค่า",
+        message: "ต้องระบุ maxOtHoursPerStaffPerCycle หรือ maxOtHoursPerOrgPerCycle อย่างน้อยหนึ่งค่า",
       });
     }
   });

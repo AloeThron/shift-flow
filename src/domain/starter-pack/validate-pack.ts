@@ -43,9 +43,7 @@ export function validateStarterPack(snapshot: StarterPackSnapshot): StarterPackV
       errors.push(`staff shift auth ${row.staffCode}: ไม่พบรหัสเวร ${row.shiftCode}`);
     }
     if (row.authorizerStaffCode && !staffCodes.has(row.authorizerStaffCode)) {
-      errors.push(
-        `staff shift auth ${row.staffCode}: ไม่พบ authorizer ${row.authorizerStaffCode}`,
-      );
+      errors.push(`staff shift auth ${row.staffCode}: ไม่พบ authorizer ${row.authorizerStaffCode}`);
     }
   }
 

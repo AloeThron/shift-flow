@@ -39,7 +39,6 @@ flowchart TB
   Services --> Domain[Pure Domain Core]
   Services --> Repo[Org-Scoped Repository]
   Repo --> DB[(PostgreSQL / Neon)]
-  Services --> Workflow[Vercel Workflows]
 ```
 
 **หลักการ config-driven:**
@@ -60,7 +59,7 @@ flowchart TB
 ### 1. Clone และอ่าน docs
 
 ```bash
-git clone https://github.com/<org>/shift-flow.git
+git clone https://github.com/AloeThron/shift-flow.git
 cd shift-flow
 ```
 
@@ -96,11 +95,11 @@ pnpm dev
 | Phase                 | สถานะ     | เนื้อหา                                                                                                   |
 | --------------------- | --------- | ------------------------------------------------------------------------------------------------------- |
 | Discovery & domain    | ✅ ส่วนใหญ่  | taxonomy, constraint catalog, configuration model                                                       |
-| OSS foundation        | ✅         | license, governance, demo data, templates                                                               |
+| OSS foundation        | ✅         | license, governance, demo data, CI                                                                      |
 | Platform scaffold     | ✅         | Next.js, Prisma, Auth, CI                                                                               |
-| Admin & scheduling UI | 🔜         | config UI, canvas จัดเวร, publish/share (import wizard ถอดแล้ว)        |
-| Scheduling core       | 🔜         | validator ✅, optimize Stage A/B บางส่วน, deterministic solver         |
-| Staff access          | ✅         | share link read-only (`/s/{token}`) — ไม่มี mobile leave/swap app      |
+| Admin & scheduling UI | 🔜         | config UI, canvas จัดเวร, publish/share (import wizard ถอดแล้ว)                                           |
+| Scheduling core       | 🔜         | validator ✅, optimize Stage A/B บางส่วน, deterministic solver                                            |
+| Staff access          | ✅         | share link read-only (`/s/{token}`) — ไม่มี mobile leave/swap app                                         |
 | Parallel pilot        | ✅ runbook | shadow ≥ 2 รอบ, go-live gate, rollback — [`docs/pilot/parallel-pilot.md`](docs/pilot/parallel-pilot.md) |
 
 เกณฑ์ go-live อัตโนมัติ: `pnpm pilot:evaluate <report.json>` — ดู [`demo/pilot-shadow/README.md`](demo/pilot-shadow/README.md)

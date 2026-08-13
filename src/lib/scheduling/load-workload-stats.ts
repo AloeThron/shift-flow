@@ -1,15 +1,15 @@
 import {
-    buildWorkloadStatsSnapshot,
-    type StaffDisplayMeta,
-    type StaffGroupLabel,
-    type WorkloadStatsSnapshot,
+  buildWorkloadStatsSnapshot,
+  type StaffDisplayMeta,
+  type StaffGroupLabel,
+  type WorkloadStatsSnapshot,
 } from "@/domain/optimize/fairness/workload-stats";
 import { yearMonthFromDate } from "@/domain/rules/helpers/schedule-metrics";
 import type {
-    PlannedNonWorkingDaySnapshot,
-    RuleInstanceSnapshot,
-    ScheduleAssignment,
-    ScheduleEngineInput,
+  PlannedNonWorkingDaySnapshot,
+  RuleInstanceSnapshot,
+  ScheduleAssignment,
+  ScheduleEngineInput,
 } from "@/domain/schedule/types";
 import type { PrismaClient } from "@/generated/client/client";
 import { loadHistoryWindowSnapshot } from "@/lib/scheduling/load-history-window";

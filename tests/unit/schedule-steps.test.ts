@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import { computeScheduleAchievementStatus } from "@/components/schedule/canvas/schedule-achievement";
 import {
-    deriveScheduleStepStates,
-    resolveCanvasInteractionMode,
-    resolveInitialStep,
-    SCHEDULE_STEPS,
+  deriveScheduleStepStates,
+  resolveCanvasInteractionMode,
+  resolveInitialStep,
+  SCHEDULE_STEPS,
 } from "@/components/schedule/canvas/schedule-steps";
 import type { ScheduleCanvasGrid, ScheduleCanvasRow } from "@/domain/schedule/canvas-grid";
 import type { ValidationResult } from "@/domain/schedule/types";
@@ -97,8 +97,12 @@ describe("deriveScheduleStepStates", () => {
   });
 
   it("MANUAL_OFF done เมื่อมี planned off อย่างน้อยหนึ่งเซลล์", () => {
-    const withoutOff = deriveScheduleStepStates(baseInput({ grid: makeGrid({ hasPlannedOff: false }) }));
-    const withOff = deriveScheduleStepStates(baseInput({ grid: makeGrid({ hasPlannedOff: true }) }));
+    const withoutOff = deriveScheduleStepStates(
+      baseInput({ grid: makeGrid({ hasPlannedOff: false }) }),
+    );
+    const withOff = deriveScheduleStepStates(
+      baseInput({ grid: makeGrid({ hasPlannedOff: true }) }),
+    );
 
     expect(withoutOff.find((state) => state.id === "MANUAL_OFF")?.isDone).toBe(false);
     expect(withOff.find((state) => state.id === "MANUAL_OFF")?.isDone).toBe(true);

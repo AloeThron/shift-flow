@@ -1,14 +1,11 @@
-import {
-    buildBalanceSlots,
-    buildFillPools,
-} from "@/domain/optimize/balance/build-slot-graph";
+import { buildBalanceSlots, buildFillPools } from "@/domain/optimize/balance/build-slot-graph";
 import { solveBalance } from "@/domain/optimize/balance/solve-balance";
 import type {
-    ArcCostAdjustment,
-    BalancePlanInput,
-    BalancePlanResult,
-    BalanceSlot,
-    FillPool,
+  ArcCostAdjustment,
+  BalancePlanInput,
+  BalancePlanResult,
+  BalanceSlot,
+  FillPool,
 } from "@/domain/optimize/balance/types";
 import { areaKeyForShiftCode } from "@/domain/optimize/balance/types";
 import type { ScheduleAssignment, ScheduleEngineInput } from "@/domain/schedule/types";
@@ -86,9 +83,7 @@ function resolveSlotForAssignment(
   fillPools: readonly FillPool[],
   assignment: ScheduleAssignment,
 ): { slotId: string; scheduleDate: string } | undefined {
-  const fromMandatory = mandatorySlots.find((slot) =>
-    assignment.id.startsWith(`bal-${slot.id}-`),
-  );
+  const fromMandatory = mandatorySlots.find((slot) => assignment.id.startsWith(`bal-${slot.id}-`));
   if (fromMandatory) {
     return { slotId: fromMandatory.id, scheduleDate: fromMandatory.scheduleDate };
   }
@@ -283,9 +278,7 @@ function adjustmentsUnchanged(
 
 /** คีย์ arc adjustment */
 function adjustmentKey(staffId: string, slotId: string, shiftCodeId?: string): string {
-  return shiftCodeId
-    ? `${staffId}\x1f${slotId}\x1f${shiftCodeId}`
-    : `${staffId}\x1f${slotId}`;
+  return shiftCodeId ? `${staffId}\x1f${slotId}\x1f${shiftCodeId}` : `${staffId}\x1f${slotId}`;
 }
 
 /** แกะ adjustment จากคีย์ */

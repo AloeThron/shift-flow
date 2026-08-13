@@ -4,7 +4,7 @@ import type { ActionResult } from "@/domain/action-result";
 import { planDayOff } from "@/domain/optimize/day-off";
 import { runLagrangianBalance } from "@/domain/optimize/lagrangian/subgradient";
 import { analyzeFeasibility } from "@/domain/schedule/feasibility";
-import { runScheduleSolverSchema, type RunScheduleSolverInput } from "@/domain/schedule/schemas";
+import { type RunScheduleSolverInput, runScheduleSolverSchema } from "@/domain/schedule/schemas";
 import { validateSchedule } from "@/domain/schedule/validate";
 import type { Prisma } from "@/generated/client/client";
 import { actionErrorMessage } from "@/lib/auth/get-organization-context";
@@ -17,17 +17,17 @@ import { buildDeterministicSeed, buildInputChecksum } from "@/lib/scheduling/inp
 import { loadCanvasDraftSnapshot } from "@/lib/scheduling/load-canvas-draft";
 import { loadHistoryWindowSnapshot } from "@/lib/scheduling/load-history-window";
 import {
-    persistBalanceAssignments,
-    persistDayOffPlan,
-    toPersistShiftCodes,
+  persistBalanceAssignments,
+  persistDayOffPlan,
+  toPersistShiftCodes,
 } from "@/lib/scheduling/persist-draft";
 import {
-    balanceChecksumInput,
-    buildBalancePlanInput,
-    buildDayOffPlanInput,
-    dayOffChecksumInput,
-    loadRuleSetVersionId,
-    nextScheduleRunAttempt,
+  balanceChecksumInput,
+  buildBalancePlanInput,
+  buildDayOffPlanInput,
+  dayOffChecksumInput,
+  loadRuleSetVersionId,
+  nextScheduleRunAttempt,
 } from "@/lib/scheduling/solver-input";
 
 /** ผลลัพธ์ solver แต่ละระยะ */
@@ -270,10 +270,11 @@ export async function runBalanceSolverAction(
         const planInput = buildBalancePlanInput(snapshot);
         const feasibility = analyzeFeasibility(planInput, planInput.slots);
         const blockingIssues = feasibility.issues
-          .filter((issue) =>
-            issue.kind === "INSUFFICIENT_STAFF" ||
-            issue.kind === "MISSING_SHIFT_AUTH" ||
-            issue.kind === "UNCONFIRMED_CODE",
+          .filter(
+            (issue) =>
+              issue.kind === "INSUFFICIENT_STAFF" ||
+              issue.kind === "MISSING_SHIFT_AUTH" ||
+              issue.kind === "UNCONFIRMED_CODE",
           )
           .map((issue) => ({
             kind: issue.kind,
@@ -282,10 +283,7 @@ export async function runBalanceSolverAction(
             shiftCodeId: issue.shiftCodeId,
           }));
 
-        if (
-          planInput.slots.length === 0 &&
-          planInput.fillEveryAvailableCell === false
-        ) {
+        if (planInput.slots.length === 0 && planInput.fillEveryAvailableCell === false) {
           return {
             feasible: false,
             messageTh: "ไม่มี demand และปิดโหมดเติมเวร — ไม่สามารถเกลี่ยงานได้",
@@ -323,13 +321,11 @@ export async function runBalanceSolverAction(
         };
 
         if (!solved.feasible) {
-          const messageTh =
-            blockingIssues.some((issue) => issue.kind === "MISSING_SHIFT_AUTH")
-              ? (solved.messageTh ??
-                "Stage B ไม่ feasible — สิทธิรหัสเวรหมดอายุหรือไม่มีคนผ่าน")
-              : blockingIssues.some((issue) => issue.kind === "UNCONFIRMED_CODE")
-                ? (solved.messageTh ?? "Stage B ไม่ feasible — มีรหัสเวรที่ยังไม่ยืนยัน")
-                : (solved.messageTh ?? "Stage B ไม่ feasible");
+          const messageTh = blockingIssues.some((issue) => issue.kind === "MISSING_SHIFT_AUTH")
+            ? (solved.messageTh ?? "Stage B ไม่ feasible — สิทธิรหัสเวรหมดอายุหรือไม่มีคนผ่าน")
+            : blockingIssues.some((issue) => issue.kind === "UNCONFIRMED_CODE")
+              ? (solved.messageTh ?? "Stage B ไม่ feasible — มีรหัสเวรที่ยังไม่ยืนยัน")
+              : (solved.messageTh ?? "Stage B ไม่ feasible");
 
           if (solved.filledCellCount > 0) {
             const persistStats = await persistBalanceAssignments(prisma, {

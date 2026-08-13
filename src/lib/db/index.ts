@@ -1,10 +1,10 @@
-export { recordAuditEvent, recordConfigChange } from "@/lib/db/audit";
 export type { AuditEventInput, ConfigChangeInput } from "@/lib/db/audit";
+export { recordAuditEvent, recordConfigChange } from "@/lib/db/audit";
 export {
   createScopedRepository,
+  type ScopedRepository,
   TENANT_OWNED_MODELS,
+  type TenantOwnedModel,
   tenantData,
   tenantWhere,
-  type ScopedRepository,
-  type TenantOwnedModel,
 } from "@/lib/db/scoped-repository";

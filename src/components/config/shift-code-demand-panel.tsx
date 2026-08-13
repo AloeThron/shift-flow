@@ -62,8 +62,8 @@ function DemandForm({
 
   const defaultWeekdays = initial
     ? WEEKDAYS.filter((day) => (initial.weekdayMask & (1 << day.index)) !== 0).map(
-      (day) => day.index,
-    )
+        (day) => day.index,
+      )
     : [0, 1, 2, 3, 4];
 
   const handleSubmit = (formData: FormData) => {

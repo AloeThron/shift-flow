@@ -1,5 +1,5 @@
-import { staffHasShiftAuthForInterval } from "@/domain/schedule/shift-auth";
 import type { RuleValidatorFn } from "@/domain/rules/types";
+import { staffHasShiftAuthForInterval } from "@/domain/schedule/shift-auth";
 import type { ConstraintViolation } from "@/domain/schedule/types";
 
 /** HC-003 — ต้องมีสิทธิรหัสเวร valid ตลอดเวร (template id คงเดิมเพื่อ YAML) */

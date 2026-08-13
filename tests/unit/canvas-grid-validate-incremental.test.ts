@@ -3,9 +3,9 @@ import { describe, expect, it } from "vitest";
 import { buildScheduleCanvasGrid } from "@/domain/schedule/canvas-grid";
 import type { ScheduleEngineInput } from "@/domain/schedule/types";
 import {
-    validateIncremental,
-    validateSchedule,
-    type IncrementalValidationScope,
+  type IncrementalValidationScope,
+  validateIncremental,
+  validateSchedule,
 } from "@/domain/schedule/validate";
 
 const TIMEZONE = "Asia/Bangkok";
@@ -153,9 +153,7 @@ describe("buildScheduleCanvasGrid", () => {
     expect(staffRows[0]?.kind === "staff" ? staffRows[0].row.staffCode : "").toBe("B001");
     expect(staffRows[1]?.kind === "staff" ? staffRows[1].row.staffCode : "").toBe("B002");
     expect(staffRows[2]?.kind === "staff" ? staffRows[2].row.staffCode : "").toBe("C001");
-    expect(grid.rows.some((row) => row.kind === "group" && row.displayName === "กลุ่ม A")).toBe(
-      true,
-    );
+    expect(grid.rows.some((row) => row.kind === "group" && row.displayName === "กลุ่ม A")).toBe(true);
   });
 
   it("แสดงหัว section ครบ 3 แม้ไม่มีสมาชิกในกลุ่ม", () => {
@@ -200,11 +198,12 @@ describe("buildScheduleCanvasGrid", () => {
     });
 
     const sections = grid.rows.filter((row) => row.kind === "section");
-    expect(sections.find((row) => row.kind === "section" && row.section === "RESULT_CAPABLE")?.isEmpty).toBe(
-      false,
-    );
     expect(
-      sections.find((row) => row.kind === "section" && row.section === "RESULT_NOT_CAPABLE")?.isEmpty,
+      sections.find((row) => row.kind === "section" && row.section === "RESULT_CAPABLE")?.isEmpty,
+    ).toBe(false);
+    expect(
+      sections.find((row) => row.kind === "section" && row.section === "RESULT_NOT_CAPABLE")
+        ?.isEmpty,
     ).toBe(true);
   });
 

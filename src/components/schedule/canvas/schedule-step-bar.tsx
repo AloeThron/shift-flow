@@ -5,11 +5,7 @@ import type { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
-import {
-  SCHEDULE_STEPS,
-  type ScheduleStepId,
-  type ScheduleStepState,
-} from "./schedule-steps";
+import { SCHEDULE_STEPS, type ScheduleStepId, type ScheduleStepState } from "./schedule-steps";
 
 /** แถบขั้นตอนจัดตาราง — สลับได้อิสระ พร้อม hint และแถว actions */
 export function ScheduleStepBar({
@@ -67,9 +63,7 @@ export function ScheduleStepBar({
         </ol>
       </nav>
 
-      {currentStep ? (
-        <p className="text-muted-foreground text-sm">{currentStep.hintTh}</p>
-      ) : null}
+      {currentStep ? <p className="text-muted-foreground text-sm">{currentStep.hintTh}</p> : null}
 
       {actions}
     </div>

@@ -2,10 +2,10 @@
 
 import type { ActionResult } from "@/domain/action-result";
 import {
-    createShareLinkSchema,
-    revokeShareLinkSchema,
-    type CreateShareLinkInput,
-    type RevokeShareLinkInput,
+  type CreateShareLinkInput,
+  createShareLinkSchema,
+  type RevokeShareLinkInput,
+  revokeShareLinkSchema,
 } from "@/domain/schedule/schemas";
 import { createShareToken, hashShareToken } from "@/domain/schedule/share/token";
 import { env } from "@/env";

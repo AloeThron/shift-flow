@@ -1,5 +1,5 @@
-import { staffHasShiftAuthForInterval } from "@/domain/schedule/shift-auth";
 import type { RuleValidatorFn } from "@/domain/rules/types";
+import { staffHasShiftAuthForInterval } from "@/domain/schedule/shift-auth";
 import {
   buildAssignmentInterval,
   demandAppliesToDate,

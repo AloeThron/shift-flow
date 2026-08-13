@@ -2,11 +2,11 @@ import * as fc from "fast-check";
 import { describe, expect, it } from "vitest";
 
 import {
-    addDaysToDate,
-    buildAssignmentInterval,
-    intervalsOverlap,
-    localDateTimeToIso,
-    shiftCrossesMidnight,
+  addDaysToDate,
+  buildAssignmentInterval,
+  intervalsOverlap,
+  localDateTimeToIso,
+  shiftCrossesMidnight,
 } from "@/domain/schedule/time";
 
 const TIMEZONE = "Asia/Bangkok";

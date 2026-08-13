@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  LayoutDashboard,
-  ShieldCheck,
-  Tags,
-  UserCog,
-  type LucideIcon,
-} from "lucide-react";
+import { LayoutDashboard, type LucideIcon, ShieldCheck, Tags, UserCog } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -19,11 +13,11 @@ const SETTINGS_NAV: readonly {
   exact?: boolean;
   icon: LucideIcon;
 }[] = [
-    { href: "/settings", label: "ภาพรวม", exact: true, icon: LayoutDashboard },
-    { href: "/settings/staff", label: "บุคลากร", icon: UserCog },
-    { href: "/settings/shift-codes", label: "รหัสเวร", icon: Tags },
-    { href: "/settings/rules", label: "กติกาเวร", icon: ShieldCheck },
-  ];
+  { href: "/settings", label: "ภาพรวม", exact: true, icon: LayoutDashboard },
+  { href: "/settings/staff", label: "บุคลากร", icon: UserCog },
+  { href: "/settings/shift-codes", label: "รหัสเวร", icon: Tags },
+  { href: "/settings/rules", label: "กติกาเวร", icon: ShieldCheck },
+];
 
 /** เมนูนำทางหน้าตั้งค่า */
 export function SettingsNav() {

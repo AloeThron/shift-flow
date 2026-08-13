@@ -1,6 +1,6 @@
 # Threat Model — Shift-Flow
 
-> อัปเดต: 2026-08-10  
+> อัปเดต: 2026-08-13  
 > ขอบเขต: lab shift scheduling (ไม่มี PHI)  
 > Method: STRIDE-lite สำหรับ web app + multi-tenant data store
 
@@ -13,7 +13,6 @@ flowchart LR
   User[Scheduler_Staff] --> App[Shift-Flow Next.js]
   App --> Auth[Auth.js JWT]
   App --> DB[(PostgreSQL Neon)]
-  App --> Workflow[Vercel Workflows]
   Admin[Org Admin] --> App
 ```
 
@@ -21,7 +20,6 @@ flowchart LR
 
 - Browser ↔ App (untrusted client)
 - App ↔ Database (tenant-scoped queries)
-- App ↔ Background jobs (idempotent, org-scoped)
 
 ---
 

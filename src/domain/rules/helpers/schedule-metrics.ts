@@ -8,7 +8,11 @@ import type {
 
 /** มิติที่ FAIR_DISTRIBUTION วัด */
 export type FairnessDimension =
-  "TOTAL_HOURS" | "OT_HOURS" | "NIGHT_SHIFTS" | "WEEKEND_DAYS" | "HOLIDAY_DAYS";
+  | "TOTAL_HOURS"
+  | "OT_HOURS"
+  | "NIGHT_SHIFTS"
+  | "WEEKEND_DAYS"
+  | "HOLIDAY_DAYS";
 
 /** ขอบเขตการจัดกลุ่ม staff */
 export type FairnessScope = "GROUP" | "ORG";

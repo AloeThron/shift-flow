@@ -1,14 +1,14 @@
 import type {
-    PlannedNonWorkingDaySnapshot,
-    ScheduleAssignment,
-    ShiftCodeSnapshot,
-    StaffSnapshot,
-    StaffWorkloadMonthlySnapshot,
+  PlannedNonWorkingDaySnapshot,
+  ScheduleAssignment,
+  ShiftCodeSnapshot,
+  StaffSnapshot,
+  StaffWorkloadMonthlySnapshot,
 } from "@/domain/schedule/types";
 import type { SchedulingPolicySnapshot } from "@/domain/scheduling/policy";
 import {
-    buildDefaultSchedulingPolicySnapshot,
-    resolveEffectiveSchedulingPolicy,
+  buildDefaultSchedulingPolicySnapshot,
+  resolveEffectiveSchedulingPolicy,
 } from "@/domain/scheduling/policy";
 import { computeHistoryWindow, fairnessLookbackYearMonths } from "@/domain/scheduling/window";
 import type { Prisma, PrismaClient } from "@/generated/client/client";
